@@ -71,6 +71,56 @@ router.post('/login',jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/login-customer',jsonParser, async (req,res)=>{
+    try {
+        const { username, password } = req.body;
+        if (!(username && password)) {
+          res.status(400).json({error:"All input is required"});
+          return;
+        }
+        // Validate if user exist in our database
+        const user = await customers.findOne({phone: username });
+        //console.log(user)
+        if(!user){
+          res.status(400).json({error:"user not found"});
+          return;
+        }
+        if(!user.password){
+          res.status(400).json({error:"password not set"});
+          return;
+        }
+        if(user.active==="false"){
+          res.status(400).json({error:"user not active"});
+          return;
+        }
+        if (user && (await bcrypt.compare(password, user.password))) {
+          const token = jwt.sign(
+            { user_id: user._id, username },
+            process.env.TOKEN_KEY,
+            {expiresIn: "72h",}
+          );
+          user.token = token;
+          res.status(200).json(user);
+          return;
+        }
+        if (user && password===user.password){
+          const token = jwt.sign(
+            { user_id: user._id, username },
+            process.env.TOKEN_KEY,
+            {expiresIn: "48h",}
+          );
+          user.token = token;
+          res.status(200).json(user);
+          return;
+        }
+        else{
+          res.status(400).json({error:"Invalid Password"}); 
+        }
+        } 
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 const createOTP=(cName)=>{
   return(cName+(Math.floor(Math.random() * 10000000)
    + 10000000))

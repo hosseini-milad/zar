@@ -32,6 +32,7 @@ const FindCurrentExist = require('../middleware/CurrentExist');
 const OrderToTask = require('../middleware/OrderToTask');
 const IsToday = require('../middleware/IsToday');
 const NewQuote = require('../middleware/NewQuote');
+const CreateCart = require('../middleware/CreateCart');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -49,54 +50,11 @@ router.post('/list-products', async (req,res)=>{
     const filter = req.body.filters
     const brandId= filter?filter.brand:''
     const catId= filter?filter.category:''
-    const subId = filter?filter.subCategory:''
-    const stockId = req.body.stockId
-    //const categoryData = await category.findOne({catCode:catId})
-    const subChild = subId?[]:await category.find({"parent.catCode":catId})
-    const subChildId = subChild.map(item=>item.catCode)
     
-    var searchCat = ''
-    if(subId)
-        searchCat = {catId:subId}
-    else{
-        if(catId)
-            if(subChildId&&subChildId.length)
-                searchCat = {catId:{$in:subChildId}}
-            else 
-                searchCat = {catId:catId}
-        else
-            searchCat = {}
-    }
     try{
-        const products = await productSchema.aggregate([
-            {$match:brandId?{brandId:brandId}:{}},
-            {$match:searchCat},
-            
-            {$lookup:{
-                from : "productprices", 
-                localField: "ItemID", 
-                foreignField: "ItemID", 
-                as : "priceData"
-            }},
-            {$lookup:{
-                from : "productcounts", 
-                localField: "ItemID", 
-                foreignField: "ItemID", 
-                as : "countData"
-            }}
-        ])
-        var showProduct=[]
-        for(var i=0;i<products.length;i++){
-            var count=products[i].countData&&
-            products[i].countData.find(item=>item.Stock==stockId)
-            if(count) count = count.quantity
-            products[i].countData = count
-            if(count)
-                showProduct.push(products[i])
-        }
-        //console.log(showProduct)
-        //logger.warn("main done")
-        res.json({products:showProduct})
+        const products = await productSchema.find({})
+        
+        res.json({products:products})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -745,42 +703,23 @@ router.post('/cartRemove', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/update-cart',jsonParser, async (req,res)=>{
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
+router.post('/add-cart',jsonParser, async (req,res)=>{
+    const userId=req.headers['userid']
     const data={
         userId:userId,
-        manageId:req.headers['userid'],
-        date:req.body.date,
-        payValue:req.body.payValue,
+        sku:req.body.sku,
+        count:req.body.count,
+        date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
     try{
         const userData = await users.findOne({_id:req.headers['userid']})
-        const stockId = userData.StockId?userData.StockId:"13"
-        var status = "";
-        //const cartData = await cart.find({userId:userId})
-        const qCartData = await quickCart.findOne({userId:userId})
-        const availItems = await checkAvailable(req.body.cartItem,stockId)
-        if(!availItems){
-            res.status(400).json({error:"موجودی کافی نیست"}) 
-            return
-        }
-        const cartItems = createCart(qCartData?qCartData.cartItems:[],
-            req.body.cartItem)
-        data.cartItems =(cartItems)
-        if(!qCartData){
-            cartLog.create({...data,ItemID:req.body.cartItem,action:"create"})
-            await quickCart.create({...data,stockId:stockId})
-            status = "new Cart"
-        }
-        else{
-            cartLog.create({...data,ItemID:req.body.cartItem,action:"update"})
-            await quickCart.updateOne(
-                {userId:userId},{$set:data})
-            status = "update cart"
-        }
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        res.json({...cartDetails,message:"آیتم اضافه شد"})
+        const cartData = await cart.find({userId:userId})
+        
+        const cartItems = CreateCart(cartData,data.sku,userId)
+        
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        res.json({cartItems,message:"آیتم اضافه شد"})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -860,21 +799,6 @@ const checkAvailable= async(items,stockId)=>{
     var minusCount = currentOrder + items.count
     return(compareCount(totalCount,minusCount))
 } 
-const createCart=(cartData,cartItem)=>{
-    var cartItemTemp=cartData?cartData:[]
-    var repeat = 0
-    for(var i=0;i<(cartItemTemp&&cartItemTemp.length);i++){
-        if(cartItemTemp[i].id===cartItem.id){
-            cartItemTemp[i].count=parseInt(cartItemTemp[i].count)+
-                                  parseInt(cartItem.count)
-            repeat=1
-            break
-        }
-    }
-    !repeat&&cartItemTemp.push({...cartItem,date:Date.now()})
-    return(cartItemTemp)
-
-}
 const removeCart=(cartData,cartID)=>{
     if(!cartData||!cartData.cartItems)return([])
 var cartItemTemp=cartData.cartItems
