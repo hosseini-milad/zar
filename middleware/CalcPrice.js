@@ -9,7 +9,7 @@ const CalcPrice=(weight,price)=>{
     var taxPrice = (senfiPrice+ojratPrice) * TAX
 
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
-    return(totalPrice)
+    return(parseInt(Math.round(totalPrice)))
 }
 
 module.exports =CalcPrice
