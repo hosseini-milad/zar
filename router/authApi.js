@@ -125,7 +125,7 @@ const createOTP=(cName)=>{
   return(cName+(Math.floor(Math.random() * 10000000)
    + 10000000))
 }
-router.post('/sendOtp',jsonParser,async(req,res)=>{
+router.post('/customer-otp',jsonParser,async(req,res)=>{
   var smsResult = ''
   try {
     const { phone } = req.body;
