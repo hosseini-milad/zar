@@ -36,7 +36,6 @@ const CreateCart = require('../middleware/CreateCart');
 const CalcCart = require('../middleware/CalcCart');
 const faktorItems = require('../models/product/faktorItems');
 const faktor = require('../models/product/faktor');
-const faktorItems = require('../models/product/faktorItems');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
