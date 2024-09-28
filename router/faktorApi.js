@@ -447,6 +447,7 @@ router.post('/list-faktor',auth, async (req,res)=>{
             var faktorNo = faktorData[i].faktorNo
             const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
             faktorData[i].items = faktorItemData
+            faktorData[i].rahId	=faktorNo
             //itemRefs.push(faktorItem)
         }
         res.json({data:faktorData})
