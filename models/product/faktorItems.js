@@ -10,6 +10,8 @@ const FaktorItems = new Schema({
     discount:{ type: String },
     price:{ type: String },
     totalPrice:{ type: String },
-    count:{ type: String }
+    weight:{ type: String },
+    title:{ type: String },
+    isMojood:{ type: Boolean }
 })
 module.exports = mongoose.model('faktorItems',FaktorItems);

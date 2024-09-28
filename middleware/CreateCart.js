@@ -1,11 +1,14 @@
+const cart = require("../models/product/cart");
 const products = require("../models/product/products");
 
 const CreateCart=async(cartDetails,sku,userId)=>{
-    var newCar =[]
     var index = cartDetails.find(item=>item.sku==sku)
     if(!index){
         const productDetail = await products.findOne({sku:sku})
-        cartDetails.push({
+        if(!productDetail){
+            return({error:"محصول پیدا نشد"})
+        }
+        await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
@@ -15,14 +18,9 @@ const CreateCart=async(cartDetails,sku,userId)=>{
         })
     }
     else{
-        return('repeated Item')
+        return({error:'محصول در سبد وجود دارد'})
     }
-    for(var c=0;c<cartDetails.length;c++){
-        if(cartDetails[c].sku == sku){
-
-        }
-    }
-    return({totalPrice:totalPrice,totalCount:totalCount})
+    return({message:"done"})
 }
 
 module.exports =CreateCart

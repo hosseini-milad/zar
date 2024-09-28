@@ -1,23 +1,18 @@
-const productPrice = require("../models/product/productPrice")
-const NormalTax = require("./NormalTax")
-const {StockId,SaleType} = process.env;
+const customers = require("../models/auth/customers");
+const cart = require("../models/product/cart");
+var ObjectID = require('mongodb').ObjectID;
 
-var tax = process.env.TaxRate
-
-const CalcCart=async(cartDetails)=>{
+const CalcCart=async(userId)=>{
     var totalPrice = 0
     var totalCount = 0
+    const userDetail = await customers.findOne({_id:ObjectID(userId)})
+    const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
     //const ItemId = 
-    const priceData = await productPrice.findOne(
-        {ItemID:cartDetails[c].ItemId,saleType:SaleType},
-        {price:1,_id:0})
     
-    cartDetails[c].price=NormalTax(priceData.price)
-    totalPrice += cartDetails[c].price*cartDetails[c].count
     totalCount += parseInt(cartDetails[c].count)
     }
-    return({totalPrice:totalPrice,totalCount:totalCount})
+    return(cartDetails)
 }
 
 module.exports =CalcCart
