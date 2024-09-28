@@ -60,7 +60,7 @@ router.post('/list-product', async (req,res)=>{
         res.json({data:products,type:[],hasChild:1,
             size:10,success:true,
             categoryList:[{
-                title: "سوسیس و کالباس", 
+                title: "دسته بندی1", 
                 link: "class1"
             }],
             subCategoryList	:[]

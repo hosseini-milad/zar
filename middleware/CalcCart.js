@@ -12,7 +12,16 @@ const CalcCart=async(userId)=>{
     
     totalCount += parseInt(cartDetails[c].count)
     }
-    return(cartDetails)
+    return({cart:cartDetails,
+        cartDetail: {
+            "cartPrice": 1563636,
+            "cartDiscount": 0,
+            "cartWeight": 1,
+            "cartTax": 156363,
+            "cartTotal": 1719999,
+            "cartCount": 1
+        }
+    })
 }
 
 module.exports =CalcCart
