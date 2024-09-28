@@ -270,7 +270,7 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
     }
 })
 
-router.get('/cart',auth, async (req,res)=>{
+router.get('/get-cart',auth, async (req,res)=>{
     const userId =req.body.userId
     try{ 
         const cartDetails = await CalcCart(req.headers['userid'])
