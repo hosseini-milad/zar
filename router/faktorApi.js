@@ -36,6 +36,7 @@ const CreateCart = require('../middleware/CreateCart');
 const CalcCart = require('../middleware/CalcCart');
 const faktorItems = require('../models/product/faktorItems');
 const faktor = require('../models/product/faktor');
+const faktorItems = require('../models/product/faktorItems');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -426,6 +427,22 @@ router.post('/faktor-find', async (req,res)=>{
             //itemRefs.push(faktorItem)
         }
         res.json({faktor:OnlineFaktor,userDetail:userDetail,itemRefs:invoice})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+router.post('/list-faktor',auth, async (req,res)=>{
+    try{
+        const faktorData = await FaktorSchema.find({}).lean()
+
+        for(var i=0;i<faktorData.length;i++){
+            var faktorNo = faktorData[i].faktorNo
+            const faktorItems = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItems
+            //itemRefs.push(faktorItem)
+        }
+        res.json({data:faktorData})
     }
     catch(error){
         res.status(500).json({error: error.message})
