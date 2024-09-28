@@ -61,13 +61,9 @@ router.use('/panel/faktor', panelFaktorApi)
 router.use('/esale', panelFaktorApi)
 
 router.use('/panel/crm',CRMPanelApi)
-schedule.scheduleJob('5 */2 * * *', async() => { 
-    response = await fetch(ONLINE_URL+"/get-customers",
-        {method: 'GET'});
- })  
+
  schedule.scheduleJob('*/1 * * * *', async() => { 
     var priceValue = process.env.DEF_PRICE
-    console.log("update price")
    await price.create({price:priceValue,description:"initial value",date:Date.now()});
  })
  router.get('/get-customers', async (req,res)=>{
@@ -81,7 +77,6 @@ schedule.scheduleJob('5 */2 * * *', async() => {
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
-        console.log(customerList[10])
         for(var i=1;i<1000;i++){
             if(customerList[i]){
             outPut.push(customerList[i])
@@ -118,7 +113,6 @@ router.get('/get-product', async (req,res)=>{
         var outPut = []
         var updateProduct = 0
         var newProduct = 0
-        console.log(productList[10])
         for(var i=1;i<1000;i++){
             if(productList[i]){
             outPut.push(productList[i])
@@ -130,7 +124,6 @@ router.get('/get-product', async (req,res)=>{
             var updateResult = await products.updateOne({sku:productList[i].Code},
                 {$set:query}
             )
-            console.log(updateResult)
             if(!updateResult.matchedCount){
                 newProduct++
                 await products.create(query)

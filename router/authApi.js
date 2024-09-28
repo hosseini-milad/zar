@@ -129,6 +129,7 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
   var smsResult = ''
   try {
     const {  username } = req.body;
+    const phone = username
     ////console.log((phone)
     var otpValue = Math.floor(Math.random() * 8999)+1000 ;
     
