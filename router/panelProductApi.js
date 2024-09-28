@@ -204,7 +204,7 @@ router.post('/list-product',jsonParser,async (req,res)=>{
             { $match:data.active?{isMojood:true}:{}}
             ])
         
-            const productList = newProduct.slice(offset,
+            const productList = products.slice(offset,
                 (parseInt(offset)+parseInt(pageSize)))  
             const brandList = await BrandSchema.find()
            res.json({filter:productList,brands:brandList,exists:data.exists})
