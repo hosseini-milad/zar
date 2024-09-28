@@ -185,23 +185,23 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
 })
 
 
-router.post('/verifyOtp',jsonParser,async(req,res)=>{
+router.post('/login-otp',jsonParser,async(req,res)=>{
 try {
   // Get user input
-  const data ={ phone, otp } = req.body;
+  const data ={ username, otp } = req.body;
 
   // Validate user input
-  if (!(phone && otp)) {
+  if (!(username && otp)) {
     res.status(400).send("All input is required");
     return;
   }
   // Validate if user exist in our database
-  const user = await customers.findOne({phone: phone });
+  const user = await customers.findOne({phone: username });
   ////console.log((user , phone)
   if (user && otp===user.otp) {
     // Create token
     const token = jwt.sign(
-      { user_id: user._id, phone },
+      { user_id: user._id, username },
       process.env.TOKEN_KEY,
       {
         expiresIn: "6h",
