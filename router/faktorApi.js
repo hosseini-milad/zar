@@ -57,7 +57,7 @@ router.post('/list-product', async (req,res)=>{
     try{
         const products = await productSchema.find({})
         
-        res.json({products:products})
+        res.json({data:products})
     }
     catch(error){
         res.status(500).json({message: error.message})
