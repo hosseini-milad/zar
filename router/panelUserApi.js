@@ -166,8 +166,6 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
     }
         const reportList = await customer.aggregate([
             { $match:data.access?{access:data.access}:{}},
-            {$match:data.official?data.official=="official"?
-                {agent:{$exists:false}}:{agent:{$exists:true}}:{}},
             { $match:data.customer?{$or:[
                 {meli:new RegExp('.*' + data.customer + '.*')},
                 {phone:new RegExp('.*' + data.customer + '.*')},
