@@ -81,6 +81,7 @@ schedule.scheduleJob('5 */2 * * *', async() => {
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
+        console.log(customerList.length)
         for(var i=1;i<1000;i++){
             if(customerList[i]){
             outPut.push(customerList[i])
@@ -117,6 +118,7 @@ router.get('/get-product', async (req,res)=>{
         var outPut = []
         var updateProduct = 0
         var newProduct = 0
+        console.log(productList.length)
         for(var i=1;i<1000;i++){
             if(productList[i]){
             outPut.push(productList[i])
