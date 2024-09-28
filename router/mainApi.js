@@ -56,6 +56,7 @@ router.use('/yas', yasApi)
 router.use('/panel/user', panelUserApi)
 router.use('/panel/order', panelOrderApi)
 router.use('/panel/product', panelProductApi)
+router.use('/panel/faktor', panelFaktorApi)
 router.use('/esale', panelFaktorApi)
 
 router.use('/panel/crm',CRMPanelApi)

@@ -49,7 +49,7 @@ router.post('/products', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/list-products', async (req,res)=>{
+router.post('/list-product', async (req,res)=>{
     const filter = req.body.filters
     const brandId= filter?filter.brand:''
     const catId= filter?filter.category:''
