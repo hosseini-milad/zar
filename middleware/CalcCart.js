@@ -12,7 +12,7 @@ const CalcCart=async(userId)=>{
     //const ItemId = 
     cartDetails[c].productDetail = 
         await products.findOne({sku:cartDetails[c].sku})
-        totalCount += parseInt(cartDetails[c].count)
+    totalCount += parseInt(cartDetails[c].count)
     }
     return({cart:cartDetails,
         cartDetail: {

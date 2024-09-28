@@ -9,7 +9,7 @@ const FaktorItems = new Schema({
     sku:{ type: String },
     discount:{ type: String },
     price:{ type: String },
-    totalPrice:{ type: String },
+    unitPrice:{ type: String },
     weight:{ type: String },
     title:{ type: String },
     isMojood:{ type: Boolean }

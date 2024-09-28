@@ -21,14 +21,13 @@ const bankAccounts = require('../models/product/bankAccounts');
 const sepidarFetch = require('../middleware/Sepidar');
 const products = require('../models/product/products');
 const tasks = require('../models/crm/tasks');
-const CheckSale = require('../middleware/CheckSale')
+const CheckSale = require('../middleware/CalcPrice')
 const profiles = require('../models/auth/ProfileAccess');
 const CreateTask = require('../middleware/CreateTask');
 const NewCode = require('../middleware/NewCode');
 const customers = require('../models/auth/customers');
 const brand = require('../models/product/brand');
 const FindCurrentCart = require('../middleware/CurrentCart');
-const FindCurrentExist = require('../middleware/CurrentExist');
 const OrderToTask = require('../middleware/OrderToTask');
 const IsToday = require('../middleware/IsToday');
 const NewQuote = require('../middleware/NewQuote');
@@ -38,6 +37,8 @@ const faktorItems = require('../models/product/faktorItems');
 const faktor = require('../models/product/faktor');
 const slider = require('../models/main/slider');
 const price = require('../models/price');
+const CalcPrice = require('../middleware/CalcPrice');
+const FindPrice = require('../middleware/FindPrice');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -52,15 +53,20 @@ router.post('/products', async (req,res)=>{
     }
 })
 router.post('/list-product', async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
     const filter = req.body.filters
-    const brandId= filter?filter.brand:''
-    const catId= filter?filter.category:''
-    
     try{
-        const products = await productSchema.find({})
-        
-        res.json({data:products,type:[],hasChild:1,
-            size:10,success:true,
+   
+        const products = await productSchema.find({}).lean()
+        const priceRaw = await FindPrice()
+        const productList = products.slice(offset,
+            (parseInt(offset)+parseInt(pageSize)))  
+        for(var i=0;i<productList.length;i++){
+            productList[i].price = await CalcPrice(productList[i].weight,priceRaw)
+        }
+        res.json({data:productList,type:[],hasChild:1,
+            size:products.length,success:true,
             categoryList:[{
                 title: "دسته بندی1", 
                 link: "class1"
@@ -284,7 +290,7 @@ router.get('/get-cart',auth, async (req,res)=>{
     const userId =req.body.userId
     try{ 
         const cartDetails = await CalcCart(req.headers['userid'])
-        res.json(cartDetails)
+        res.json({...cartDetails})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -315,7 +321,7 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
         }
         else{
             const cart = await CalcCart(userId)
-            res.json({cart,message:"آیتم اضافه شد"})
+            res.json({...cart,message:"آیتم اضافه شد"})
             return
         } 
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -351,9 +357,26 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
     const userId=req.headers['userid']
     
     try{
+        const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
+        const cartDetail = await CalcCart(userId)
+        var totalPrice = 0
+        if(!cartDetail.cart||!cartDetail.cart.length){
+            res.status(400).json({error:"سبد خرید خالی است"})
+            return
+        }
+        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
+            var cartItem = cartDetail.cart[i]
+            const price = CalcPrice(cartItem.weight,priceRaw)
+            totalPrice+=price
+            const { _id: _, ...newObj } = cartItem;
+            await faktorItems.create({...newObj,faktorNo:faktorNo,
+                price:price,unitPrice:priceRaw})
+
+        }
+
         const faktorData = {
             faktorNo:faktorNo,
             userId:userId,
@@ -361,16 +384,10 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             progressDate:Date.now(),
             status:"inprogress",
             isActive:true, isEdit:false,
-            totalPrice:"12345000",
+            totalPrice:totalPrice,
+            unitPrice:priceRaw
         }
         await faktor.create(faktorData)
-        const cartDetail = await CalcCart(userId)
-        for(var i=0;i<cartDetail.length;i++){
-            var cartItem = cartDetail[i]
-            const { _id: _, ...newObj } = cartItem;
-            await faktorItems.create({...newObj,faktorNo:faktorNo})
-
-        }
         await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
@@ -973,7 +990,7 @@ router.post('/sepidar-find',jsonParser, async (req,res)=>{
 })
 router.get('/price', async (req,res)=>{
     try{ 
-        const cPrice = await price.findOne().sort({date:-1});
+        const cPrice = await FindPrice()
         res.json({data:cPrice})
     }
     catch(error){

@@ -1,5 +1,7 @@
 const cart = require("../models/product/cart");
 const products = require("../models/product/products");
+const CalcPrice = require("./CalcPrice");
+const FindPrice = require("./FindPrice");
 
 const CreateCart=async(cartDetails,sku,userId)=>{
     var index = cartDetails.find(item=>item.sku==sku)
@@ -8,11 +10,14 @@ const CreateCart=async(cartDetails,sku,userId)=>{
         if(!productDetail){
             return({error:"محصول پیدا نشد"})
         }
+        
+        const priceRaw = await FindPrice()
+        const price = await CalcPrice(productDetail.weight,priceRaw)
         await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
-            price:productDetail.price,
+            price:price,
             isMojood:productDetail.isMojood,
             userId:userId
         })
