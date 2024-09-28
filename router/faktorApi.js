@@ -438,8 +438,8 @@ router.post('/list-faktor',auth, async (req,res)=>{
 
         for(var i=0;i<faktorData.length;i++){
             var faktorNo = faktorData[i].faktorNo
-            const faktorItems = await faktorItems.find({faktorNo:faktorNo})
-            faktorData[i].items = faktorItems
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItemData
             //itemRefs.push(faktorItem)
         }
         res.json({data:faktorData})
