@@ -186,7 +186,6 @@ router.post('/fetch-product',jsonParser,async (req,res)=>{
 router.post('/list-product',jsonParser,async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
-    var stockId = req.body.store?req.body.store.StockID:StockId
     try{const data={
         category:req.body.category,
         title:req.body.title,
@@ -202,52 +201,13 @@ router.post('/list-product',jsonParser,async (req,res)=>{
                 {sku:new RegExp('.*' + data.title + '.*', "i")}]}:{}},
             { $match:data.sku?{sku:new RegExp('.*' + data.sku + '.*')}:{}},
             { $match:data.category?{category:data.category}:{}},
-            { $match:data.active?{active:true}:{}},
-            { $match:data.brand?(data.brand=="unkown")?
-                {$or:[{brandId:{$exists:false}},{brandId:''}]}:{brandId:data.brand}:{}},
-            {$lookup:{from : "brands", 
-            localField: "brandId", foreignField: "brandCode", as : "brandInfo"}},
+            { $match:data.active?{isMojood:true}:{}}
             ])
-        const productsQuantity = await productCount.find({Stock:stockId})
-            var quantity = []
-            var price = []
-            const newProduct=[]
-            for(var i=0;i<products.length;i++){
-                const countData = productsQuantity.find(
-                    Item=>Item.ItemID==products[i].ItemID)
-                //const countStock = stockData?countData.find(item=>item.Stock==stockData):''
-                if(!countData||!countData.quantity) 
-                    if(!data.exists)continue
-                
-                if(newProduct.length>(pageSize+offset)){
-                    newProduct.push({})
-                    continue;
-                }
-                const countAll = await productCount.find(
-                    {ItemID:products[i].ItemID})
-                var openCount = 0
-                //if()
-                const openList = await openOrders.find({sku:products[i].sku,payStatus:"paid"})
-                for(var c=0;c<openList.length;c++) openCount+= parseInt(openList[c].count)
-                const priceData = await productPrice.findOne(
-                    {ItemID:products[i].ItemID,saleType:SaleType})
-                newProduct.push({
-                    ...products[i],
-                    price:priceData?priceData.price:'',
-                    taxPrice:NormalTax(products[i].price)/10,
-                    count:countData?countData.quantity:'',
-                    countTotal:countAll,
-                    openOrderCount:openCount
-                })
-            }
-            
+        
             const productList = newProduct.slice(offset,
                 (parseInt(offset)+parseInt(pageSize)))  
-            const typeUnique = [...new Set(productList.map((item) => item.brand))];
             const brandList = await BrandSchema.find()
-           res.json({filter:productList,brands:brandList,
-            size:newProduct.length,exists:data.exists,
-            quantity:quantity,price:price})
+           res.json({filter:productList,brands:brandList,exists:data.exists})
     }
     catch(error){
         res.status(500).json({message: error.message})
