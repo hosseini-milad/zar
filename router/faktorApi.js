@@ -57,7 +57,15 @@ router.post('/list-product', async (req,res)=>{
     try{
         const products = await productSchema.find({})
         
-        res.json({data:products})
+        res.json({data:products,type:[],hasChild:1,
+            size:10,success:true,
+            categoryList:[{
+                title: "سوسیس و کالباس", 
+                link: "class1"
+            }],
+            subCategoryList	:[]
+        })
+
     }
     catch(error){
         res.status(500).json({message: error.message})
