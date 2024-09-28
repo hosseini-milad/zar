@@ -65,97 +65,6 @@ const Users = (props) => {
 
   //selected user
 
-  const fetchUser = async (userId) => {
-    try {
-      const response = await fetch(`${env.siteApi}/panel/user/fetch-user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": token && token.token,
-        },
-        body: JSON.stringify({ userId }),
-      });
-      const data = await response.json();
-      setUserData(data.data);
-      setFormData({
-        _id: data.data._id,
-        profile: data.data.profile,
-        access: data.data.access,
-        password: data.data.password,
-        email: data.data.email,
-        username: data.data.username,
-      });
-      setShowCreatePanel(true); // Show the create panel after user data is fetched
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  const fetchProfiles = async () => {
-    try {
-      const response = await fetch(`${env.siteApi}/panel/user/list-profiles`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": token && token.token,
-        },
-      });
-      const data = await response.json();
-      setProfiles(data.profiles);
-    } catch (error) {
-      console.error("Error fetching profiles:", error);
-    }
-  };
-  // must be activated after the list-access api is added to back-end
-  // const fetchAccessList = async () => {
-  //   try {
-  //     const response = await fetch(`${env.siteApi}/panel/user/list-access`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         "x-access-token": token && token.token,
-  //       },
-  //     });
-  //     const data = await response.json();
-  //     setAccess(data.access);
-  //   } catch (error) {
-  //     console.error("Error fetching access list:", error);
-  //   }
-  // };
-
-  const handleUserEdit = (userId) => {
-    fetchUser(userId);
-  };
-
-  const handleFormSubmit = async () => {
-    console.log("Form Data:", formData);
-    try {
-      //   const token = cookies.get(env.cookieName);
-      await fetch(`${env.siteApi}/panel/user/update-user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-access-token": token && token.token,
-        },
-        body: JSON.stringify(formData),
-      });
-      setShowCreatePanel(false);
-      // Refresh the list of users
-      fetchUsers();
-    } catch (error) {
-      console.error("Error updating user data:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-    fetchProfiles();
-  }, []);
-
-  // useEffect(() => {
-  //   console.log("Access List:", accessList);
-  // }, [accessList]);
-
   return (
     <div className="team-users" style={{ direction: direction }}>
       {showCreatePanel && (
@@ -279,22 +188,7 @@ const Users = (props) => {
               }))
             }
           />
-          <div className="create-btn-wrapper">
-            <button
-              type="button"
-              className="add-btn"
-              onClick={handleFormSubmit}
-            >
-              {formtrans.saveChanges[lang]}
-            </button>
-            <button
-              type="button"
-              className="cancel-btn"
-              onClick={() => setShowCreatePanel(false)}
-            >
-              {formtrans.cancel[lang]}
-            </button>
-          </div>
+          
         </div>
       )}
 
@@ -334,17 +228,7 @@ const Users = (props) => {
         </div>
       </div>
 
-      <div className="team-wrapper">
-        {users.map((user) => (
-          <UserCard
-            key={user._id}
-            user={user}
-            userData={userData}
-            lang={lang}
-            onEdit={handleUserEdit}
-          />
-        ))}
-      </div>
+      
     </div>
   );
 };

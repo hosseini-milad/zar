@@ -48,8 +48,8 @@ function Orders(props) {
       dateFrom: filters.date && filters.date.dateFrom,
       dateTo: filters.date && filters.date.dateTo,
       access: "manager",
-      type:filters.category,
-      index:tab
+      
+      
     };
     const postOptions = {
       method: "post",
@@ -60,7 +60,7 @@ function Orders(props) {
       },
       body: JSON.stringify(body),
     };
-    fetch(env.siteApi + "/panel/order/list", postOptions)
+    fetch(env.siteApi + "/panel/faktor/list-faktor", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -131,8 +131,8 @@ function Orders(props) {
           status={content.rxStatus}
           setFilters={setFilters}
         />
-        <OrderTab setFilters={handleFilterChange} filters={filters} 
-        setTab={setTab} tab={tab}/>
+        {/* <OrderTab setFilters={handleFilterChange} filters={filters} 
+        setTab={setTab} tab={tab}/> */}
 
         <OrderFilters
           lang={props.lang}
@@ -147,7 +147,7 @@ function Orders(props) {
           {loading ? (
             env.loader
           ) : (
-            Error?<p>دسترسی ندارید</p>:<OrderTable orders={content ? content.filter : {}} lang={lang} 
+            Error?<p>دسترسی ندارید</p>:<OrderTable orders={content ? content.data : {}} lang={lang} 
             isSale={content&&content.isSale} token={token}/>
           )}
         </div>

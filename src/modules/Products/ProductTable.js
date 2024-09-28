@@ -16,14 +16,14 @@ function ProductTable(props){
               <p>{tabletrans.productName[lang]}</p>
               <i></i>
             </th>
-            <th>
+            {/* <th>
               <p>{tabletrans.brand[lang]}</p>
               <i></i>
-            </th>
-            <th>
+            </th> */}
+            {/* <th>
               <p>{tabletrans.item[lang]}</p>
               <i></i>
-            </th>
+            </th> */}
             <th>
             <p>{tabletrans.price[lang]}</p>
               <i></i>
@@ -33,13 +33,13 @@ function ProductTable(props){
               <i></i>
             </th>
             <th>
-            <p>{tabletrans.taxPrice[lang]}</p>
+            <p>وزن</p>
               <i></i>
             </th>
-            <th>
+            {/* <th>
             <p>{tabletrans.status[lang]}</p>
               <i></i>
-            </th>
+            </th> */}
             <th>
             </th>
           </tr>
@@ -49,7 +49,7 @@ function ProductTable(props){
             productList.filter.map((product,i)=>(
             <ProductTableRow detail={detail} showDetail={showDetail} token={props.token}
             product={product} index={i} key={i} lang={lang} stockId={props.store}
-            count={productList.quantity[i]} price={productList.price[i]}/>
+            />
           )):''}
           
         </tbody>

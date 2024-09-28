@@ -70,31 +70,6 @@ function Customers(props) {
         }
       );
   }, [filters]);
-  useEffect(() => {
-    if (update === 0) return;
-    const body = {
-      url: update,
-    };
-    const postOptions = {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": token && token.token,
-        userId: token && token.userId,
-      },
-      body: JSON.stringify(body),
-    };
-    fetch(env.siteApi + "/panel/user/parse-list", postOptions)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setErrorHandling(result.matchError);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }, [update]);
   const resizeFile = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -154,21 +129,21 @@ function Customers(props) {
           </label>
           <label
             className="edit-btn"
-            onClick={() => (window.location.href = "/Discount")}
+            onClick={() => (window.location.href = "#")}
           >
             <i className="fa-solid fa-percent"></i>
             {tabletrans.discount[lang]}
           </label>
           <label
             className="edit-btn"
-            onClick={() => (window.location.href = "/offcustomer")}
+            onClick={() => (window.location.href = "#")}
           >
             <i className="fa-solid fa-user"></i>
             {tabletrans.newCu[lang]}
           </label>
           <label
             className="edit-btn"
-            onClick={() => (window.location.href = "/class")}
+            onClick={() => (window.location.href = "#")}
           >
             <i className="fa-solid fa-plus"></i>
             {tabletrans.classes[lang]}

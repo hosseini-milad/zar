@@ -5,6 +5,7 @@ import { normalPriceCount, normalPriceRound, rxFindCount } from "../../env";
 import OrderQuickDetail from "./OrderComponent/OrderQuickDetail";
 import tabletrans from "../../translate/tables";
 import OrderQuickCart from "./OrderComponent/OrderQuickCart";
+import env from "../../env"
 
 function OrderTableRow(props) {
   const [openOption, setOpenOption] = useState(0);
@@ -58,9 +59,9 @@ function OrderTableRow(props) {
         <td>
           <div className="order-id">
             <p onClick={() =>
-                  (window.location.href = "/orders/detail/" + order.cartNo)
+                  (window.location.href = "/orders/detail/" + order.faktorNo)
                 }>
-                {order.cartNo}
+                {order.faktorNo}
               </p>
             
           </div>
@@ -70,7 +71,7 @@ function OrderTableRow(props) {
             <img src="/img/avatar/avatar_1.jpg" alt="avatar" />
             <div className="cu-name">
               <p className="name">
-                {order.userInfo[0]
+                {order.userInfo&&order.userInfo[0]
                   ? order.userInfo[0].cName + "---" + order.userInfo[0].sName
                   : "---"}
               </p>
@@ -85,7 +86,7 @@ function OrderTableRow(props) {
         <td>
           <div className="order-num">
             <p className="email">
-              {order.userInfo[0]
+              {order.userInfo&&order.userInfo[0]
                 ? order.userInfo[0].phone
                 : tabletrans.notEntered[lang]}
             </p>
@@ -150,36 +151,35 @@ function OrderTableRow(props) {
             ></i> */}
             <i
               className="tableIcon fas fa-print"
-              onClick={() =>(order.taskInfo[0].taskStep=="archive"?setOpenOption(openOption?0:1):(window.location.href = "/orders/print/" + order.cartNo))
-                
-              }
+              onClick={() =>(window.location.href = "/orders/print/" + order.faktorNo)}
             ></i>
             
           </div>
-          {openOption ? (
-            <div className="sub-more-menu">
-              <div className="sub-option" onClick={()=>window.location.href="/print/sepidar/"+order.taskInfo[0].result.InvoiceID}>
-                
-                <p>پرینت سپیدار</p>
-              </div>
-              <div className="sub-option" onClick={()=>window.location.href="/print/official/"+order.taskInfo[0].result.InvoiceID}>
-                
-                <p>پرینت رسمی</p>
-              </div>
-            </div>
-          ) : (
-            <></>
-          )}
+          
+          
         </td>
       </tr>
       {activeAcc ? (
         <tr className="sub-order">
           <td colSpan="10">
-            {order.orderItems ? (
-              <OrderQuickDetail order={order.orderItems} />
-            ) : (
-              <OrderQuickCart order={order.cartItems} />
-            )}
+          {order?<div className="sub-order-table">
+                {order&&order.items.map((item,i)=>(
+                    <div className="sub-row" key={i}>
+                      <div className="sub-avatar">
+                        <div className="sub-avatar-container">
+                          <img src={env.siteApiUrl+item.thumbUrl}
+                          alt={item.sku}/>
+                          <div className="sub-info">
+                          <p className="sub-name">{item.title}</p>
+                          <p className="sub-id">کد محصول: {item.sku}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="sub-num">{item.weight+"g"}</div>
+                    <div className="sub-price">{normalPriceCount(item.price)}</div>
+                </div>))}
+                
+            </div>:env.loader}
           </td>
         </tr>
       ) : (

@@ -20,13 +20,10 @@ function CustomerTable(props){
               <i></i>
             </th>
             <th>
-              <p>{tabletrans.company[lang]}</p>
+              <p>گروه</p>
               <i></i>
             </th>
-            <th>
-              <p>{tabletrans.role[lang]}</p>
-              <i></i>
-            </th>
+            
             <th>
               <p>{tabletrans.status[lang]}</p>
               <i></i>

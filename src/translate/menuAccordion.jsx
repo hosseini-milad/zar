@@ -1,7 +1,7 @@
 const menutrans ={
     title:{
-        english:"SharifOil",
-        persian:"روانکاران شریف",
+        english:"Barzegar",
+        persian:"برزگر",
         icon:"fa-eercast",
         href:"https://sharifoilco.com"
         
@@ -14,14 +14,7 @@ const menutrans ={
             icon:"fa-dashboard",
             href:"#",
             children:[
-            {
-                english: "Dashboard",
-                persian: "داشبورد",
-                index:0,
-                icon:"fa-dashboard",
-                href:"/",
-                url:""
-            },
+            
             {
                 english: "Tasks",
                 persian: "وظایف و پیگیری",
@@ -30,14 +23,7 @@ const menutrans ={
                 href:"/crm",
                 url:"crm"
             },
-            {
-                english: "Sale Analyze",
-                persian: "آنالیز فروش",
-                index:0,
-                icon:"fa-users",
-                href:"/visitor",
-                url:"visitor"
-            },
+            
             ]
         },
         {
@@ -55,14 +41,7 @@ const menutrans ={
                     href:"/customers",
                     url:"customers"
                 },
-                {
-                    english: "Sale Policy",
-                    persian: "سیاست های فروش",
-                    index:0,
-                    icon:"fa-percent",
-                    href:"/policy",
-                    url:"policy"
-                },
+                
                 ]
         },
         {
@@ -80,14 +59,7 @@ const menutrans ={
                     href:"/orders",
                     url:"orders"
                 },
-                {
-                    english: "Transactions",
-                    persian: "تراکنش ها",
-                    index:0,
-                    icon:"fa-tasks",
-                    href:"/transactions",
-                    url:"transactions"
-                },
+                
                 ]
         },
         
@@ -106,57 +78,10 @@ const menutrans ={
                     href:"/products",
                     url:"products"
                 },
-                {
-                    english: "Services",
-                    persian: "خدمات",
-                    index:1,
-                    icon:"fa-bar-chart",
-                    href:"/services",
-                    url:"services"
-                },
-                {
-                    english: "Brands",
-                    persian: "برندها",
-                    index:1,
-                    icon:"fa-bar-chart",
-                    href:"/brands",
-                    url:"brands"
-                },
-                {
-                    english: "Category",
-                    persian: "دسته بندی ها",
-                    index:1,
-                    icon:"fa-bar-chart",
-                    href:"/category",
-                    url:"category"
-                },
+                
                 ]
         },
-        {
-            english: "Configuration",
-            persian: "تنظیمات",
-            index:0,
-            icon:"fa-dashboard",
-            href:"#",
-            children:[
-            {
-                english: "Sepidar",
-                persian: "سپیدار",
-                index:0,
-                icon:"fa-dashboard",
-                href:"/config/sepidar",
-                url:"config"
-            },
-            {
-                english: "Sliders",
-                persian: "اسلایدرها",
-                index:0,
-                icon:"fa-dashboard",
-                href:"/sliders",
-                url:"sliders"
-            }
-            ]
-        },
+        
     ],
     setting:[
         {

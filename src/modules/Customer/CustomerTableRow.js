@@ -15,7 +15,7 @@ function CustomerTableRow(props){
               <div className="cu-avatar">
               <img src="/img/avatar/avatar_1.jpg" alt="avatar"/>
                 <div className="cu-name">
-                <p className="name">{user.cName} {user.sName}<span>(کد مشتری: {user.cCode})</span></p>
+                <p className="name">{user.username}</p>
                 <p className="email">{user.Address}</p>
                 </div>
               </div>
@@ -26,15 +26,11 @@ function CustomerTableRow(props){
               </div>
             </td>
             <td>
-              <div className="cu-company">
-                <p>{user.mobile}</p>
+              <div className="cu-phone">
+                <p>{user.group}</p>
               </div>
             </td>
-            <td>
-              <div className="cu-role">
-                <p>{user.access}</p>
-              </div>
-            </td>
+            
             <td>
               <div className="pen-status order-status">
                 Pending
