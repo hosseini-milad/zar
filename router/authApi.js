@@ -128,19 +128,14 @@ const createOTP=(cName)=>{
 router.post('/customer-otp',jsonParser,async(req,res)=>{
   var smsResult = ''
   try {
-    const { phone } = req.body;
+    const {  username } = req.body;
     ////console.log((phone)
     var otpValue = Math.floor(Math.random() * 8999)+1000 ;
     
-    const user = await customers.findOne({phone: phone });
+    const user = await customers.findOne({phone: username });
     ////console.log((otpValue)
     if(user){
       
-    /*console.log({
-      token: otpValue,
-      template: process.env.template,//"mgmVerify",
-      receptor: phone
-  }) */
   smsResult =api.VerifyLookup({
         token: otpValue,
         template: process.env.template,//"mgmVerify",

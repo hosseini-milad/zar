@@ -37,6 +37,7 @@ const CalcCart = require('../middleware/CalcCart');
 const faktorItems = require('../models/product/faktorItems');
 const faktor = require('../models/product/faktor');
 const slider = require('../models/main/slider');
+const price = require('../models/price');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -970,7 +971,15 @@ router.post('/sepidar-find',jsonParser, async (req,res)=>{
         res.status(500).json({error: error.message})
     }
 })
-
+router.get('/price', async (req,res)=>{
+    try{ 
+        const cPrice = await price.findOne().sort({date:-1});
+        res.json({data:cPrice})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.get('/sliders', async (req,res)=>{
     try{
         const SlidersList = await slider.find()

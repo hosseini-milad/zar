@@ -29,6 +29,7 @@ const state = require('../models/main/state');
 const city = require('../models/main/city');
 const quickCart = require('../models/product/quickCart');
 const GetTahHesab = require('../middleware/GetTahHesab');
+const price = require('../models/price');
 const { ONLINE_URL} = process.env;
  
 router.get('/main', async (req,res)=>{
@@ -63,13 +64,18 @@ router.use('/panel/crm',CRMPanelApi)
 schedule.scheduleJob('5 */2 * * *', async() => { 
     response = await fetch(ONLINE_URL+"/get-customers",
         {method: 'GET'});
+ })  
+ schedule.scheduleJob('*/1 * * * *', async() => { 
+    var priceValue = process.env.DEF_PRICE
+    console.log("update price")
+   await price.create({price:priceValue,description:"initial value",date:Date.now()});
  })
  router.get('/get-customers', async (req,res)=>{
     try{
         const customerList = await GetTahHesab(
             {
                 "DoListMoshtari":
-                [1,16]
+                [1,100]
             }
         )
         var outPut = []
