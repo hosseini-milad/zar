@@ -13,13 +13,13 @@ function TaskData(props){
                 onClick={()=>props.setOrderPop(1)}>
                 <h3 className={"task-title "+ 
                     findPriority(taskData.priority)+"task"}>
-                    {taskData.taskId}</h3>
+                    {taskData.faktorNo}</h3>
                 <ul>
                     <li>{creator&&creator.length?
                         creator[0].username:''}</li>
                     {customer&&customer.length?
                     <li>{customer[0].username}</li>:<></>}
-                    <li>{new Date(taskData.date).toLocaleDateString('fa')}</li>
+                    <li>{new Date(taskData.initDate).toLocaleDateString('fa')}</li>
                 </ul>
             </div>
             {/*<div className='editTask'
