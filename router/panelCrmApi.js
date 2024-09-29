@@ -10,16 +10,12 @@ const user = require('../models/auth/users');
 const mime = require('mime');
 const crmlist = require('../models/crm/crmlist');
 const tasks = require('../models/crm/tasks');
+const faktors = require('../models/product/faktor');
 const ProfileAccess = require('../models/auth/ProfileAccess');
 const FindAccess = require('../middleware/FindAccess');
 const {TaxRate} = process.env
 const cart = require('../models/product/cart');
-const sepidarPOST = require('../middleware/SepidarPost');
-const customers = require('../models/auth/customers');
-const { error } = require('console');
 const SepidarOrder = require('../middleware/SepidarOrder');
-const MergeOrder = require('../middleware/MergeOrder');
-const MergeCarts = require('../middleware/MergeCarts');
 const ClassifyOrder = require('../middleware/ClassifyOrder');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
@@ -57,25 +53,11 @@ const calcTasks=async(userId)=>{
     //if(userData&&userData.access!=="manager") limitTask= userData.profile
     const crmData = await crmlist.findOne()
     const crmId = crmData&&(crmData._id).toString()
-    taskList = await tasks.aggregate([
-        //{$match:limitTask?{profile:limitTask}:{}},
-        {$match:{crmId:crmId}},
-        {$addFields: { "user_Id": { $convert: {input:"$assign" ,
-    to:'objectId', onError:'',onNull:''}}}},
-        {$lookup:{from : "users", 
-            localField: "user_Id", foreignField: "_id", as : "userInfo"}},
-        {$addFields: { "profile_Id": { $convert: {input:"$profile" ,
-        to:'objectId', onError:'',onNull:''}}}},
-        {$lookup:{from : "profiles", 
-            localField: "profile_Id", foreignField: "_id", as : "profileInfo"}},
-        {$addFields: { "creator_Id": { $convert: {input:"$creator" ,
-        to:'objectId', onError:'',onNull:''}}}},
-        {$lookup:{from : "users", 
-            localField: "creator_Id", foreignField: "_id", as : "creatorInfo"}},
-        {$addFields: { "customer_Id": { $convert: {input:"$customer" ,
+    taskList = await faktors.aggregate([
+        {$addFields: { "userId": { $convert: {input:"$userId" ,
         to:'objectId', onError:'',onNull:''}}}},
         {$lookup:{from : "customers", 
-            localField: "customer_Id", foreignField: "_id", as : "customerInfo"}},
+            localField: "userId", foreignField: "_id", as : "customerInfo"}},
         {$sort:{progressDate:-1}}
     ])
     //const taskList = await tasks.find({crmCode:crmData._id})
@@ -94,14 +76,8 @@ const calcTasks=async(userId)=>{
     }
     //console.log(columns)
     const tasksToShow=[]
-    for(var c=0;c<taskList.length;c++){ 
-        if(taskList[c].result){
-            var Number = taskList[c].result.Number
-            var InvoiceID = taskList[c].result.InvoiceID
-            var Message = taskList[c].result.Message
-            taskList[c].result = {Number,InvoiceID,Message}
-        }
-        var taskStep = taskList[c].taskStep
+    for(var c=0;c<taskList.length;c++){
+        var taskStep = taskList[c].status
         var yesterday = new Date(Date.now() - 86400000); // that is: 24 * 60 * 60 * 1000
         var taskDate = taskList[c].progressDate?taskList[c].progressDate:
             taskList[c].date

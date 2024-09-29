@@ -12,6 +12,8 @@ const FaktorItems = new Schema({
     unitPrice:{ type: String },
     weight:{ type: String },
     title:{ type: String },
+    isActive:{ type: Boolean },
+    isEdit:{ type: Boolean },
     isMojood:{ type: Boolean }
 })
 module.exports = mongoose.model('faktorItems',FaktorItems);

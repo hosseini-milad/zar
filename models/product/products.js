@@ -12,7 +12,7 @@ const ProductSchema = new Schema({
 
     range:Array,
     rangeText:String,
-    
+
     isMojood:Boolean,
     price:String,
     categories:String
