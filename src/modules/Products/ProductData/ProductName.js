@@ -5,12 +5,14 @@ import ImageSimple from '../../../components/Button/ImageSimple';
 import env from '../../../env';
 import RichTextEditor from '../../../components/Button/RichTextEditor';
 import ProductImportButton from './ProductImport';
-
+import ProductRange from './ProductRange';
 function ProductName(props){
     const content =props.content?props.content.filter:''
-    
+    const rangeArray = props.rangeArray
+    const setRangeArray = props.setRangeArray
     const [image,setImage]= useState();
     const [thumb,setThumb]= useState();
+    
     const [imageUrl,setImageUrl] = useState('')
     useEffect(() => {
       const postOptions={
@@ -72,7 +74,7 @@ function ProductName(props){
       },[thumb])
     
       //console.log(props.productChange)
-    return(
+    return(<>
         <div className="pd-row">
           <div className="row-title">
             <h4>{tabletrans.details[props.lang]}</h4>
@@ -135,7 +137,8 @@ function ProductName(props){
                     }))}/>
                   </div>
               <hr/>
-              <div className="images">
+              
+              {/* <div className="images">
                 <h5>{tabletrans.images[props.lang]}</h5>
                 <ImageSimple cardName="Input Image" imageGallery={[]} 
                     setImage={setImage} setImageUrl={setImageUrl} part={1}
@@ -143,10 +146,13 @@ function ProductName(props){
                 <img src={props.productChange.imageUrl?env.siteApiUrl+props.productChange.imageUrl:
                   (content?(env.siteApiUrl+content.imageUrl):'')} 
                   alt={content?content.title:env.default}/>
-              </div>
+                  
+              </div> */}
             </div>
           </div>
         </div>
+        <ProductRange direction={props.direction} lang={props.lang} 
+          rangeArray={rangeArray} setRangeArray={setRangeArray}/>        </>
     )
 }
 export default ProductName

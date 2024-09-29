@@ -1571,3 +1571,31 @@ dialog {
   flex-wrap: wrap;
   justify-content: flex-start;
 }
+
+.rangeHolder {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+.rangeImage {
+  width: 70px;
+  margin: auto 0;
+}
+.rangeText {
+  width: 80%;
+}
+.rangeText .MuiFormControl-root {
+  width: 100%;
+}
+.rangeRemove {
+  color: brown;
+  width: 80px;
+  padding: 10px 20px;
+  margin: auto;
+  cursor: pointer;
+  margin: auto;
+}
+.rangeUpload {
+  width: 62px;
+}

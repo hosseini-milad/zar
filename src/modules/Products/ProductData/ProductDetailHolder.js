@@ -13,7 +13,7 @@ function ProductDetailHolder(props) {
   const direction = props.lang ? props.lang.dir : errortrans.defaultDir;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [error, setError] = useState({ errorText: "", errorColor: "brown" });
-
+  const [rangeArray,setRangeArray] = useState([])
   const [content, setContent] = useState("");
   const [filters, setFilters] = useState({});
   const [purchase, setPurchase] = useState("");
@@ -43,6 +43,7 @@ function ProductDetailHolder(props) {
             setUpdateContent(1);
             setContent(result);
             setFilters(result.filter ? result.filter.filters : {});
+            setRangeArray(result.filter?result.filter.range:[])
             setTimeout(
               () => setError({ errorText: "", errorColor: "brown" }),
               2000
@@ -63,6 +64,7 @@ function ProductDetailHolder(props) {
         productId: url,
         ...productChange,
         filters: filters,
+        range:rangeArray,
       }),
     };
     console.log(filters);
@@ -107,6 +109,8 @@ function ProductDetailHolder(props) {
                 setProductChange={setProductChange}
                 setUpdateContent={setUpdateContent}
                 setContent={setContent}
+                setRangeArray={setRangeArray}
+                rangeArray={rangeArray}
               />
               {url === "new" || content ? (
                 <ProductSKU
