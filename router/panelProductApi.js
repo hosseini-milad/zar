@@ -238,7 +238,9 @@ router.post('/editProduct',jsonParser,async(req,res)=>{
             quantity: req.body.quantity,
             sort: req.body.sort,
             imageUrl:  req.body.imageUrl,
-            thumbUrl:  req.body.thumbUrl
+            thumbUrl:  req.body.thumbUrl,
+            range:req.body.range,
+            rangeText:req.body.rangeText
         }
         var productResult = ''
         if(productId) productResult=await ProductSchema.updateOne({_id:productId},
@@ -257,14 +259,6 @@ router.post('/updateProduct',jsonParser,async(req,res)=>{
     productId=filterNumber(productId)
     if(productId === "new")productId=''
     try{ 
-        const newRawData = await fetch(OLD_SITE_URL+"/api/v1/getProduct/"+productId,
-            {method: 'GET' ,headers:{"content-type": "application/json"}});
-        var result = ''
-        try{result =await newRawData.json()}
-        catch{
-            res.status(400).json({error:"Api not find"})
-            return
-        }
         const newData = result.data
         const location = "/upload/product/"
         const imageUrl = newData.image_url?location+productId+"."+newData.image_url.split('.').pop():

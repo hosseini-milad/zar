@@ -7,12 +7,12 @@ const ProductSchema = new Schema({
     sku: { type: String , unique: true},
     enTitle:String,
     weight:String,
-    imageUrl: {
-        type:String
-    },
-    thumbUrl: {
-        type:String
-    },
+    imageUrl: {type:String},
+    thumbUrl: {type:String},
+
+    range:Array,
+    rangeText:String,
+    
     isMojood:Boolean,
     price:String,
     categories:String
