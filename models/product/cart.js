@@ -13,5 +13,6 @@ const CartSchema = new Schema({
     weight:{type:String},
     title:{type:String},
     price:{type:String},
+    unitPrice:{type:String}
 })
 module.exports = mongoose.model('cart',CartSchema);

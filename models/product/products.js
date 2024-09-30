@@ -14,7 +14,10 @@ const ProductSchema = new Schema({
     rangeText:String,
 
     isMojood:Boolean,
+    sood:String,
+    ojrat:String,
+    
     price:String,
-    categories:String
+    categories:{type:Array,default:[]}
 })
 module.exports = mongoose.model('product',ProductSchema);

@@ -21,7 +21,6 @@ const bankAccounts = require('../models/product/bankAccounts');
 const sepidarFetch = require('../middleware/Sepidar');
 const products = require('../models/product/products');
 const tasks = require('../models/crm/tasks');
-const CheckSale = require('../middleware/CalcPrice')
 const profiles = require('../models/auth/ProfileAccess');
 const CreateTask = require('../middleware/CreateTask');
 const NewCode = require('../middleware/NewCode');
@@ -39,6 +38,7 @@ const slider = require('../models/main/slider');
 const price = require('../models/price');
 const CalcPrice = require('../middleware/CalcPrice');
 const FindPrice = require('../middleware/FindPrice');
+const CalcCartRecalc = require('../middleware/CalcCartRecalc');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -63,7 +63,7 @@ router.post('/list-product', async (req,res)=>{
         const productList = products.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
         for(var i=0;i<productList.length;i++){
-            productList[i].price = await CalcPrice(productList[i].weight,priceRaw)
+            productList[i].price = CalcPrice(productList[i],priceRaw)
         }
         res.json({data:productList,type:[],hasChild:1,
             size:products.length,success:true,
@@ -286,13 +286,25 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
     }
 })
 
+router.get('/recalc-cart',auth, async (req,res)=>{
+    const userId =req.body.userId
+    try{ 
+        await CalcCartRecalc(req.headers['userid'])
+        const cartDetails = await CalcCart(req.headers['userid'])
+        res.json({message:"cart recalculated",...cartDetails})
+    }
+    catch(error){ 
+        res.status(500).json({message: error.message})
+    }
+})
+
 router.get('/get-cart',auth, async (req,res)=>{
     const userId =req.body.userId
     try{ 
         const cartDetails = await CalcCart(req.headers['userid'])
         res.json({...cartDetails})
     }
-    catch(error){
+    catch(error){ 
         res.status(500).json({message: error.message})
     }
 })
@@ -369,7 +381,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         }
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
-            const price = CalcPrice(cartItem.weight,priceRaw)
+            const price = CalcPrice(cartItem,priceRaw)
             totalPrice+=price
             const { _id: _, ...newObj } = cartItem;
             await faktorItems.create({...newObj,faktorNo:faktorNo,

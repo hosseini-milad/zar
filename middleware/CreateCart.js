@@ -12,12 +12,13 @@ const CreateCart=async(cartDetails,sku,userId)=>{
         }
         
         const priceRaw = await FindPrice()
-        const price = await CalcPrice(productDetail.weight,priceRaw)
+        const price = CalcPrice(productDetail,priceRaw)
         await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
             price:price,
+            unitPrice:priceRaw,
             isMojood:productDetail.isMojood,
             userId:userId
         })

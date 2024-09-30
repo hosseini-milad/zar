@@ -62,16 +62,28 @@ router.use('/esale', panelFaktorApi)
 
 router.use('/panel/crm',CRMPanelApi)
 
- schedule.scheduleJob('*/1 * * * *', async() => { 
-    var priceValue = process.env.DEF_PRICE
-   await price.create({price:priceValue,description:"initial value",date:Date.now()});
+ schedule.scheduleJob('*/2 * * * *', async() => { 
+    try{
+    var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
+    const result = await response.json();
+    var priceValue = result&&result.geram18
+    priceValue&&await price.create({price:priceValue.value,date:Date.now()});
+    }
+    catch(error){
+        console.log(error)
+    }
  })
- router.get('/get-customers', async (req,res)=>{
+ schedule.scheduleJob('*/60 * * * *', async() => { 
+    
+ })
+ router.post('/get-customers', async (req,res)=>{
+    const from = req.body.from
+    const to = req.body.to
     try{
         const customerList = await GetTahHesab(
             {
                 "DoListMoshtari":
-                [1,100]
+                [from,to]
             }
         )
         var outPut = []
@@ -102,23 +114,27 @@ router.use('/panel/crm',CRMPanelApi)
         res.status(500).json({message: error.message})
     }
 })
-router.get('/get-product', async (req,res)=>{
+router.post('/get-product', async (req,res)=>{
+    const from = req.body.from
+    const to = req.body.to
     try{
         const productList = await GetTahHesab(
             {
                 "DoListEtiket":
-                [1,1000]
+                [from,to]
             }
         )
         var outPut = []
         var updateProduct = 0
         var newProduct = 0
-        for(var i=1;i<1000;i++){
+        for(var i=1;i<10000;i++){
             if(productList[i]){
             outPut.push(productList[i])
             var query = {title:productList[i].Name,
                 sku:productList[i].Code,
                 weight:productList[i].Vazn,
+                sood:productList[i].DarsadSood,
+                ojrat:productList[i].DarsadVazn,
                 isMojood:productList[i].IsMojood=="1"?true:false,
                 price:productList[i].OnlinePrice}
             var updateResult = await products.updateOne({sku:productList[i].Code},
