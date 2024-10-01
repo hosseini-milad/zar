@@ -16,6 +16,9 @@ const CartToSepidar = require('../middleware/CartToSepidar');
 const sepidarPOST = require('../middleware/SepidarPost');
 const Invoice = require('../models/product/Invoice');
 const InvoiceItems = require('../models/product/InvoiceItems');
+const tax = require('../models/param/tax');
+const { updateOne } = require('../models/logger');
+const prepaid = require('../models/param/prepaid');
 
 router.post('/sliders', async (req,res)=>{
     try{
@@ -152,6 +155,45 @@ router.post('/multi-sepidar',jsonParser,auth, async (req,res)=>{
         }})
         }
         res.json({data:sepidarResult,message:"orders process"})
+    } 
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.get('/get-params',jsonParser, async (req,res)=>{
+    try{
+        const taxValue = await tax.find().sort({date:-1})
+        const prepaidValue = await prepaid.find().sort({date:-1})
+
+        res.json({tax:taxValue,prepaid:prepaidValue,message:"param list"})
+    } 
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/update-params',jsonParser,auth, async (req,res)=>{
+    const taxValue = req.body.tax
+    const prepaidValue = req.body.prepaid
+    try{
+        if(taxValue){
+            const taxData = await tax.findOne()
+            if(taxData){
+                await tax.updateOne({},{$set:{percent:taxValue}})
+            }
+            else{
+                await tax.create({percent:taxValue})
+            }
+        }
+        if(prepaidValue){
+            const prepaidData = await prepaid.findOne()
+            if(prepaidData){
+                await prepaid.updateOne({},{$set:{percent:prepaidValue}})
+            }
+            else{
+                await prepaid.create({percent:prepaidValue})
+            }
+        }
+        res.json({message:"param updated"})
     } 
     catch(error){
         res.status(500).json({message: error.message})

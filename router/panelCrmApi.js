@@ -44,6 +44,9 @@ router.post('/fetch-tasks',auth,jsonParser,async (req,res)=>{
 })
 const calcTasks=async(userId)=>{
     const userData = await user.findOne({_id:ObjectID(userId)})
+    if(!userData){
+        return
+    } 
     var admin = 0
     if(userData.access==="manager") admin = 1
     const userAccess = await FindAccess(userData.profile)

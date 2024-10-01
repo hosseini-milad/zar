@@ -14,6 +14,7 @@ const ProductSchema = new Schema({
     rangeText:String,
 
     isMojood:Boolean,
+    isReserve:{type:Boolean,default:false},
     sood:String,
     ojrat:String,
     

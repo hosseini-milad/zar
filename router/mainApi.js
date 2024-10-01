@@ -95,6 +95,7 @@ router.use('/panel/crm',CRMPanelApi)
             var query = {username:customerList[i].Name,
                 phone:customerList[i].Mobile,
                 groupCode:customerList[i].GID,
+                cCode:i,
                 group:customerList[i].GoroupName}
             var updateResult = await customers.updateOne({phone:customerList[i].Mobile},
                 {$set:query}

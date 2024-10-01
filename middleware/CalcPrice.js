@@ -1,5 +1,4 @@
-const {TAX} = process.env
-const CalcPrice=(product,price)=>{
+const CalcPrice=(product,price,TAX)=>{
     if(!product) return(0)
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
@@ -12,8 +11,9 @@ const CalcPrice=(product,price)=>{
 
     var ojratPrice = parseFloat(OJRAT)*roundPrice/100
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
+    var taxValue = parseFloat(TAX)/100
 
-    var taxPrice = (senfiPrice+ojratPrice) * TAX
+    var taxPrice = (senfiPrice+ojratPrice) * taxValue
 
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     return(parseInt(Math.round(totalPrice)))

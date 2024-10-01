@@ -1,3 +1,5 @@
+const prepaid = require("../models/param/prepaid");
+const tax = require("../models/param/tax");
 const cart = require("../models/product/cart");
 const products = require("../models/product/products");
 const CalcPrice = require("./CalcPrice");
@@ -12,14 +14,21 @@ const CreateCart=async(cartDetails,sku,userId)=>{
         }
         
         const priceRaw = await FindPrice()
-        const price = CalcPrice(productDetail,priceRaw)
+        
+        var TAX = await tax.findOne().sort({date:-1})
+        var PRE = await prepaid.findOne().sort({date:-1})
+        const price = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+        
+        var mojood = productDetail.isMojood&&!productDetail.isReserve
         await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
-            price:price,
+            price:mojood?price:parseFloat(PRE&&PRE.percent)*price/100,
+            fullPrice:price,
             unitPrice:priceRaw,
             isMojood:productDetail.isMojood,
+            isReserve:mojood?0:1,
             userId:userId
         })
     }

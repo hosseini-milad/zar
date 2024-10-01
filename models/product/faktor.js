@@ -11,10 +11,12 @@ const FaktorSchema = new Schema({
     status:String,
 
     totalPrice:{ type: String },
+    fullPrice:{ type: String },
     unitPrice:{ type: String },
     InvoiceID:{ type: String },
     InvoiceNumber:{ type: String },
     totalCount:{ type: String },
+    totalWeight:{ type: String },
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
 })

@@ -39,6 +39,10 @@ const price = require('../models/price');
 const CalcPrice = require('../middleware/CalcPrice');
 const FindPrice = require('../middleware/FindPrice');
 const CalcCartRecalc = require('../middleware/CalcCartRecalc');
+const tax = require('../models/param/tax');
+const RegisterFaktor = require('../middleware/RegisterFaktor');
+const prepaid = require('../models/param/prepaid');
+const NormalNumber = require('../middleware/NormalNumber');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -62,8 +66,10 @@ router.post('/list-product', async (req,res)=>{
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
+            
+        var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<productList.length;i++){
-            productList[i].price = CalcPrice(productList[i],priceRaw)
+            productList[i].price = CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
         }
         res.json({data:productList,type:[],hasChild:1,
             size:products.length,success:true,
@@ -374,18 +380,27 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId)
+        
+        var TAX = await tax.findOne().sort({date:-1})
+        var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
+        var totalWeight = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
             return
         }
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
-            const price = CalcPrice(cartItem,priceRaw)
+            const productDetail = await products.findOne({sku:cartItem.sku})
+            const fullPrice = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const price = cartItem.isReserve?
+                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
+            totalWeight+= NormalNumber(productDetail&&productDetail.weight)
             const { _id: _, ...newObj } = cartItem;
             await faktorItems.create({...newObj,faktorNo:faktorNo,
-                price:price,unitPrice:priceRaw})
+                fullPrice:fullPrice,price,unitPrice:priceRaw})
+            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
 
         }
 
@@ -396,8 +411,9 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             progressDate:Date.now(),
             status:"inprogress",
             isActive:true, isEdit:false,
-            totalPrice:totalPrice,
-            unitPrice:priceRaw
+            totalPrice:NormalNumber(totalPrice),
+            totalWeight:NormalNumber(totalWeight),
+            unitPrice:NormalNumber(priceRaw)
         }
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
@@ -444,27 +460,15 @@ router.post('/faktor', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/faktor-find', async (req,res)=>{
-    const faktorId =req.body.faktorId;
+router.post('/fetch-faktor',auth, async (req,res)=>{
+    const faktorNo =req.body.faktorNo;
     try{
-        const faktorData = await FaktorSchema.findOne({InvoiceID:faktorId})
+        const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
+        const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
+        faktorData.items = FaktorItems
+        const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         
-        //logger.warn("main done")
-        var userId=faktorData&&faktorData.manageId
-        
-        const OnlineFaktor = await sepidarFetch(data,"/api/invoices/"+faktorId,userId)
-        const userDetail = await customerSchema.findOne({CustomerID:OnlineFaktor.CustomerRef})
-        const invoice = OnlineFaktor.InvoiceItems
-        if(!invoice)
-            res.status(400).json({error: OnlineFaktor.Message})
-        //var itemRefs=OnlineFaktor.InvoiceItems
-        for(var i=0;i<invoice.length;i++){
-            var faktorItem = invoice[i]
-            var itemDetail = await products.findOne({ItemID:faktorItem.ItemRef})
-            OnlineFaktor.InvoiceItems[i].itemDetail = itemDetail
-            //itemRefs.push(faktorItem)
-        }
-        res.json({faktor:OnlineFaktor,userDetail:userDetail,itemRefs:invoice})
+        res.json({data:faktorData,userDetail:userDetail})
     }
     catch(error){
         res.status(500).json({error: error.message})
@@ -534,6 +538,17 @@ router.post('/faktor-fetch', async (req,res)=>{
         orderData.cartPrice=cartPrice
         
         res.json({faktor:faktorList,orderData:orderData,faktorDetail:faktorDetail})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/register-faktor',auth, async (req,res)=>{
+    const faktorNo=req.body.faktorNo
+    try{
+        const result = await RegisterFaktor(faktorNo)
+
+        res.json({result,query:result,message:"faktor registered"})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -680,36 +695,7 @@ const SepidarFunc=async(data,faktorNo)=>{
       }
     return(query)
 }
-const RecieptFunc=async(data,FaktorInfo,faktorNo)=>{
-    var query ={
-        "GUID": "124ab075-fc79-417f-b8cf-2a"+faktorNo,
-        "InvoiceID": toInt(FaktorInfo.InvoiceID),
-        "Description": toInt(FaktorInfo.Number),
-        "Date":new Date(),
-        "Drafts": 
-          data.filter(n => n).map((pay,i)=>(
-            {
-            "BankAccountID": toInt(pay.id),
-            "Description": pay.title,
-            "Number": pay.Number?pay.Number:"000",
-            "Date":new Date(),
-            "Amount": toInt(pay.value)
-          }))
-        
-      }
-    return(query)
-}
-const updateCount = async(items)=>{
-    for(var i=0;i<items.length;i++){
-        await productCount.updateOne({ItemID:items[i].id,Stock:"13"},
-            {$inc:{quantity:toInt(items[i].count,"1",-1)}})
-    }
-}
-const returnUpdateCount = async(itemID,count)=>{
-    await productCount.updateOne({ItemID:itemID,Stock:"13"},
-        {$inc:{quantity:toInt(count)}})
-    
-}
+
 const createfaktorNo= async(Noun,year,userCode)=>{
     var faktorNo = '';
     for(var i=0;i<10;i++){
@@ -751,16 +737,6 @@ const roundNumber = (number)=>{
     return(parseInt(Math.round(rawNumber/1000))*1000)
 
 }
-const minusInt=(quantity,minus)=>{
-    if(!quantity)return(0)
-    
-    return(parseInt(quantity.replace(/\D/g,''))-
-    parseInt(minus.replace(/\D/g,'')))
-}
-const compareCount=(count1,count2)=>{
-    return(parseInt(count1.toString().replace(/\D/g,''))>=
-    (parseInt(count2.toString().replace(/\D/g,''))))
-} 
 router.post('/customer-find', async (req,res)=>{
     const search = req.body.search
     try{ 
@@ -947,59 +923,6 @@ router.post('/edit-updateFaktor',jsonParser, async (req,res)=>{
     }
 })
 
-router.post('/edit-payValue',jsonParser, async (req,res)=>{
-    const cartNo= req.body.cartNo;
-    const data={
-        userId:req.body.userId?req.body.userId:req.headers['userid'],
-        payValue:req.body.payValue,
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        cartNo?await cart.updateOne({cartNo:cartNo},{$set:{payValue:req.body.payValue}}):
-            await quickCart.updateOne({userId:data.userId},{$set:data})
-        status = "update cart"
-        const cartDetails = cartNo?await findCartData(cartNo)
-            :await findCartFunction(data.userId,req.headers['userid'])
-        res.json({...cartDetails,message:"تغییرات ذخیره شد"})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-
-router.post('/sepidar-find',jsonParser, async (req,res)=>{
-    const faktorId =req.body.faktorId;
-    try{
-        //const faktorData = await tasks.findOne({orderNo:cartId})
-        //var faktorId = faktorData&&faktorData.result
-        if(!faktorId){
-            res.send({error:"not Found",message:"not found"})
-            return
-        }
-        //logger.warn("main done")
-        var userId=""
-         
-        const OnlineFaktor = await sepidarFetch("data","/api/invoices/"+faktorId) 
-        
-        const userDetail = await customerSchema.findOne({CustomerID:OnlineFaktor.CustomerRef,agent:{$exists:false}})
-        const invoice = OnlineFaktor.InvoiceItems
-        if(!invoice)
-            res.status(400).json({error: OnlineFaktor.Message})
-        //var itemRefs=OnlineFaktor.InvoiceItems
-        for(var i=0;i<invoice.length;i++){
-            var faktorItem = invoice[i]
-            var itemDetail = await products.findOne({ItemID:faktorItem.ItemRef})
-            OnlineFaktor.InvoiceItems[i].itemDetail = itemDetail
-            //itemRefs.push(faktorItem)
-        }
-        res.json({faktor:OnlineFaktor,userDetail:userDetail,itemRefs:invoice})
-    }
-    catch(error){
-        res.status(500).json({error: error.message})
-    }
-})
 router.get('/price', async (req,res)=>{
     try{ 
         const cPrice = await FindPrice()
