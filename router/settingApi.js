@@ -18,7 +18,8 @@ const CreateNotif = require('../middleware/CreateNotif');
 const news = require('../models/param/news');
 const notif = require('../models/param/notif');
 const docSchema = require('../models/param/document')
-const docCat = require('../models/param/docCat')
+const docCat = require('../models/param/docCat');
+const customers = require('../models/auth/customers');
 
 router.post('/sliders', async (req,res)=>{
     try{
