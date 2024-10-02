@@ -1,4 +1,4 @@
-const notif = require("../model/param/notif")
+const notif = require("../models/param/notif")
 
 
 const CreateNotif = async(data,user,type,linkRaw,kind,thumb)=>{
