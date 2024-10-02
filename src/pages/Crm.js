@@ -7,35 +7,6 @@ import Cookies from 'universal-cookie';
 import errortrans from "../translate/error";
 const cookies = new Cookies();
 
-const initalDataStatic = {
-    tasks:{
-        'task-1':{id:'task-1',content:"1.User Register"},
-        'task-2':{id:'task-2',content:"2.User Confirm"},
-        'task-3':{id:'task-3',content:"3.User Active"},
-        'task-4':{id:'task-4',content:"4.Data Uploaded"},
-        'task-5':{id:'task-5',content:"5.Sent to Bank"},
-        'task-6':{id:'task-6',content:"6.Recieve Bank Acount"}
-    },
-    columns:{
-        'lead':{
-            id:"lead", title:"Lead",
-            taskIds:['task-1','task-2','task-3','task-4']
-        },
-        'inprogress':{
-            id:"inprogress", title:"Inprogress",
-            taskIds:[]
-        },
-        'completed':{
-            id:"complete", title:"Completed",
-            taskIds:['task-5','task-6']
-        },
-        'done':{
-            id:"done", title:"Done",
-            taskIds:['task-5','task-6']
-        }
-    },
-    columnOrder:env.columnOrder
-}
 function CRM(props){
     const [boardArray,setBoardArray] = useState()
     const token=cookies.get(env.cookieName)
