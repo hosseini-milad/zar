@@ -11,14 +11,14 @@ const state = require('../models/main/state');
 const city = require('../models/main/city');
 const cart = require('../models/product/cart');
 var ObjectID = require('mongodb').ObjectID;
-const MergeOrder = require('../middleware/MergeOrder');
-const CartToSepidar = require('../middleware/CartToSepidar');
-const sepidarPOST = require('../middleware/SepidarPost');
-const Invoice = require('../models/product/Invoice');
-const InvoiceItems = require('../models/product/InvoiceItems');
 const tax = require('../models/param/tax');
 const { updateOne } = require('../models/logger');
 const prepaid = require('../models/param/prepaid');
+const CreateNotif = require('../middleware/CreateNotif');
+const news = require('../models/param/news');
+const notif = require('../models/param/notif');
+const docSchema = require('../models/param/document')
+const docCat = require('../models/param/docCat')
 
 router.post('/sliders', async (req,res)=>{
     try{
