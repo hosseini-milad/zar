@@ -130,36 +130,6 @@ router.post('/list-city',jsonParser, async (req,res)=>{
     }
 })
 
-router.post('/multi-sepidar',jsonParser,auth, async (req,res)=>{
-    const orderList = req.body.orderNo
-    const manageId = req.headers['userid']
-    try{
-        const orderDetails = await cart.find({cartNo:{$in:orderList}})
-        const mergeOrder = await MergeOrder(orderDetails.map(item=>item.cartItems))
-        const adminData = await users.findOne({_id:ObjectID(manageId)})
-        const faktorNo= "F321"+orderDetails[0].cartNo
-        var sepidarQuery = await CartToSepidar(mergeOrder,faktorNo,
-                adminData,adminData.StockId) 
-        //console.log(sepidarQuery) 
-        var sepidarResult = await sepidarPOST(sepidarQuery,"/api/invoices",adminData._id)
-        if(sepidarResult&&sepidarResult.InvoiceID){
-            await Invoice.create({...sepidarResult,manageId:adminData._id})
-            var invoiceItems = sepidarResult.InvoiceItems
-            for(var i=0;i<invoiceItems.length;i++)
-                await InvoiceItems.create({...invoiceItems[i],
-                    InvoiceID:sepidarResult.InvoiceID})
-        
-        await cart.updateMany({cartNo:{$in:orderList}},{$set:{
-            Number:sepidarResult.Number,
-            InvoiceID:sepidarResult.InvoiceID
-        }})
-        }
-        res.json({data:sepidarResult,message:"orders process"})
-    } 
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
 router.get('/get-params',jsonParser, async (req,res)=>{
     try{
         const taxValue = await tax.find().sort({date:-1})
@@ -199,4 +169,254 @@ router.post('/update-params',jsonParser,auth, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+
+
+/*Document*/
+router.post('/list-doc',jsonParser,async (req,res)=>{
+    try{
+        var result = await docSchema.find();
+       
+        res.json({filter:result})
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.get('/list-mocks',jsonParser,async (req,res)=>{
+    try{
+        var documents = await docSchema.find();
+        var docCats = await docCat.find();
+        const mocks = await CreateMock(docCats,documents)
+        res.json(mocks)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/fetch-doc',jsonParser,async (req,res)=>{
+    const docId = req.body.docId
+    try{
+        var result = docId?await docSchema.findOne({_id:ObjectID(docId)}):'';
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/update-doc',jsonParser,async (req,res)=>{
+    var docId = req.body.docId
+    if(docId==="new") docId = ""
+    const data = req.body
+
+    try{
+        var result = docId?await docSchema.updateOne({_id:ObjectID(docId)},{$set:data}):
+        await docSchema.create(data);
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/delete-doc',jsonParser,auth,async (req,res)=>{
+    var docId = req.body.docId
+    if(!docId) {
+        res.status(400).json({message:"not found"})
+        return
+    }
+
+    try{
+        var result = await docSchema.deleteOne({_id:ObjectID(docId)})
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.get('/list-notif',jsonParser,auth,async (req,res)=>{
+    const userId = req.headers['userid']
+    try{
+        var result = userId&&await notif.find({userId:ObjectID(userId)}).sort({date:-1}).limit(10)
+        var resultPop = userId&&await notif.findOne({userId:ObjectID(userId),
+            title:/news/,status:true
+        }).sort({date:-1})
+        const unread = result&&result.filter(item=>(item.status==true))
+        
+        //const popUpNotif = unread[0]?unread[0]:{}
+
+        res.json({filter:result,unread:unread,
+            unreadSize:unread.length,popUp:resultPop})
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/fetch-notif',jsonParser,async (req,res)=>{
+    const notifCode = req.body.notifCode
+    try{
+        var result = notifCode?await notif.findOne({enTitle:notifCode}):'';
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/update-notif',jsonParser,auth,async (req,res)=>{
+    var notifCode = req.body.notifCode
+    const userId = req.headers['userid']
+    var data = req.body
+    data.userId = userId
+    try{
+        var result = notifCode?await notif.updateOne({_id:ObjectID(notifCode)},
+            {$set:data}):
+        await notif.create(data);
+        res.json(result)
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+
+router.post('/list-news',jsonParser,async (req,res)=>{
+    const userId = req.headers['userid']
+    var userData = userId&&await customers.findOne({_id:ObjectID(userId)})
+    var lastNews = userData&&userData.showNews
+    try{
+        var result = await news.find().sort({date:-1});
+        var lastShow = ''
+        if(result&&(result[0]._id != lastNews)){
+            lastShow = result[0]
+        }
+        res.json({filter:result,lastShow})
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/read-news',jsonParser,auth,async (req,res)=>{
+    const userId = req.headers['userid']
+    const newsId = req.body.newsId
+    try{
+        
+        if(userId&&newsId){
+            await customers.updateOne({_id:ObjectID(userId)},
+            {$set:{showNews:newsId}})
+        }
+        else{
+            res.status(400).json({message:"کدخبر وارد نشده است"})
+        }
+        res.json({message:"تغییرات اعمال شد"})
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/fetch-news',jsonParser,async (req,res)=>{
+    const newsCode = req.body.newsCode
+    try{
+        var result = newsCode?await news.findOne({enTitle:newsCode}):'';
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/update-news',jsonParser,async (req,res)=>{
+    var newsCode = req.body.newsCode
+    if(newsCode==="new") newsCode = ""
+    const data = req.body 
+
+    try{
+        var result = ''
+        if(newsCode)
+            await news.updateOne({enTitle:newsCode},{$set:data})
+        else
+            {
+                await news.create(data) 
+                const customerList = await customers.find({})
+                for(var i=0;i<customerList.length;i++){
+                    await CreateNotif(data.title,customerList[i]._id,"news",
+                        data.link,"newNews",data.thumbUrl
+                    )
+                }
+            };
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+router.post('/delete-news',jsonParser,async (req,res)=>{
+    var newsCode = req.body.newsCode
+
+    try{
+        var result = ''
+        if(newsCode)
+            await news.deleteOne({enTitle:newsCode})
+        else
+            {
+                
+            };
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.post('/show-news',jsonParser,async (req,res)=>{
+    var userId = req.headers["userid"]
+    const newsCode = req.body.newsCode
+
+    try{ 
+        const newsResult = await news.findOne({_id:ObjectID(newsCode)})
+        if(!newsResult){
+            res.status(400).json({message: "یافت نشد", error:"Not Found"}) 
+            return
+        }
+        var result = await customers.updateOne({_id:ObjectID(userId)},
+            {$set:{showNews:newsCode}})
+        
+        res.json(result)
+        return
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+
+
 module.exports = router;
