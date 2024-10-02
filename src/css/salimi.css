@@ -4495,6 +4495,16 @@ dialog {
   justify-content: space-between;
   border-bottom: 1px solid #e4e4e4;
   padding-block: 0.8rem;
+
+  .btn-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .cancel-btn{
+    background-color: red !important;
+  }
 }
 .profiles-header h5 {
   font-size: 1.143rem;
@@ -7019,6 +7029,7 @@ table {
 .profile-table th:nth-child(1) {
   width: 50%;
 }
+
 .profile-table td:nth-child(2),
 .profile-table th:nth-child(2) {
   width: 200px;
@@ -7028,6 +7039,19 @@ table {
 .profile-table td:nth-child(4),
 .profile-table th:nth-child(4) {
   width: 100px;
+}
+.SS-table td,
+.SS-table th {
+  width: unset !important;
+  text-align: center !important;
+  font-size: 1rem !important;
+}
+.SS-table th{
+  font-weight: 600 !important;
+  border-bottom: solid;
+}
+.SS-table td{
+  padding-block: 0.5rem;
 }
 .profile-table th {
   text-align: left;

@@ -133,6 +133,18 @@ const tabletrans ={
         english: "Status",
         persian: "وضعیت"
     },
+    document:{
+        english: "Document",
+        persian: "مستندات"
+    },
+    upload:{
+        english: "Upload",
+        persian: "آپلود"
+    },
+    addDoc:{
+        english: "add Document",
+        persian: "افزودن مستندات"
+    },
     payStatus:{
         english: "Payment status",
         persian: "وضعیت پرداخت"

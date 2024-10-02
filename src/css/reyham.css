@@ -101,9 +101,6 @@
 .dense-btn {
   width: unset;
 }
-.sub-more-menu {
-  display: inherit;
-}
 .formInput {
   margin: 15px !important;
 }
@@ -1598,4 +1595,21 @@ dialog {
 }
 .rangeUpload {
   width: 62px;
+}
+.delete-btn {
+  background-color: red;
+}
+.sub-active{
+  display: inherit;
+}
+.fa-ellipsis-v{
+  width: 20px;
+}
+.num-input{
+  width: 100px;
+  text-align: center;
+}
+.num-view{
+  margin: 0;
+  font-weight: 600;
 }

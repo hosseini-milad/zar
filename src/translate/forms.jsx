@@ -11,6 +11,10 @@ const formtrans ={
         english: "Store",
         persian: "انبار"
     },
+    deleteNews:{
+        english: "Delete News",
+        persian: "حذف خبر"
+    },
     hse:{
         english: "HSE",
         persian: "HSE"

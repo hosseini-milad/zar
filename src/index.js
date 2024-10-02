@@ -56,6 +56,13 @@ import Printofficial from "./modules/Print/Printofficial";
 import Discount from "./pages/Discount";
 import OffCustomer from "./pages/Offcustomer";
 import PrintStore from "./modules/Crm/PrintStore";
+import News from './pages/News';
+import NewsDetailHolder from './components/News/NewsData/NewsDetailHolder';
+import DocDetailHolder from './modules/Documents/DocPanel/DocData/DocDetailHolder';
+import DocumentList from './pages/DocumentList';
+import Documents from './pages/Document';
+import SalesSetting from "./pages/SalesSetting";
+
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
 var lang = JSON.parse(localStorage.getItem(env.cookieLang));
@@ -106,6 +113,18 @@ root.render(
               <Dashboard lang={lang} />
             </Layout>
           }
+        />
+        <Route 
+          path="/documents" 
+          element={<Layout><Documents lang={lang}/></Layout>}
+        />
+        <Route 
+          path="/documents/list" 
+          element={<Layout><DocumentList lang={lang}/></Layout>}
+        />
+        <Route 
+          path="/documents/detail/:docId" 
+          element={<Layout><DocDetailHolder lang={lang}/></Layout>}
         />
         <Route
           path="/visitor"
@@ -168,6 +187,14 @@ root.render(
           element={
             <Layout>
               <AccessHolder lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/SaleSetting"
+          element={
+            <Layout>
+              <SalesSetting lang={lang} />
             </Layout>
           }
         />
@@ -251,6 +278,14 @@ root.render(
               <ServiceDetailHolder lang={lang} />
             </Layout>
           }
+        />
+        <Route 
+          path="/news" 
+          element={<Layout><News lang={lang}/></Layout>}
+        />
+        <Route 
+          path="/news/detail/:newsId" 
+          element={<Layout><NewsDetailHolder lang={lang}/></Layout>}
         />
         <Route
           path="/products"

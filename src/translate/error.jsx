@@ -83,6 +83,18 @@ setting:{
     english:"Setting",
     persian:"تنظیمات"
 },//Access Control
+SaleSetting:{
+    english:"Sales Setting",
+    persian:"پارامترهای فروش"
+},
+SaleParameter:{
+    english:"Parameter",
+    persian:"نام پارامتر "
+},
+Amount:{
+    english:"Amount",
+    persian:"مقدار"
+},
 profiles:{
     english:"Profiles",
     persian:"پروفایل ها"
@@ -114,6 +126,14 @@ read:{
 edit:{
     english:"Edit",
     persian:"ویرایش"
+},
+save:{
+    english:"save",
+    persian:"ذخیره"
+},
+cancel:{
+    english:"cancel",
+    persian:"انصراف"
 },
 full:{
     english:"Full",

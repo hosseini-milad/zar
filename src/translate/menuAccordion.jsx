@@ -78,9 +78,43 @@ const menutrans ={
                     href:"/products",
                     url:"products"
                 },
+                {
+                    english: "Category",
+                    persian: "دسته بندی ها",
+                    index:1,
+                    icon:"fa-bar-chart",
+                    href:"/category",
+                    url:"category"
+                },
                 
                 ]
         },
+        {
+            english: "Configuration",
+            persian: "تنظیمات",
+            index:0,
+            icon:"fa-dashboard",
+            href:"#",
+            children:[
+            {
+                english: "Sales Parameters",
+                persian: "پارامترهای فروش",
+                index:0,
+                icon:"fa-percent",
+                href:"/SaleSetting",
+                url:"config"
+            },
+            {
+                english: "Sliders",
+                persian: "اسلایدرها",
+                index:0,
+                icon:"fa-dashboard",
+                href:"/sliders",
+                url:"sliders"
+            }
+            ]
+        },
+
         
     ],
     setting:[
@@ -100,6 +134,14 @@ const menutrans ={
             href:"/filter",
             url:"filter"
         },
+        {
+            english: "News",
+            persian: "خبرها",
+            index:1,
+            icon:"fa-bull-horn",
+            href:"/news",
+            url:"news"
+        },
         {       
             english: "User Management",
             persian: "مدیریت کاربران",
@@ -107,6 +149,14 @@ const menutrans ={
             icon:"fa-user",
             href:"/users",
             url:"users"
+        },
+        {
+            english: "Documents",
+            persian: "مستندات",
+            index:1,
+            icon:"fa-learn",
+            href:"/documents/list",
+            url:"documents"
         }
     ]
     }
