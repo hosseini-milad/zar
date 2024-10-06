@@ -1,23 +1,28 @@
-const productPrice = require("../models/product/productPrice")
-const NormalTax = require("./NormalTax")
-const {StockId,SaleType} = process.env;
+const customers = require("../models/auth/customers");
+const cart = require("../models/product/cart");
+const products = require("../models/product/products");
+const NormalNumber = require("./NormalNumber");
+var ObjectID = require('mongodb').ObjectID;
 
-var tax = process.env.TaxRate
-
-const CalcCart=async(cartDetails)=>{
+const CalcCart=async(userId)=>{
+    var totalWeight = 0
     var totalPrice = 0
-    var totalCount = 0
+    var unitPrice = 0
+    const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
-    //const ItemId = 
-    const priceData = await productPrice.findOne(
-        {ItemID:cartDetails[c].ItemId,saleType:SaleType},
-        {price:1,_id:0})
-    
-    cartDetails[c].price=NormalTax(priceData.price)
-    totalPrice += cartDetails[c].price*cartDetails[c].count
-    totalCount += parseInt(cartDetails[c].count)
+        unitPrice = cartDetails[c].unitPrice
+        totalPrice += parseFloat(cartDetails[c].price)
+        totalWeight += parseFloat(cartDetails[c].weight&&
+            cartDetails[c].weight.replace(/\//g,'.'))
     }
-    return({totalPrice:totalPrice,totalCount:totalCount})
+    return({cart:cartDetails,
+        cartDetail: {
+            "unitPrice": unitPrice,
+            "cartDiscount": 0,
+            "cartPrice": totalPrice,
+            "cartWeight": NormalNumber(totalWeight)
+        }
+    })
 }
 
 module.exports =CalcCart

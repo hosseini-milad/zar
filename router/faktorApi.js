@@ -21,18 +21,28 @@ const bankAccounts = require('../models/product/bankAccounts');
 const sepidarFetch = require('../middleware/Sepidar');
 const products = require('../models/product/products');
 const tasks = require('../models/crm/tasks');
-const CheckSale = require('../middleware/CheckSale')
 const profiles = require('../models/auth/ProfileAccess');
 const CreateTask = require('../middleware/CreateTask');
 const NewCode = require('../middleware/NewCode');
 const customers = require('../models/auth/customers');
 const brand = require('../models/product/brand');
 const FindCurrentCart = require('../middleware/CurrentCart');
-const FindCurrentExist = require('../middleware/CurrentExist');
 const OrderToTask = require('../middleware/OrderToTask');
 const IsToday = require('../middleware/IsToday');
 const NewQuote = require('../middleware/NewQuote');
 const CreateCart = require('../middleware/CreateCart');
+const CalcCart = require('../middleware/CalcCart');
+const faktorItems = require('../models/product/faktorItems');
+const faktor = require('../models/product/faktor');
+const slider = require('../models/main/slider');
+const price = require('../models/price');
+const CalcPrice = require('../middleware/CalcPrice');
+const FindPrice = require('../middleware/FindPrice');
+const CalcCartRecalc = require('../middleware/CalcCartRecalc');
+const tax = require('../models/param/tax');
+const RegisterFaktor = require('../middleware/RegisterFaktor');
+const prepaid = require('../models/param/prepaid');
+const NormalNumber = require('../middleware/NormalNumber');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -46,15 +56,30 @@ router.post('/products', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/list-products', async (req,res)=>{
+router.post('/list-product', async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
     const filter = req.body.filters
-    const brandId= filter?filter.brand:''
-    const catId= filter?filter.category:''
-    
     try{
-        const products = await productSchema.find({})
-        
-        res.json({products:products})
+   
+        const products = await productSchema.find({}).lean()
+        const priceRaw = await FindPrice()
+        const productList = products.slice(offset,
+            (parseInt(offset)+parseInt(pageSize)))  
+            
+        var TAX = await tax.findOne().sort({date:-1})
+        for(var i=0;i<productList.length;i++){
+            productList[i].price = CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
+        }
+        res.json({data:productList,type:[],hasChild:1,
+            size:products.length,success:true,
+            categoryList:[{
+                title: "دسته بندی1", 
+                link: "class1"
+            }],
+            subCategoryList	:[]
+        })
+
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -267,444 +292,35 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
     }
 })
 
-router.post('/cart',auth, async (req,res)=>{
+router.get('/recalc-cart',auth, async (req,res)=>{
     const userId =req.body.userId
     try{ 
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        res.json(cartDetails)
+        await CalcCartRecalc(req.headers['userid'])
+        const cartDetails = await CalcCart(req.headers['userid'])
+        res.json({message:"cart recalculated",...cartDetails})
     }
-    catch(error){
+    catch(error){ 
         res.status(500).json({message: error.message})
     }
 })
-const findCartFunction=async(userId,managerId)=>{
-    const isSale = await CheckSale(managerId)
+
+router.get('/get-cart',auth, async (req,res)=>{
+    const userId =req.body.userId
     try{ 
-        const cartData = await cart.aggregate([
-            {$match:{manageId:managerId}},
-            {$match:userId?{userId:userId}:{}},
-            {$match:{result:{$exists:false}}},
-            {$sort:{"initDate":-1}}
-        ])
-    
-    const qCartData = await qCart.findOne({userId:userId?userId:managerId})
-    const qCartAdmin = await qCart.aggregate([
-        {$match:{manageId:managerId}},
-        
-        {$match:{cartItems:{$ne:[]}}},
-
-        { $addFields: { "userId": { "$toObjectId": "$userId" }}},
-            {$lookup:{ 
-                from : "customers", 
-                localField: "userId", 
-                foreignField: "_id", 
-                as : "userInfo"
-            }},
-    ])
-    //const userData = await customerSchema.findOne({userId:ObjectID(userId)})
-    
-    var cartDetail = []
-    var qCartDetail = ''
-    var description = '' 
-    var todayCartData=[]
-   for(var c=0;c<(cartData&&cartData.length);c++){
-    
-        if(!userId&&IsToday(cartData[c].initDate)!==1){
-            continue
-        }
-        try{
-            for(var j=0;j<cartData[c].cartItems.length;j++){
-                try{var cartTemp = cartData[c].cartItems[j]
-                const cartItemDetail = findCartItemDetail(cartTemp,cartData[c].payValue)
-                cartData[c].cartItems[j].total = cartItemDetail
-                }
-                catch{}
-            }
-            const userData = await customers.findOne({_id:ObjectID(cartData[c].userId)})
-            cartData[c] = {...cartData[c],userData:userData}
-            cartDetail.push(findCartSum(cartData[c].cartItems))
-        }
-    catch{}
-    todayCartData.push(cartData[c])
-        
-   }
-    if(qCartData) {
-        qCartDetail =findQuickCartSum(qCartData.cartItems,
-        qCartData.payValue,qCartData.discount)
+        const cartDetails = await CalcCart(req.headers['userid'])
+        res.json({...cartDetails})
     }
-    return({cart:todayCartData,cartDetail:cartDetail,userData:"userData",isSale,
-        quickCart:qCartData,qCartDetail:qCartDetail,qCartAdmin:qCartAdmin})
-        }
-    catch{
-        return({cart:[],cartDetail:[],isSale,
-            quickCart:'',qCartDetail:''})
-    }
-}
-const findPayValuePrice=(priceArray,payValue)=>{
-    if(!priceArray)return(0)
-    if(!payValue)payValue = 3
-    var price = priceArray
-    if(priceArray.length&&priceArray.constructor === Array)
-        price=priceArray.find(item=>item.saleType==payValue).price
-   
-    return(price)
-
-}
-const findCartItemDetail=(cartItem,payValue)=>{
-    var cartItemPrice = findPayValuePrice(cartItem.price,payValue)
-    var tax = 0
-    var discount = 0
-    var totalPrice = 0
-    var count = cartItem.count
-    if(cartItem.discount){
-        var off = parseInt(cartItem.discount.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-        
-        if(off>100)
-            discount += off 
-        else
-            discount += parseInt(cartItemPrice)*
-            count*(off)/100
-        //console.log(off+": "+cartDiscount)
-    }
-    tax = (cartItemPrice*count - discount)*TaxRate
-    totalPrice = (cartItemPrice*count - discount)*(1+TaxRate)
-    return({price:cartItemPrice,tax:tax,
-        total:totalPrice,discount:discount})
-}
-const findCartData=async(cartNo)=>{
-    try{
-        const cartData = await cart.findOne({cartNo:cartNo})
-        var cartDetail = ''
-    
-        cartDetail=findQuickCartSum(cartData.cartItems,cartData.payValue,cartData.discount)
-        //if(qCartData) qCartDetail =findQuickCartSum(qCartData.cartItems,qCartData.payValue)
-   
-    return({cart:[cartData],cartDetail:cartDetail})
-        }
-    catch{
-        return({cart:[],cartDetail:[]})
-    }
-}
-const findQuickCartSum=(cartItems,payValue,discount)=>{
-    if(!cartItems)return({totalPrice:0,totalCount:0})
-    var cartSum=0;
-    var cartCount=0;
-    var cartDescription = ''
-    var cartDiscount = 0;
-    for (var i=0;i<cartItems.length;i++){
-        try{//console.log(payValue)
-        var cartItemPrice = ''
-        try{cartItemPrice =cartItems[i].price.find(item=>item.saleType===payValue).price
-            .replace( /,/g, '').replace( /^\D+/g, '')}
-        catch{cartItemPrice =cartItems[i].price&&cartItems[i].price
-            .replace( /,/g, '').replace( /^\D+/g, '')}
-        //console.log(cartItemPrice)
-        var newCount = parseInt(cartItems[i].count.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-        if(cartItems[i].price) 
-            cartSum+= parseInt(cartItemPrice)*newCount
-        
-        if(cartItems[i].count)
-            cartCount+=newCount
-        cartDescription += cartItems[i].description?cartItems[i].description:''
-        
-        if(cartItems[i].discount){
-            var off = parseInt(cartItems[i].discount.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-            
-            if(off>100)
-                cartDiscount += off 
-            else
-                cartDiscount += parseInt(cartItemPrice)*
-                newCount*(off)/100
-            //console.log(off+": "+cartDiscount)
-        }
-    }catch{}
-
-    }
-    if(discount){
-    if(parseInt(discount)>100)
-        cartDiscount += parseInt(discount)
-    else
-        cartDiscount += discount&&
-            (parseInt(cartSum)*
-            parseInt(discount)/100)
-    }
-    const totalPriceNoTax = cartSum - cartDiscount
-    return({totalFee:cartSum,
-        totalCount:cartCount,
-        totalDiscount:cartDiscount,
-        totalTax:(totalPriceNoTax*TaxRate),
-        totalPrice:(totalPriceNoTax*(1+TaxRate)),
-        cartDescription:cartDescription})
-}
-const findCartSum=(cartItems,payValue)=>{
-    if(!cartItems)return({totalPrice:0,totalCount:0})
-    var cartSum=0;
-    var cartCount=0;
-    var cartDiscount = 0;
-    var cartDescription = ''
-    for (var i=0;i<cartItems.length;i++){
-        //console.log(payValue)
-        var cartItemPrice = findPayValuePrice(cartItems[i].price,payValue)
-        //console.log(cartItemPrice)
-        try{if(cartItems[i].price) 
-            cartSum+= parseInt(cartItemPrice)*
-            parseInt(cartItems[i].count.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-        if(cartItems[i].count)
-            cartCount+=parseInt(cartItems[i].count.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-        cartDescription += cartItems[i].description?cartItems[i].description:''
-        if(cartItems[i].discount){
-            var off = parseInt(cartItems[i].discount.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-            if(off>100)
-                cartDiscount += off 
-            else
-                cartDiscount += parseInt(cartItemPrice)
-                *Number(cartItems[i].count)*
-                (1+TaxRate)*(off)/100
-        }
-        }catch{}
-    }
-    return({totalFee:cartSum,
-        totalCount:cartCount,
-        totalDiscount:cartDiscount,
-        totalTax:(cartSum*TaxRate),
-        totalPrice:(cartSum*(1+TaxRate)-cartDiscount),
-        cartDescription:cartDescription})
-}
-router.post('/cartlist', async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid'];
-    const cartID=req.body.cartID
-    try{
-        const cartList = await cart.aggregate
-        ([{$match:{manageId:userId}},
-        { $addFields: { "manageId": { "$toObjectId": "$manageId" }}},
-        
-        {$lookup:{
-            from : "customers", 
-            localField: "userId", 
-            foreignField: "Code", 
-            as : "userData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "userId", 
-            foreignField: "_id", 
-            as : "adminData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "manageId", 
-            foreignField: "_id", 
-            as : "managerData"
-        }}])
-    var cartTotal={cartPrice:0,cartCount:0}
-        for(var i = 0;i<cartList.length;i++){
-            if(cartList[i].cartItems&&cartList[i].cartItems.length){
-                var cartResult = findCartSum(cartList[i].cartItems)
-                cartList[i].countData=cartResult
-            }
-            else{
-                cartList.splice(i,1)
-            }
-            if(!cartList[i].userData||!cartList[i].userData.length){
-                //console.log(cartList[i].userData)
-                var userData =await users.find({_id:ObjectID(cartList[i].userId)}).limit(1)
-                cartList[i].userData=userData
-            }
-        }
-        for(var i=0;i<cartList.length;i++){
-            const found =(cartID&&cartID.find(item=>item===cartList[i]._id.toString()))
-            if(found||!cartID.length){
-            cartTotal.cartPrice+=cartList[i].countData?
-            cartList[i].countData.totalPrice:0;
-            cartTotal.cartCount+=cartList[i].countData?
-            cartList[i].countData.totalCount:0;
-            }
-        }
-        res.json({cart:cartList,
-            cartTotal:cartTotal})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/cart-fetch', async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid'];
-    const cartID=req.body.cartID
-    try{
-        const cartList = await cart.aggregate
-        ([{$match:{manageId:userId}},
-          {$match:{_id:ObjectID(cartID)}},
-        { $addFields: { "manageId": { "$toObjectId": "$manageId" }}},
-        {$lookup:{
-            from : "customers", 
-            localField: "userId", 
-            foreignField: "Code", 
-            as : "userData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "userId", 
-            foreignField: "_id", 
-            as : "adminData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "manageId", 
-            foreignField: "_id", 
-            as : "managerData"
-        }}])
-        var orderData={cartPrice:0,cartCount:0}
-        var cartPrice = 0
-        var cartItems = (cartList&&cartList[0].cartItems)?
-            cartList[0].cartItems:[]
-        for(var i = 0;i<cartItems.length;i++){
-            cartPrice +=parseInt(cartItems[i].price)*
-                cartItems[i].count
-        }
-        orderData.cartPrice=cartPrice
-        
-        res.json({cart:cartList,orderData:orderData})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/cart-delete',auth, async (req,res)=>{
-    const userId =req.headers['userid'];
-    const cartID=req.body.cartID
-    const adminData = await users.findOne({_id:ObjectID(userId)})
-    try{
-        if(adminData.access !== "manager"){
-            res.status(500).json({message: "دسترسی ندارید",error:"deny"})
-        }
-        await cart.deleteOne({cartNo:cartID})
-        await tasks.updateOne({orderNo:cartID},{$set:{taskStep:"cancel"}})
-        
-        
-        res.json({message:"سفارش حذف شد"})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/cart-find', async (req,res)=>{
-    const cartNo=req.body.cartNo
-    try{
-        const cartList = await cart.aggregate
-        ([{$match:{cartNo:cartNo}},
-        { $addFields: { "manageId": { "$toObjectId": "$manageId" }}},
-        { $addFields: { "userId": { "$toObjectId": "$userId" }}},
-        {$lookup:{
-            from : "customers", 
-            localField: "userId", 
-            foreignField: "_id", 
-            as : "userData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "manageId", 
-            foreignField: "_id", 
-            as : "managerData"
-        }}])
-        const cartData =cartList&&cartList[0] 
-        var canEdit = 0
-        var taskData = await OrderToTask(cartData.cartNo)
-        if(taskData&&(
-            taskData.taskStep== "initial"||taskData.taskStep=="edit")) 
-            canEdit = 1
-        
-        if(!cartData){
-            res.status(400).json({error:"error",message:"آیتم ها با مشکل مواجه شدند"})
-             return
-        } 
-        var cartItems = cartData.cartItems
-        if(cartItems)
-            for(var i=0;i<cartItems.length;i++){
-            cartList[0].cartItems[i].total =findCartItemDetail(cartItems[i],cartData.payValue)
-            
-        }
-        var orderData=findQuickCartSum(cartItems,cartData.payValue,
-            cartData.discount)
-        
-        res.json({cart:cartList,orderData:orderData,canEdit,taskData})
-    }
-    catch(error){
+    catch(error){ 
         res.status(500).json({message: error.message})
     }
 })
 
-router.post('/cartData', async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid'];
-    const cartNo=req.body.cartNo
-    try{
-        const cartList = await cart.aggregate
-        ([
-          {$match:{cartNo:cartNo}},
-        { $addFields: { "manageId": { "$toObjectId": "$manageId" }}},
-        { $addFields: { "userId": { "$toObjectId": "$userId" }}},
-        {$lookup:{
-            from : "customers", 
-            localField: "userId", 
-            foreignField: "_id", 
-            as : "userData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "userId", 
-            foreignField: "_id", 
-            as : "adminData"
-        }},
-        {$lookup:{
-            from : "users", 
-            localField: "manageId", 
-            foreignField: "_id", 
-            as : "managerData"
-        }}])
-        var orderData={totalPrice:0,totalCount:0}
-        var cartPrice = 0
-        var cartItem = 0
-        var cartDiscount=0
-        var cartItems = (cartList&&cartList[0].cartItems)?
-            cartList[0].cartItems:[]
-        for(var i = 0;i<cartItems.length;i++){
-            cartPrice +=parseInt(cartItems[i].price.replace( /,/g, ''))*
-                cartItems[i].count
-            cartItem+=Number(cartItems[i].count)
-            if(cartItems[i].discount){
-                var off = parseInt(cartItems[i].discount.toString().replace( /,/g, '').replace( /^\D+/g, ''))
-                if(off>100)
-                    cartDiscount += off 
-                else
-                    cartDiscount += parseInt(cartItems[i].price)
-                    *Number(cartItems[i].count)*(1+TaxRate)*off/100
-            }
-        }
-        orderData.totalFee=cartPrice
-        orderData.totalCount=cartItem
-        orderData.totalDiscount=cartDiscount
-        orderData.totalTax=cartPrice*TaxRate
-        orderData.totalPrice=cartPrice*(1+TaxRate)-cartDiscount
-        res.json({cart:cartList&&cartList[0],
-            cartDetail:orderData})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/cartRemove', async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid'];
-    const cartID=req.body.cartID
-    try{
-        const cartList = await cart.deleteOne({_id:ObjectID(cartID)})
-        
-        res.json({cart:cartList,message:"Cart Removed"})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/add-cart',jsonParser, async (req,res)=>{
+router.post('/add-cart',auth,jsonParser, async (req,res)=>{
     const userId=req.headers['userid']
+    if(!req.body.sku){
+        res.status(400).json({error:"محصول وارد نشده است"})
+        return
+    }
     const data={
         userId:userId,
         sku:req.body.sku,
@@ -716,436 +332,100 @@ router.post('/add-cart',jsonParser, async (req,res)=>{
         const userData = await users.findOne({_id:req.headers['userid']})
         const cartData = await cart.find({userId:userId})
         
-        const cartItems = CreateCart(cartData,data.sku,userId)
-        
+        const cartItems = await CreateCart(cartData,data.sku,userId)
+        if(cartItems.error){
+            res.status(400).json({error:cartItems.error})
+            return
+        }
+        else{
+            const cart = await CalcCart(userId)
+            res.json({...cart,message:"آیتم اضافه شد"})
+            return
+        } 
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        res.json({cartItems,message:"آیتم اضافه شد"})
+        
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
-router.post('/update-desc',jsonParser, async (req,res)=>{
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
-    const cartNo = req.body.cartNo
-    const data={
-        description:req.body.description,
-        discount:req.body.discount,
-        payValue:req.body.payValue
-    }
-    try{
-        
-        //const cartData = await cart.find({userId:userId})
-        if(cartNo)
-            await cart.updateOne({cartNo:cartNo},
-            {...data})
-        else
-            await quickCart.updateOne({userId:userId},
-            {...data})
-        
-        const cartDetails = cartNo?await findCartData(cartNo)
-        :await findCartFunction(userId,req.headers['userid'])
-        res.json({...cartDetails,message:"سبد بروز شد"})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/edit-cart',jsonParser, async (req,res)=>{
-    const userId =req.body.userId?req.body.userId:req.headers['userid']
-    const data={
-        
-        payValue:req.body.payValue,
-        date:req.body.date,
-        progressDate:Date.now()
+router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
+    const id=req.body.id
+    const userId=req.headers['userid']
+    if(!id){
+        res.status(400).json({error:"ردیف وارد نشده است"})
+        return
     }
     
-        var status = "";
-        //const cartData = await cart.find({userId:data.userId})
-        const qCartData = await quickCart.findOne({userId:userId})
-        const availItems = await checkAvailable(req.body.cartItem)
+    try{
+        await cart.deleteOne({userId:userId,_id:ObjectID(id)})
         
-        if(!availItems){
-            res.status(400).json({error:"موجودی کافی نیست"}) 
-            return
-        }
-        const cartItems = editCart(qCartData,req.body.cartItem)
-        data.cartItems =(cartItems)
-        await quickCart.updateOne({userId:userId},{$set:data})
-        status = "update cart"
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        res.json({...cartDetails,message:"آیتم ها بروز شدند"})
-    try{}
+        const cartDetail = await CalcCart(userId)
+        res.json({cart:cartDetail,message:"آیتم حذف شد"})
+        return
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
-const checkAvailable= async(items,stockId)=>{
 
-    //console.log(stockId)
-    if(!stockId) stockId="13"
-    const existItem = await productcounts.findOne({ItemID:items.id,Stock:stockId})
-    const existItem3 = await productcounts.findOne({ItemID:items.id,Stock:"9"})
-     
-
-    if(!existItem&&!existItem3) return('')
-    var totalCount = existItem?parseFloat(existItem.quantity):0
-    totalCount += existItem3?parseFloat(existItem3.quantity):0
+router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
+    const userId=req.headers['userid']
     
-    const currentOrder = await FindCurrentExist(items.id)
-    /*console.log("total: ",totalCount, "- order: ",currentOrder,
-        "- req: ",items.count
-    )*/
-    var minusCount = currentOrder + items.count
-    return(compareCount(totalCount,minusCount))
-} 
-const removeCart=(cartData,cartID)=>{
-    if(!cartData||!cartData.cartItems)return([])
-var cartItemTemp=cartData.cartItems
-    for(var i=0;i<cartItemTemp.length;i++){
-        if(cartItemTemp[i].id===cartID){
-            cartItemTemp.splice(i,1)
-            return(cartItemTemp)
-        }
-    }
-}
-const removeCartCount=(cartData,cartID,count)=>{
-    if(!cartData||!cartData.cartItems)return([])
-var cartItemTemp=cartData.cartItems
-    for(var i=0;i<cartItemTemp.length;i++){
-        if(cartItemTemp[i].id===cartID){
-            cartItemTemp[i].count= parseInt(cartItemTemp[i].count)-parseInt(count)
-            return(cartItemTemp)
-        }
-    }
-}
-const editCart=(cartData,cartItem)=>{
-    if(!cartData||!cartData.cartItems)return([])
-var cartItemTemp=cartData.cartItems
-    for(var i=0;i<(cartItemTemp&&cartItemTemp.length);i++){
-        if(cartItemTemp[i].id===cartItem.id){
-            cartItemTemp[i].count = cartItem.count;
-            if(cartItem.price)
-                cartItemTemp[i].price = cartItem.price
-            return(cartItemTemp)
-        }
-    }
-}
-const totalCart=(cartArray)=>{
-    var cartListTotal =[]
-    for(var i =0;i<cartArray.length;i++){
-        const userCode = cartArray[i].userData[0]?
-            cartArray[i].userData[0].CustomerID:
-            cartArray[i].adminData[0].CustomerID
-        const userAddress = cartArray[i].userData[0]?
-            cartArray[i].userData[0].AddressID:
-            cartArray[i].adminData[0].AddressID
-        var repeat=0
-        for(var j=0;j<cartListTotal.length;j++)
-            if(userCode&&(userCode===cartListTotal[j].userId)){
-                cartListTotal[j].cartItems.push(
-                    ...cartArray[i].cartItems)
-                cartListTotal[j].userTotal +="|"+cartArray[i].userId
-                repeat=1
-            break
-        }
-        !repeat&&cartListTotal.push({
-            userId:userCode,
-            userTemp:cartArray[i].userId,
-            userAddress:userAddress,
-            userTotal:cartArray[i].userId,
-            payValue:cartArray[i].payValue,
-            stockId:cartArray[i].stockId?cartArray[i].stockId:"13",
-            cartItems:cartArray[i].cartItems})
-    }
-    return(cartListTotal)
-}
-router.post('/update-Item',jsonParser, async (req,res)=>{
-    const data={
-        userId:req.body.userId?req.body.userId:req.headers['userid'],
-        cartID:req.body.cartID,
-        changes:req.body.changes,
-        progressDate:Date.now()
-    }
     try{
-        var status = "";
-        //const cartData = await cart.find({userId:data.userId})
-        const qCartData = await quickCart.findOne({userId:data.userId})
-        var oldCartItems = qCartData.cartItems
-        for(var i=0;i<(oldCartItems&&oldCartItems.length);i++){
-            if(!data.changes)break
-            if(oldCartItems[i].id==data.cartID){
-                
-                if(data.changes.description)
-                    oldCartItems[i].description = data.changes.description
-                if(data.changes.count)
-                    oldCartItems[i].count = data.changes.count
-                if(data.changes.discount)
-                    oldCartItems[i].discount = data.changes.discount
-
-                const availItems = await checkAvailable(oldCartItems[i],"5")
-                
-                if(!availItems){
-                    res.status(400).json({error:"موجودی کافی نیست"}) 
-                    return
-                }
-            }
-        }
+        const priceRaw = await FindPrice()
+        const userData = await customers.findOne({_id:userId})
+        const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
+        const faktorNo = await NewCode("z"+userCode)
+        const cartDetail = await CalcCart(userId)
         
-        
-        //const cartItems = removeCart(qCartData,req.body.cartID)
-        //data.cartItems =(cartItems)
-        cartLog.create({...data,ItemID:req.body.cartID,action:"delete"})
-            await quickCart.updateOne(
-                {userId:data.userId},{$set:{cartItems:oldCartItems}})
-            status = "update cart"
-        const cartDetails = await findCartFunction(data.userId,req.headers['userid'])
-        res.json({...cartDetails,message:"آیتم بروز شد."})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/update-Item-cart',jsonParser, async (req,res)=>{
-    const data={
-        cartID:req.body.cartID,
-        changes:req.body.changes,
-        cartNo:req.body.cartNo,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        //const cartData = await cart.find({userId:data.userId})
-        const CartData = await cart.findOne({cartNo:data.cartNo})
-        var oldCartItems = CartData.cartItems
-        var manId = await users.findOne({_id:ObjectID(CartData.manageId)})
-        for(var i=0;i<oldCartItems.length;i++){
-            if(!data.changes)break
-            if(oldCartItems[i].id==data.cartID){
-                if(data.changes.description)
-                    oldCartItems[i].description = data.changes.description
-                if(data.changes.count)
-                    oldCartItems[i].count = data.changes.count
-                if(data.changes.discount)
-                    oldCartItems[i].discount = data.changes.discount
-                //if(data.changes.stock)
-                    oldCartItems[i].stock = data.changes.stock
-
-                const availItems = await checkAvailable(oldCartItems[i],manId.StockId)
-                if(!availItems){
-                    res.status(400).json({error:"موجودی کافی نیست"}) 
-                    return
-                }
-            }
-        }
-        
-        
-        //const cartItems = removeCart(qCartData,req.body.cartID)
-        //data.cartItems =(cartItems)
-        
-        cartLog.create({...data,ItemID:req.body.cartID,action:"update"})
-            await cart.updateOne(
-                {cartNo:data.cartNo},{$set:{cartItems:oldCartItems}})
-            status = "update cart"
-        const cartDetails = await findCartData(data.cartNo)
-        res.json({...cartDetails,message:"آیتم بروز شد."})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-
-router.post('/remove-cart',jsonParser, async (req,res)=>{
-    const data={
-        userId:req.body.userId?req.body.userId:req.headers['userid'],
-
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        const cartData = await cart.find({userId:data.userId})
-        const qCartData = await quickCart.findOne({userId:data.userId})
-        const cartItems = removeCart(qCartData,req.body.cartID)
-        data.cartItems =(cartItems)
-        //console.log(req.body.cartItem)
-        cartLog.create({...data,ItemID:req.body.cartID,action:"delete"})
-            await quickCart.updateOne(
-                {userId:data.userId},{$set:data})
-            status = "update cart"
-        const cartDetails = await findCartFunction(data.userId,req.headers['userid'])
-        res.json({...cartDetails,message:"آیتم حذف شد."})
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-
-router.post('/return-cart',jsonParser, async (req,res)=>{
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
-    const data={
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        const cartData = await cart.findOne({_id:req.body.cartID})
-        const cartItems = removeCartCount(cartData,req.body.itemId,req.body.count)
-        data.cartItems =(cartItems)
-        
-        cartLog.create({...data,ItemID:req.body.cartID,action:"return"})
-            await cart.updateOne(
-                {_id:req.body.cartID},{$set:data})
-            status = "Return "
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        res.json(cartDetails)
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-const findNullCount=async(items,cart)=>{
-    //console.log(items)
-    for(var i=0;i<items.length;i++){
-        const itemCount = await productCount.findOne({ItemID:items[i].id,Stock:'13'})
-        var count = findCartCount(items[i].sku,cart)
-        count+=parseInt(items[i].count)
-        var cmpr = compareCount(itemCount.quantity,count)
-        //console.log(itemCount.quantity,count,cmpr)
-
-    }
-}
-router.post('/quick-to-cart',jsonParser, async (req,res)=>{
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
-    const data={ 
-        userId:userId,
-        manageId:req.headers['userid'],
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        data.isQuote = req.body.isQuote;
-        const isSale = await CheckSale(data.manageId)
-        data.isSale = isSale
-        //const cartAll = await cart.find()
-        const userData = await customers.findOne({_id:ObjectID(userId)})
-        const qCartData = await quickCart.findOne({userId:userId})
-        
-        data.payValue=qCartData&&qCartData.payValue
-        data.description = qCartData&&qCartData.description
-        data.discount = qCartData&&qCartData.discount
-        const quickCartItems = qCartData&&qCartData.cartItems
-        data.cartItems = quickCartItems
-        const stockId = userData.StockId?userData.StockId:"5"
-        
-        const availItems = !data.isQuote?
-            await checkCart(quickCartItems,stockId,data.payValue):0
-        
-        
-        if(availItems){
-            res.status(400).json({error:availItems}) 
+        var TAX = await tax.findOne().sort({date:-1})
+        var PRE = await prepaid.findOne().sort({date:-1})
+        var totalPrice = 0
+        var totalWeight = 0
+        if(!cartDetail.cart||!cartDetail.cart.length){
+            res.status(400).json({error:"سبد خرید خالی است"})
             return
         }
-        //data.cartItems =pureCartPrice(quickCartItems,qCartData.payValue)
-        data.cartNo = await NewCode(isSale?"s":"d")
-        data.stockId = qCartData&&qCartData.stockId
-        cartLog.create({...data,ItemID:req.body.cartID,action:"quick to cart"})
-        await cart.create(data)
-            status = "create cart"
-        await quickCart.deleteOne({userId:data.userId})
-        if(!isSale)
-            await CreateTask("border",data,userData)
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        setTimeout(()=>res.json(cartDetails),3000)
-        
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-router.post('/quick-to-quote',jsonParser, async (req,res)=>{
-    const userId=req.body.userId?req.body.userId:req.headers['userid']
-    const data={ 
-        userId:userId,
-        manageId:req.headers['userid'],
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        //const cartAll = await cart.find()
-        const userData = await customers.findOne({_id:ObjectID(userId)})
-        const qCartData = await quickCart.findOne({userId:userId})
-        
-        data.payValue=qCartData&&qCartData.payValue
-        data.description = qCartData&&qCartData.description
-        data.discount = qCartData&&qCartData.discount
-        const quickCartItems = qCartData&&qCartData.cartItems
-        data.cartItems = quickCartItems
-        const stockId = userData.StockId?userData.StockId:"5"
-        
-        const availItems = await checkCart(quickCartItems,stockId,data.payValue)
-        
-        
-        if(availItems){
-            res.status(400).json({error:availItems}) 
-            return
-        }
-        //data.cartItems =pureCartPrice(quickCartItems,qCartData.payValue)
-        data.cartNo = await NewQuote("q")
-        data.stockId = qCartData&&qCartData.stockId
-        cartLog.create({...data,ItemID:req.body.cartID,action:"quick to quote"})
-        await quote.create(data)
-            status = "create cart"
-        await quickCart.deleteOne({userId:data.userId})
-        if(!isSale)
-            await CreateTask("bquote",data,userData)
-        const cartDetails = await findCartFunction(userId,req.headers['userid'])
-        setTimeout(()=>res.json(cartDetails),3000)
-        
-    }
-    catch(error){
-        res.status(500).json({message: error.message})
-    }
-})
-const pureCartPrice=(cartItem,payValue)=>{
-    var cartItems = cartItem
-    for(var c=0;c<cartItems.length;c++){
-        try{
-            cartItems[c].price = cartItem[c].price.find(item=>item.saleType===payValue).price
-        }
-        catch{
-        }
-    }
-    return cartItems
-}
-const checkCart=async(cartItems,stockId,payValue)=>{
-    const cartList = await tasks.find({taskStep:{$nin:['archive']}})
-    var currentCart = await FindCurrentCart(cartList.map(item=>item.orderNo))
-        
-    const qCartList = await qCart.find(stockId?{stockId:stockId}:{})
-    var checkCart=''
-    for(var i =0;i<cartItems.length;i++){
-        var sku = cartItems[i].sku
-        const count = await findItemBySku(sku,currentCart.concat(qCartList),stockId,cartItems[i])
-        const count3 = await findItemBySku(sku,currentCart.concat(qCartList),"9",cartItems[i])
-        //console.log(count)
-        if(count<0&&count3<0) 
-            checkCart+=`sku: ${sku}, value: ${count} || `
-    }
-    return(checkCart)
-    //const orders = await carts.
-}
-const findItemBySku=async(sku,cartItems,stockId,item)=>{
-    var existCount =0
-    const ItemID = item.price?item.price[0].ItemID:"0"
-    const searchProducts = await productCount.find({ItemID:ItemID})
-    var countSep = (searchProducts.find(item=>item.Stock==stockId))
-    countSep = countSep?countSep.quantity:0
-    var countCart = findCartCount(sku,cartItems,stockId)
-    return(countSep-countCart)
+        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
+            var cartItem = cartDetail.cart[i]
+            const productDetail = await products.findOne({sku:cartItem.sku})
+            const fullPrice = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const price = cartItem.isReserve?
+                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
+            totalPrice+=price
+            totalWeight+= NormalNumber(productDetail&&productDetail.weight)
+            const { _id: _, ...newObj } = cartItem;
+            await faktorItems.create({...newObj,faktorNo:faktorNo,
+                fullPrice:fullPrice,price,unitPrice:priceRaw})
+            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
 
-}
+        }
+
+        const faktorData = {
+            faktorNo:faktorNo,
+            userId:userId,
+            initDate:Date.now(),
+            progressDate:Date.now(),
+            status:"inprogress",
+            isActive:true, isEdit:false,
+            totalPrice:NormalNumber(totalPrice),
+            totalWeight:NormalNumber(totalWeight),
+            unitPrice:NormalNumber(priceRaw)
+        }
+        await faktor.create(faktorData)
+        await cart.deleteMany({userId:userId})
+        res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
+        return
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.post('/faktor', async (req,res)=>{
     const offset =req.body.offset?parseInt(req.body.offset):0 
     const userId =req.body.userId?req.body.userId:req.headers['userid'];
@@ -1180,27 +460,32 @@ router.post('/faktor', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/faktor-find', async (req,res)=>{
-    const faktorId =req.body.faktorId;
+router.post('/fetch-faktor',auth, async (req,res)=>{
+    const faktorNo =req.body.faktorNo;
     try{
-        const faktorData = await FaktorSchema.findOne({InvoiceID:faktorId})
+        const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
+        const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
+        faktorData.items = FaktorItems
+        const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         
-        //logger.warn("main done")
-        var userId=faktorData&&faktorData.manageId
-        
-        const OnlineFaktor = await sepidarFetch(data,"/api/invoices/"+faktorId,userId)
-        const userDetail = await customerSchema.findOne({CustomerID:OnlineFaktor.CustomerRef})
-        const invoice = OnlineFaktor.InvoiceItems
-        if(!invoice)
-            res.status(400).json({error: OnlineFaktor.Message})
-        //var itemRefs=OnlineFaktor.InvoiceItems
-        for(var i=0;i<invoice.length;i++){
-            var faktorItem = invoice[i]
-            var itemDetail = await products.findOne({ItemID:faktorItem.ItemRef})
-            OnlineFaktor.InvoiceItems[i].itemDetail = itemDetail
+        res.json({data:faktorData,userDetail:userDetail})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+router.post('/list-faktor',auth, async (req,res)=>{
+    try{
+        const faktorData = await FaktorSchema.find({}).lean()
+
+        for(var i=0;i<faktorData.length;i++){
+            var faktorNo = faktorData[i].faktorNo
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItemData
+            faktorData[i].rahId	=faktorNo
             //itemRefs.push(faktorItem)
         }
-        res.json({faktor:OnlineFaktor,userDetail:userDetail,itemRefs:invoice})
+        res.json({data:faktorData})
     }
     catch(error){
         res.status(500).json({error: error.message})
@@ -1253,6 +538,17 @@ router.post('/faktor-fetch', async (req,res)=>{
         orderData.cartPrice=cartPrice
         
         res.json({faktor:faktorList,orderData:orderData,faktorDetail:faktorDetail})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/register-faktor',auth, async (req,res)=>{
+    const faktorNo=req.body.faktorNo
+    try{
+        const result = await RegisterFaktor(faktorNo)
+
+        res.json({result,query:result,message:"faktor registered"})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -1399,36 +695,7 @@ const SepidarFunc=async(data,faktorNo)=>{
       }
     return(query)
 }
-const RecieptFunc=async(data,FaktorInfo,faktorNo)=>{
-    var query ={
-        "GUID": "124ab075-fc79-417f-b8cf-2a"+faktorNo,
-        "InvoiceID": toInt(FaktorInfo.InvoiceID),
-        "Description": toInt(FaktorInfo.Number),
-        "Date":new Date(),
-        "Drafts": 
-          data.filter(n => n).map((pay,i)=>(
-            {
-            "BankAccountID": toInt(pay.id),
-            "Description": pay.title,
-            "Number": pay.Number?pay.Number:"000",
-            "Date":new Date(),
-            "Amount": toInt(pay.value)
-          }))
-        
-      }
-    return(query)
-}
-const updateCount = async(items)=>{
-    for(var i=0;i<items.length;i++){
-        await productCount.updateOne({ItemID:items[i].id,Stock:"13"},
-            {$inc:{quantity:toInt(items[i].count,"1",-1)}})
-    }
-}
-const returnUpdateCount = async(itemID,count)=>{
-    await productCount.updateOne({ItemID:itemID,Stock:"13"},
-        {$inc:{quantity:toInt(count)}})
-    
-}
+
 const createfaktorNo= async(Noun,year,userCode)=>{
     var faktorNo = '';
     for(var i=0;i<10;i++){
@@ -1470,16 +737,6 @@ const roundNumber = (number)=>{
     return(parseInt(Math.round(rawNumber/1000))*1000)
 
 }
-const minusInt=(quantity,minus)=>{
-    if(!quantity)return(0)
-    
-    return(parseInt(quantity.replace(/\D/g,''))-
-    parseInt(minus.replace(/\D/g,'')))
-}
-const compareCount=(count1,count2)=>{
-    return(parseInt(count1.toString().replace(/\D/g,''))>=
-    (parseInt(count2.toString().replace(/\D/g,''))))
-} 
 router.post('/customer-find', async (req,res)=>{
     const search = req.body.search
     try{ 
@@ -1666,57 +923,22 @@ router.post('/edit-updateFaktor',jsonParser, async (req,res)=>{
     }
 })
 
-router.post('/edit-payValue',jsonParser, async (req,res)=>{
-    const cartNo= req.body.cartNo;
-    const data={
-        userId:req.body.userId?req.body.userId:req.headers['userid'],
-        payValue:req.body.payValue,
-        date:req.body.date,
-        progressDate:Date.now()
-    }
-    try{
-        var status = "";
-        cartNo?await cart.updateOne({cartNo:cartNo},{$set:{payValue:req.body.payValue}}):
-            await quickCart.updateOne({userId:data.userId},{$set:data})
-        status = "update cart"
-        const cartDetails = cartNo?await findCartData(cartNo)
-            :await findCartFunction(data.userId,req.headers['userid'])
-        res.json({...cartDetails,message:"تغییرات ذخیره شد"})
+router.get('/price', async (req,res)=>{
+    try{ 
+        const cPrice = await FindPrice()
+        res.json({data:cPrice})
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
-
-router.post('/sepidar-find',jsonParser, async (req,res)=>{
-    const faktorId =req.body.faktorId;
+router.get('/sliders', async (req,res)=>{
     try{
-        //const faktorData = await tasks.findOne({orderNo:cartId})
-        //var faktorId = faktorData&&faktorData.result
-        if(!faktorId){
-            res.send({error:"not Found",message:"not found"})
-            return
-        }
-        //logger.warn("main done")
-        var userId=""
-         
-        const OnlineFaktor = await sepidarFetch("data","/api/invoices/"+faktorId) 
-        
-        const userDetail = await customerSchema.findOne({CustomerID:OnlineFaktor.CustomerRef,agent:{$exists:false}})
-        const invoice = OnlineFaktor.InvoiceItems
-        if(!invoice)
-            res.status(400).json({error: OnlineFaktor.Message})
-        //var itemRefs=OnlineFaktor.InvoiceItems
-        for(var i=0;i<invoice.length;i++){
-            var faktorItem = invoice[i]
-            var itemDetail = await products.findOne({ItemID:faktorItem.ItemRef})
-            OnlineFaktor.InvoiceItems[i].itemDetail = itemDetail
-            //itemRefs.push(faktorItem)
-        }
-        res.json({faktor:OnlineFaktor,userDetail:userDetail,itemRefs:invoice})
+        const SlidersList = await slider.find()
+        res.json({data:SlidersList,message:"slider list"})
     }
     catch(error){
-        res.status(500).json({error: error.message})
+        res.status(500).json({message: error.message})
     }
 })
 module.exports = router;

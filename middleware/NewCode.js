@@ -1,15 +1,13 @@
-const tasks = require("../models/crm/tasks");
-const cart = require("../models/product/cart");
+const faktor = require("../models/product/faktor");
 
-const NewCode=async(userNo,dateYear)=>{
+const NewCode=async(userNo)=>{
     var rxTemp = '';
     while(1){
         
-        var foundRx = rxTemp&&await cart.findOne({cartNo:rxTemp});
-        foundTask = rxTemp&&await tasks.findOne({orderNo:rxTemp});
-        if(rxTemp&&!foundRx&&!foundTask)break
+        var foundRx = rxTemp&&await faktor.findOne({faktorNo:rxTemp});
+        if(rxTemp&&!foundRx)break
         else rxTemp=userNo+
-            (Math.floor(Math.random() * 100000) + 10000)
+            (Math.floor(Math.random() * 10000) + 1000)
     }
     return(rxTemp)
 

@@ -166,8 +166,6 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
     }
         const reportList = await customer.aggregate([
             { $match:data.access?{access:data.access}:{}},
-            {$match:data.official?data.official=="official"?
-                {agent:{$exists:false}}:{agent:{$exists:true}}:{}},
             { $match:data.customer?{$or:[
                 {meli:new RegExp('.*' + data.customer + '.*')},
                 {phone:new RegExp('.*' + data.customer + '.*')},
@@ -629,7 +627,7 @@ router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
     let imageBuffer = decodedImg.data;
     //let type = decodedImg.type;
     //let extension = mime.extension(type);
-    let fileName = `MGM-${Date.now().toString()+"-"+req.body.imgName}`;
+    let fileName = `Zar-${Date.now().toString()+"-"+req.body.imgName}`;
    var upUrl = `/upload/${folderName}/${fileName}`
     fs.writeFileSync("."+upUrl, imageBuffer, 'utf8');
     return res.send({"status":"success",url:upUrl});

@@ -31,6 +31,7 @@ const users = require('../models/auth/users');
 const products = require('../models/product/products');
 const UpdateMarket = require('../middleware/UpdateMarket');
 const crmlist = require('../models/crm/crmlist');
+const multer = require('multer');
 
 router.post('/fetch-service',jsonParser,async (req,res)=>{
     var serviceId = req.body.serviceId?req.body.serviceId:''
@@ -186,7 +187,6 @@ router.post('/fetch-product',jsonParser,async (req,res)=>{
 router.post('/list-product',jsonParser,async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
-    var stockId = req.body.store?req.body.store.StockID:StockId
     try{const data={
         category:req.body.category,
         title:req.body.title,
@@ -202,52 +202,14 @@ router.post('/list-product',jsonParser,async (req,res)=>{
                 {sku:new RegExp('.*' + data.title + '.*', "i")}]}:{}},
             { $match:data.sku?{sku:new RegExp('.*' + data.sku + '.*')}:{}},
             { $match:data.category?{category:data.category}:{}},
-            { $match:data.active?{active:true}:{}},
-            { $match:data.brand?(data.brand=="unkown")?
-                {$or:[{brandId:{$exists:false}},{brandId:''}]}:{brandId:data.brand}:{}},
-            {$lookup:{from : "brands", 
-            localField: "brandId", foreignField: "brandCode", as : "brandInfo"}},
+            { $match:data.active?{isMojood:true}:{}}
             ])
-        const productsQuantity = await productCount.find({Stock:stockId})
-            var quantity = []
-            var price = []
-            const newProduct=[]
-            for(var i=0;i<products.length;i++){
-                const countData = productsQuantity.find(
-                    Item=>Item.ItemID==products[i].ItemID)
-                //const countStock = stockData?countData.find(item=>item.Stock==stockData):''
-                if(!countData||!countData.quantity) 
-                    if(!data.exists)continue
-                
-                if(newProduct.length>(pageSize+offset)){
-                    newProduct.push({})
-                    continue;
-                }
-                const countAll = await productCount.find(
-                    {ItemID:products[i].ItemID})
-                var openCount = 0
-                //if()
-                const openList = await openOrders.find({sku:products[i].sku,payStatus:"paid"})
-                for(var c=0;c<openList.length;c++) openCount+= parseInt(openList[c].count)
-                const priceData = await productPrice.findOne(
-                    {ItemID:products[i].ItemID,saleType:SaleType})
-                newProduct.push({
-                    ...products[i],
-                    price:priceData?priceData.price:'',
-                    taxPrice:NormalTax(products[i].price)/10,
-                    count:countData?countData.quantity:'',
-                    countTotal:countAll,
-                    openOrderCount:openCount
-                })
-            }
-            
-            const productList = newProduct.slice(offset,
+        
+            const productList = products.slice(offset,
                 (parseInt(offset)+parseInt(pageSize)))  
-            const typeUnique = [...new Set(productList.map((item) => item.brand))];
             const brandList = await BrandSchema.find()
-           res.json({filter:productList,brands:brandList,
-            size:newProduct.length,exists:data.exists,
-            quantity:quantity,price:price})
+           res.json({filter:productList,size:products.length,
+            brands:brandList,exists:data.exists})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -277,7 +239,9 @@ router.post('/editProduct',jsonParser,async(req,res)=>{
             quantity: req.body.quantity,
             sort: req.body.sort,
             imageUrl:  req.body.imageUrl,
-            thumbUrl:  req.body.thumbUrl
+            thumbUrl:  req.body.thumbUrl,
+            range:req.body.range,
+            rangeText:req.body.rangeText
         }
         var productResult = ''
         if(productId) productResult=await ProductSchema.updateOne({_id:productId},
@@ -296,14 +260,6 @@ router.post('/updateProduct',jsonParser,async(req,res)=>{
     productId=filterNumber(productId)
     if(productId === "new")productId=''
     try{ 
-        const newRawData = await fetch(OLD_SITE_URL+"/api/v1/getProduct/"+productId,
-            {method: 'GET' ,headers:{"content-type": "application/json"}});
-        var result = ''
-        try{result =await newRawData.json()}
-        catch{
-            res.status(400).json({error:"Api not find"})
-            return
-        }
         const newData = result.data
         const location = "/upload/product/"
         const imageUrl = newData.image_url?location+productId+"."+newData.image_url.split('.').pop():
@@ -787,4 +743,40 @@ router.post('/report-total',jsonParser,auth,async(req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+
+var storage = multer.diskStorage(
+    {
+        destination: '/dataset/',
+        filename: function ( req, file, cb ) {
+            cb( null, "Deep"+ '-' + Date.now()+ '-'+file.originalname);
+        }
+    }
+  );
+  const uploadImg = multer({ storage: storage ,
+    limits: { fileSize: "5mb" }})
+
+    router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
+        const folderName = req.body.folderName?req.body.folderName:"temp"
+        try{
+        // to declare some path to store your converted image
+        var matches = req.body.base64image.match(/^data:([A-Za-z-+/]+);base64,(.+)$/),
+        response = {};
+        if (matches.length !== 3) {
+        return new Error('Invalid input string');
+        }
+        response.type = matches[1];
+        response.data = new Buffer.from(matches[2], 'base64');
+        let decodedImg = response;
+        let imageBuffer = decodedImg.data;
+        //let type = decodedImg.type;
+        //let extension = mime.extension(type);
+        let fileName = `Zar-${Date.now().toString()+"-"+req.body.imgName}`;
+       var upUrl = `/upload/${folderName}/${fileName}`
+        fs.writeFileSync("."+upUrl, imageBuffer, 'utf8');
+        return res.send({"status":"success",url:upUrl});
+        } catch (e) {
+            res.send({"status":"failed",error:e});
+        }
+    })
+
 module.exports = router;

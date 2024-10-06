@@ -125,22 +125,18 @@ const createOTP=(cName)=>{
   return(cName+(Math.floor(Math.random() * 10000000)
    + 10000000))
 }
-router.post('/sendOtp',jsonParser,async(req,res)=>{
+router.post('/customer-otp',jsonParser,async(req,res)=>{
   var smsResult = ''
   try {
-    const { phone } = req.body;
+    const {  username } = req.body;
+    const phone = username
     ////console.log((phone)
     var otpValue = Math.floor(Math.random() * 8999)+1000 ;
     
-    const user = await customers.findOne({phone: phone });
+    const user = await customers.findOne({phone: username });
     ////console.log((otpValue)
     if(user){
       
-    /*console.log({
-      token: otpValue,
-      template: process.env.template,//"mgmVerify",
-      receptor: phone
-  }) */
   smsResult =api.VerifyLookup({
         token: otpValue,
         template: process.env.template,//"mgmVerify",
@@ -161,7 +157,7 @@ router.post('/sendOtp',jsonParser,async(req,res)=>{
         { username:phone,
           phone:phone,
           otp:otpValue,
-          email:phone+"@mgmlenz.com",
+          email:phone+"@zargold.com",
           date:Date.now()});
       //res.status(200).json({"error":"user not found"});
       const newUserLog = await loginLogSchema.create({
@@ -185,23 +181,23 @@ router.post('/sendOtp',jsonParser,async(req,res)=>{
 })
 
 
-router.post('/verifyOtp',jsonParser,async(req,res)=>{
+router.post('/login-otp',jsonParser,async(req,res)=>{
 try {
   // Get user input
-  const data ={ phone, otp } = req.body;
+  const data ={ username, otp } = req.body;
 
   // Validate user input
-  if (!(phone && otp)) {
+  if (!(username && otp)) {
     res.status(400).send("All input is required");
     return;
   }
   // Validate if user exist in our database
-  const user = await customers.findOne({phone: phone });
+  const user = await customers.findOne({phone: username });
   ////console.log((user , phone)
   if (user && otp===user.otp) {
     // Create token
     const token = jwt.sign(
-      { user_id: user._id, phone },
+      { user_id: user._id, username },
       process.env.TOKEN_KEY,
       {
         expiresIn: "6h",

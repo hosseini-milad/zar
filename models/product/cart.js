@@ -9,9 +9,12 @@ const CartSchema = new Schema({
     description:{type:String},
     discount:{type:String},
     sku:{type:String},
-    isMojood:{type:String},
+    isMojood:{type:Boolean},
+    isReserve:{type:Boolean},
+    fullPrice:{type:String},
     weight:{type:String},
     title:{type:String},
     price:{type:String},
+    unitPrice:{type:String}
 })
 module.exports = mongoose.model('cart',CartSchema);
