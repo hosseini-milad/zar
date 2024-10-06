@@ -15,6 +15,7 @@ const ProductSchema = new Schema({
     },
     isMojood:Boolean,
     price:String,
+    poolSang:String,
     categories:String
 })
 module.exports = mongoose.model('product',ProductSchema);
