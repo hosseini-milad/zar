@@ -135,6 +135,7 @@ router.post('/get-product', async (req,res)=>{
                 sku:productList[i].Code,
                 weight:productList[i].Vazn,
                 sood:productList[i].DarsadSood,
+                poolSang:productList[i].PoolSang,
                 ojrat:productList[i].DarsadVazn,
                 isMojood:productList[i].IsMojood=="1"?true:false,
                 price:productList[i].OnlinePrice}
