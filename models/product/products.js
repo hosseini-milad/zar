@@ -19,7 +19,7 @@ const ProductSchema = new Schema({
     ojrat:String,
     
     price:String,
-    poolSang:String,
+    poolSang:String, 
     categories:{type:Array,default:[]}
 })
 module.exports = mongoose.model('product',ProductSchema);

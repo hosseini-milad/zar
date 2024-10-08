@@ -69,7 +69,8 @@ router.post('/list-product', async (req,res)=>{
             
         var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<productList.length;i++){
-            productList[i].price = CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
+            const fullPrice =  CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
+            productList[i].price = fullPrice.price
         }
         res.json({data:productList,type:[],hasChild:1,
             size:products.length,success:true,
@@ -392,14 +393,16 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             const productDetail = await products.findOne({sku:cartItem.sku})
-            const fullPrice = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const fullPrice = priceData.price
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
             totalWeight+= NormalNumber(productDetail&&productDetail.weight)
             const { _id: _, ...newObj } = cartItem;
             await faktorItems.create({...newObj,faktorNo:faktorNo,
-                fullPrice:fullPrice,price,unitPrice:priceRaw})
+                fullPrice:fullPrice,price,unitPrice:priceRaw,
+            priceDetail:priceData.priceDetail})
             await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
 
         }

@@ -26,11 +26,11 @@ const RegisterFaktor=async(faktorNo)=>{
     var MablaghKol = faktorData.totalPrice
     var OjratTedadiOrGerami_0_1 = 1
     var Darsad_Maliat = 9
-    var MeghdarMaliat
-    var Darsad_Sood
-    var Darsad_Talayee
-    var IsMarjoo_1_0
-    var PoolSang
+    var MeghdarMaliat =0 
+    var Darsad_Sood =0
+    var Darsad_Talayee =0
+    var IsMarjoo_1_0 =0
+    var PoolSang=0
     var PictureFileName
     var Ojrat
     var Shenase

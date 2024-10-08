@@ -12,6 +12,7 @@ const CartSchema = new Schema({
     isMojood:{type:Boolean},
     isReserve:{type:Boolean},
     fullPrice:{type:String},
+    priceDetail:{ type: Object },
     weight:{type:String},
     title:{type:String},
     price:{type:String},

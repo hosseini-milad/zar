@@ -17,13 +17,15 @@ const CreateCart=async(cartDetails,sku,userId)=>{
         
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
-        const price = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+        const priceDetail = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+        const price = priceDetail.price
         
         var mojood = productDetail.isMojood&&!productDetail.isReserve
         await cart.create({
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
+            priceDetail:priceDetail.priceDetail,
             price:mojood?price:parseFloat(PRE&&PRE.percent)*price/100,
             fullPrice:price,
             unitPrice:priceRaw,

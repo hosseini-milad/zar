@@ -15,8 +15,8 @@ const CalcCartRecalc=async(userId)=>{
     //const ItemId = 
         const productDetail = 
             await products.findOne({sku:cartDetails[c].sku})
-            
-        var tempPrice = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+        const priceDetail = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+        var tempPrice = priceDetail.price
         
         await cart.updateOne({_id:ObjectID(cartDetails[c]._id)},
             {$set:{price:tempPrice,unitPrice:priceRaw,progressDate:Date.now()}})

@@ -13,6 +13,7 @@ const FaktorSchema = new Schema({
     totalPrice:{ type: String },
     fullPrice:{ type: String },
     unitPrice:{ type: String },
+    priceDetail:{ type: Object },
     InvoiceID:{ type: String },
     InvoiceNumber:{ type: String },
     totalCount:{ type: String },

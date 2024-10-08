@@ -12,6 +12,7 @@ const FaktorItems = new Schema({
     price:{ type: String },
     unitPrice:{ type: String },
     fullPrice:{type:String},
+    priceDetail:{ type: Object },
 
     weight:{ type: String },
     title:{ type: String },
