@@ -15,10 +15,8 @@ function TaskData(props){
                     findPriority(taskData.priority)+"task"}>
                     {taskData.faktorNo}</h3>
                 <ul>
-                    <li>{creator&&creator.length?
-                        creator[0].username:''}</li>
-                    {customer&&customer.length?
-                    <li>{customer[0].username}</li>:<></>}
+                    <li>{taskData.cName}</li>
+                    <li>{taskData.phone}</li>
                     <li>{new Date(taskData.initDate).toLocaleDateString('fa')}</li>
                 </ul>
             </div>
@@ -60,7 +58,7 @@ function TaskData(props){
             </div>:<></>}
             {taskUser&&taskUser.length?
             <div className='task-handler customerInfo'>
-                <small>{taskUser[0].cName}</small>
+                <small>{taskData.cName}</small>
             </div>:<></>}
         </div>
     )
