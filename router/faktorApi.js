@@ -371,6 +371,21 @@ router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.body.id
+    const userId=req.headers['userid']
+    try{
+        await cart.deleteMany({userId:userId})
+        
+        const cartDetail = await CalcCart(userId)
+        res.json({cart:cartDetail,message:"سبد خالی شد"})
+        return
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
     const userId=req.headers['userid']
@@ -550,8 +565,8 @@ router.post('/register-faktor',auth, async (req,res)=>{
     const faktorNo=req.body.faktorNo
     try{
         const result = await RegisterFaktor(faktorNo)
-
-        res.json({result,query:result,message:"faktor registered"})
+        
+        res.json({...result})
     }
     catch(error){
         res.status(500).json({message: error.message})
