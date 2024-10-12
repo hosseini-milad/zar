@@ -6,6 +6,13 @@ const FaktorItems = new Schema({
     faktorNo:{ type: String },
     initDate: { type: Date, default: Date.now },
     cName:{ type: String },
+    transportType:{ type: String },
+    transportTypeFa:{ type: String },
+    transportCode:{ type: String },
+    peykName:{ type: String },
+    peykPhone:{ type: String },
+    invoiceId:{ type: String },
+    
     phone:{ type: String },
     status:{ type: String },
     progressDate: { type: Date },

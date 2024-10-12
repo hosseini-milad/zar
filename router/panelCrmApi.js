@@ -96,6 +96,21 @@ const calcTasks=async(userId)=>{
     return({crmData:crmData,tasks:tasksToShow, crm:crmData,
         columnOrder:showColumn,columns:columns})
 }
+router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
+    const taskId = req.body.id?req.body.id:""
+    var body = req.body
+    try{
+        if(taskId)
+            await faktorItems.updateOne({_id:ObjectID(taskId)},{$set:body})
+        
+        const userId=req.headers["userid"]
+        const tasksList = await calcTasks(userId)
+       res.json({taskData:tasksList,message:taskId?"Task Updated":"Task Created"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
 router.post('/update-tasks',auth,jsonParser,async (req,res)=>{
     const taskId = req.body._id?req.body._id:""
     var body = req.body

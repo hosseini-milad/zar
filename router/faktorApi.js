@@ -418,7 +418,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             await faktorItems.create({...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:"inprogress",
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
-            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
+            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
 
         }
 
@@ -434,7 +434,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             unitPrice:NormalNumber(priceRaw)
         }
         await faktor.create(faktorData)
-        await cart.deleteMany({userId:userId})
+        0&&await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -483,6 +483,19 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
     try{
         const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
+        faktorData.items = FaktorItems
+        const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
+        
+        res.json({data:faktorData,userDetail:userDetail})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+router.post('/fetch-faktor-item',auth, async (req,res)=>{
+    const faktorItemNo =req.body.faktorItemNo;
+    try{
+        const FaktorItems = await faktorItems.findOne({faktorNo:faktorItemNo})
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         

@@ -1,6 +1,7 @@
 const customers = require("../models/auth/customers");
 const faktor = require("../models/product/faktor");
 const faktorItems = require("../models/product/faktorItems");
+const GetTahHesab = require("./GetTahHesab");
 var ObjectID = require('mongodb').ObjectID;
 
 const RegisterFaktor=async(faktorNo)=>{
@@ -14,11 +15,13 @@ const RegisterFaktor=async(faktorNo)=>{
     faktorData.items = faktorItemsData
     const date = new Date(faktorData.initDate).toLocaleDateString('fa')
     const dateSplit = date.split('/')
-    var query = []
+    var queryArr = []
+    var result = []
     for(var i=0;i<faktorItemsData.length;i++){
         var faktorRow = faktorItemsData[i]
+        var isMojood = faktorRow.isMojood&&!faktorRow.isReserve
         var faktorPrice = faktorRow.priceDetail
-
+        if(!isMojood) continue
         var Sabte_Kol_Or_Movaghat_1_0 = 0 
         var Moshtari_Code = customerData.cCode
         var Factor_Number = 1234
@@ -40,14 +43,21 @@ const RegisterFaktor=async(faktorNo)=>{
         var PictureFileName
         var Ojrat = faktorPrice.ojratValue
         var Shenase=faktorRow.sku
-        query.push([
+        var query = [
             Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
             Shamsi_Year, Shamsi_Month, Shamsi_Day, 0, 
             0, 0,  "", BuyOrSale_0_1, 
             Mazaneh, MazanehIsMesghalOrGeram_0_1, MablaghKol, OjratTedadiOrGerami_0_1, 
             Darsad_Maliat, MeghdarMaliat, Darsad_Sood, Darsad_Talayee, 
             IsMarjoo_1_0, PoolSang, PictureFileName, Ojrat, Shenase
-        ])
+        ]
+        var customerList = await GetTahHesab(
+            {
+                "DoListMoshtari":
+                [from,to]
+            }
+        )
+        queryArr.push(query)
     }
     return({query,message:"outPut"})
 }
