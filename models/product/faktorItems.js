@@ -6,6 +6,7 @@ const FaktorItems = new Schema({
     faktorNo:{ type: String },
     initDate: { type: Date, default: Date.now },
     cName:{ type: String },
+    phone:{ type: String },
     status:{ type: String },
     progressDate: { type: Date },
     sku:{ type: String },

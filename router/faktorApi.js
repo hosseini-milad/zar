@@ -416,8 +416,8 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             totalWeight+= NormalNumber(productDetail&&productDetail.weight)
             const { _id: _, ...newObj } = cartItem;
             await faktorItems.create({...newObj,faktorNo:faktorNo,
-                fullPrice:fullPrice,price,unitPrice:priceRaw,
-            priceDetail:priceData.priceDetail})
+                fullPrice:fullPrice,price,unitPrice:priceRaw, status:"inprogress",
+                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
             await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
 
         }

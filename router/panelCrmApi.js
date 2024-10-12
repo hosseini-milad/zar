@@ -17,6 +17,7 @@ const {TaxRate} = process.env
 const cart = require('../models/product/cart');
 const SepidarOrder = require('../middleware/SepidarOrder');
 const ClassifyOrder = require('../middleware/ClassifyOrder');
+const faktorItems = require('../models/product/faktorItems');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -56,12 +57,8 @@ const calcTasks=async(userId)=>{
     //if(userData&&userData.access!=="manager") limitTask= userData.profile
     const crmData = await crmlist.findOne()
     const crmId = crmData&&(crmData._id).toString()
-    taskList = await faktors.aggregate([
-        {$addFields: { "userId": { $convert: {input:"$userId" ,
-        to:'objectId', onError:'',onNull:''}}}},
-        {$lookup:{from : "customers", 
-            localField: "userId", foreignField: "_id", as : "customerInfo"}},
-        {$sort:{progressDate:-1}}
+    taskList = await faktorItems.aggregate([
+        {$match:{}}
     ])
     //const taskList = await tasks.find({crmCode:crmData._id})
     const columnOrder =crmData&&crmData.crmSteps
