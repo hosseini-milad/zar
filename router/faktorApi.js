@@ -43,6 +43,7 @@ const tax = require('../models/param/tax');
 const RegisterFaktor = require('../middleware/RegisterFaktor');
 const prepaid = require('../models/param/prepaid');
 const NormalNumber = require('../middleware/NormalNumber');
+const RegisterFaktorItem = require('../middleware/RegisterFaktorItem');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -485,8 +486,8 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
-        
-        res.json({data:faktorData,userDetail:userDetail})
+        const goldInfo = await FindPrice()
+        res.json({data:faktorData,userDetail:userDetail,goldInfo})
     }
     catch(error){
         res.status(500).json({error: error.message})
@@ -578,6 +579,17 @@ router.post('/register-faktor',auth, async (req,res)=>{
     const faktorNo=req.body.faktorNo
     try{
         const result = await RegisterFaktor(faktorNo)
+        
+        res.json({...result})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/register-faktor-item',auth, async (req,res)=>{
+    const faktorNoId=req.body.id
+    try{
+        const result = await RegisterFaktorItem(faktorNoId)
         
         res.json({...result})
     }
