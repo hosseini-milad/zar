@@ -1,6 +1,7 @@
 const customers = require("../models/auth/customers");
 const faktor = require("../models/product/faktor");
 const faktorItems = require("../models/product/faktorItems");
+const EnNumber = require("./enNumber");
 const GetTahHesab = require("./GetTahHesab");
 var ObjectID = require('mongodb').ObjectID;
 
@@ -21,9 +22,9 @@ const RegisterFaktorItem=async(faktorNoId)=>{
     var Moshtari_Code = customerData.cCode
     var Factor_Number = faktorRow.faktorNo
     var Radif_Number = 1
-    var Shamsi_Year = dateSplit[0]
-    var Shamsi_Month = dateSplit[1]
-    var Shamsi_Day = dateSplit[2]
+    var Shamsi_Year = EnNumber(dateSplit[0])
+    var Shamsi_Month = EnNumber(dateSplit[1])
+    var Shamsi_Day = EnNumber(dateSplit[2])
     var BuyOrSale_0_1 = 1
     var Mazaneh = faktorPrice.unitPrice
     var MazanehIsMesghalOrGeram_0_1 = 1
@@ -37,7 +38,7 @@ const RegisterFaktorItem=async(faktorNoId)=>{
     var PoolSang=0
     var PictureFileName
     var Ojrat = faktorPrice.ojratValue
-    var Shenase=faktorRow.sku
+    var Shenase=pfaktorRow.sku
     var query = [
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day, 0, 

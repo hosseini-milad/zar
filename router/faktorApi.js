@@ -295,10 +295,10 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
 })
 
 router.get('/recalc-cart',auth, async (req,res)=>{
-    const userId =req.body.userId
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{ 
-        await CalcCartRecalc(req.headers['userid'])
-        const cartDetails = await CalcCart(req.headers['userid'])
+        await CalcCartRecalc(userId)
+        const cartDetails = await CalcCart(userId)
         res.json({message:"cart recalculated",...cartDetails})
     }
     catch(error){ 
@@ -307,9 +307,9 @@ router.get('/recalc-cart',auth, async (req,res)=>{
 })
 
 router.get('/get-cart',auth, async (req,res)=>{
-    const userId =req.body.userId
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{ 
-        const cartDetails = await CalcCart(req.headers['userid'])
+        const cartDetails = await CalcCart(userId)
         res.json({...cartDetails})
     }
     catch(error){ 
@@ -318,7 +318,7 @@ router.get('/get-cart',auth, async (req,res)=>{
 })
 
 router.post('/add-cart',auth,jsonParser, async (req,res)=>{
-    const userId=req.headers['userid']
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
     if(!req.body.sku){
         res.status(400).json({error:"محصول وارد نشده است"})
         return
@@ -353,7 +353,7 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
 })
 router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
-    const userId=req.headers['userid']
+    const userId=req.body.userId?req.body.userId:req.headers['userid']
     if(!id){
         res.status(400).json({error:"ردیف وارد نشده است"})
         return
@@ -373,7 +373,7 @@ router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
     }
 })
 router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.body.id
-    const userId=req.headers['userid']
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{
         await cart.deleteMany({userId:userId})
         
@@ -389,8 +389,7 @@ router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.bo
 })
 
 router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
-    const userId=req.headers['userid']
-    
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{
         const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
@@ -402,6 +401,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
         var totalWeight = 0
+        var totalFull = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
             return
@@ -411,6 +411,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             const productDetail = await products.findOne({sku:cartItem.sku})
             const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = priceData.price
+            totalPrice+=fullPrice
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
@@ -425,17 +426,18 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
 
         const faktorData = {
             faktorNo:faktorNo,
-            userId:userId,
+            userId:userId, 
             initDate:Date.now(),
             progressDate:Date.now(),
             status:"inprogress",
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
+            fullPrice:NormalNumber(totalFull),
             totalWeight:NormalNumber(totalWeight),
             unitPrice:NormalNumber(priceRaw)
         }
         await faktor.create(faktorData)
-        0&&await cart.deleteMany({userId:userId})
+        await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -779,7 +781,7 @@ const roundNumber = (number)=>{
     var rawNumber = parseInt(number.toString().replace( /,/g, ''))
     return(parseInt(Math.round(rawNumber/1000))*1000)
 
-}
+} 
 router.post('/customer-find', async (req,res)=>{
     const search = req.body.search
     try{ 
