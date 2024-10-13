@@ -411,7 +411,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             const productDetail = await products.findOne({sku:cartItem.sku})
             const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = priceData.price
-            totalPrice+=fullPrice
+            totalFull+=fullPrice
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
