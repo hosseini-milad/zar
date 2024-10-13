@@ -353,15 +353,16 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
 })
 router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
+    const sku = req.body.sku
     const userId=req.body.userId?req.body.userId:req.headers['userid']
-    if(!id){
+    if(!id&&!sku){
         res.status(400).json({error:"ردیف وارد نشده است"})
         return
     }
     
     try{
-        await cart.deleteOne({userId:userId,_id:ObjectID(id)})
-        
+        if(id)await cart.deleteOne({userId:userId,_id:ObjectID(id)})
+        if(sku)await cart.deleteOne({userId:userId,sku:sku})
         const cartDetail = await CalcCart(userId)
         res.json({cart:cartDetail,message:"آیتم حذف شد"})
         return
