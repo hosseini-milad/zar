@@ -3,6 +3,7 @@ const faktor = require("../models/product/faktor");
 const faktorItems = require("../models/product/faktorItems");
 const EnNumber = require("./enNumber");
 const GetTahHesab = require("./GetTahHesab");
+const PureNumber = require("./PureNumber");
 var ObjectID = require('mongodb').ObjectID;
 
 const RegisterFaktorItem=async(faktorNoId)=>{
@@ -19,12 +20,12 @@ const RegisterFaktorItem=async(faktorNoId)=>{
     var faktorPrice = faktorRow.priceDetail
     if(!isMojood) return({error:"آیتم موجود نیست"})
     var Sabte_Kol_Or_Movaghat_1_0 = 0 
-    var Moshtari_Code = customerData.cCode
-    var Factor_Number = faktorRow.faktorNo
+    var Moshtari_Code = PureNumber(customerData.cCode)
+    var Factor_Number = PureNumber(faktorRow.faktorNo)
     var Radif_Number = 1
-    var Shamsi_Year = EnNumber(dateSplit[0])
-    var Shamsi_Month = EnNumber(dateSplit[1])
-    var Shamsi_Day = EnNumber(dateSplit[2])
+    var Shamsi_Year = PureNumber(EnNumber(dateSplit[0]))
+    var Shamsi_Month = PureNumber(EnNumber(dateSplit[1]))
+    var Shamsi_Day = PureNumber(EnNumber(dateSplit[2]))
     var BuyOrSale_0_1 = 1
     var Mazaneh = faktorPrice.unitPrice
     var MazanehIsMesghalOrGeram_0_1 = 1
@@ -38,7 +39,7 @@ const RegisterFaktorItem=async(faktorNoId)=>{
     var PoolSang=0
     var PictureFileName
     var Ojrat = faktorPrice.ojratValue
-    var Shenase=pfaktorRow.sku
+    var Shenase=PureNumber(faktorRow.sku)
     var query = [
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day, 0, 
@@ -50,6 +51,10 @@ const RegisterFaktorItem=async(faktorNoId)=>{
         var customerList = await GetTahHesab(
             {"DoNewSanadBuySaleEtiket":query}
         )
+        if(customerList&&customerList["OK"]){
+            await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
+            {$set:{invoiceId:customerList["OK"]}})
+        }
     return({query,customerList,message:"outPut"})
 }
 
