@@ -511,7 +511,7 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
 })
 router.post('/list-faktor',auth, async (req,res)=>{
     try{
-        const faktorData = await FaktorSchema.find({}).lean()
+        const faktorData = await FaktorSchema.find({}).sort({initDate:-1}).lean()
 
         for(var i=0;i<faktorData.length;i++){
             var faktorNo = faktorData[i].faktorNo
