@@ -28910,8 +28910,7 @@ pre[class*="language-"] {
 
 /**-----------------------------*/
 
-
-.css-1lbgfbl-MuiResponsiveChart-container{
+.css-1lbgfbl-MuiResponsiveChart-container {
   width: 100% !important;
 }
 
@@ -28922,6 +28921,124 @@ pre[class*="language-"] {
     left: 10px;
   }
   .visitor-list {
-    overflow-x: scrol
+    overflow-x: scrol;
+  }
+}
+/* Zar Print Faktor */
+.zar-print {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  direction: rtl;
+  padding-block: 1rem;
+}
+.zar-print .header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 250px;
+  width: 100%;
+  margin-block: 1rem;
+
+  .image-wrapper {
+    width: calc(100% / 3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      aspect-ratio: 1.5;
+      max-height: 250px;
+      display: block;
+    }
+  }
+  .info-wrapper {
+    width: calc(100% / 3);
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+
+    .user-info{
+      margin-top: auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: row;
+      gap:0.5rem;
+      flex-wrap: wrap;
+
+      p{
+        font-size:1.2rem;
+        color: black;
+        font-weight: 600;
+      }
+      
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+      gap: 2rem;
+
+      p{
+        margin:0;
+        color: black;
+        font-weight: 600;
+      }
+
+      .date,.number{
+        display: flex;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+    }
+  }
+}
+.zar-print .main{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+
+  table{
+    width: 100%;
+    margin-inline: auto;
+    display: table;
+    border-collapse: initial;
+    border-spacing: 0;
+  }
+}
+.zar-print .main table thead{
+
+  tr{
+    overflow: hidden;
+  }
+  th{
+    color: black;
+    text-align: center;
+    padding: 0.5rem;
+    border: 1px solid grey;
+    background-color:#d4c8b6;
+    height: 30px;
+  }
+  th{
+    
+  }
+  th:first-child{
+    border-radius:0 0.5rem 0.5rem 0;
+  }
+  th:last-child{
+    border-radius:0.5rem 0 0 0.5rem;
   }
 }

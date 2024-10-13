@@ -3,15 +3,18 @@ import { dayFromNow ,findPriority} from '../../env'
 import { useState } from 'react'
 import TaskPopUp from './TaskPopUp'
 import OrderPopUp from './orderPopUp'
+import ProductPopUp from './ProductPopUp'
 import TaskData from './TaskData'
 function Task(props){
     const [taskPop,setTaskPop] = useState(0)
     const [orderPop,setOrderPop] = useState(0)
+    const [ProductPop,setProductPop] = useState(0)
     const taskData = props.taskList
     const taskProfile = taskData.profileInfo
     const creator = taskData.creatorInfo
     const customer = taskData.customerInfo
     const taskUser = taskData.userInfo
+    console.log(ProductPop)
     return(<Draggable key={taskData._id}
         draggableId ={taskData._id} index={props.index}>
             {(provided,snapshot)=>(
@@ -25,7 +28,7 @@ function Task(props){
                         taskProfile = {taskProfile}
                         customer= {customer} taskUser={taskUser}
                         creator={creator}
-                        setTaskPop={setTaskPop} setOrderPop={setOrderPop}/>
+                        setTaskPop={setTaskPop} setOrderPop={setOrderPop} setProductPop={setProductPop}/>
                     {taskPop?<TaskPopUp title={"ویرایش تسک"}
                     btnText={"بروزرسانی"} action={props.action}
                     token={props.token} crm={props.crm}
@@ -40,6 +43,14 @@ function Task(props){
                     direction={props.direction} access={props.access}
                     setBoardArray={props.setBoardArray}
                     data={taskData} close={()=>setOrderPop(0)}
+                    />:<></>}
+                    {ProductPop?<ProductPopUp title={"ویرایش سفارش"}
+                    btnText={"بروزرسانی"} action={props.action}
+                    token={props.token} crm={props.crm}
+                    customer={customer} creator={creator}
+                    direction={props.direction} access={props.access}
+                    setBoardArray={props.setBoardArray}
+                    data={ProductPop} close={()=>setProductPop(0)}
                     />:<></>}
                     
                 </li>

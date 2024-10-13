@@ -4,16 +4,18 @@ import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { jalali_to_gregorian } from "../../env";
 
 function StyleDatePickerSingle(props) {
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState("");
   const changeDate = () => {
     props.action(selectedDate ? selectedDate : "");
   };
   useEffect(() => {
     if (selectedDate) changeDate();
-  }, [selectedDate]);
+    else setSelectedDate(props.defaultValue)
+  }, [selectedDate,props.defaultValue]);
+  
   return (
     <DatePicker
-      value={selectedDate || null}
+      value={selectedDate || ''}
       onChange={setSelectedDate}
       inputPlaceholder={props.title}
       shouldHighlightWeekends

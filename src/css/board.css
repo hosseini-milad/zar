@@ -141,7 +141,6 @@ li.board-task {
   margin-bottom: 5px;
   color: var(--blue);
   position: relative;
-  pointer-events: none;
 }
 .task-title::before {
   content: "";

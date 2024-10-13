@@ -16,8 +16,8 @@ const menutrans ={
             children:[
             
             {
-                english: "Tasks",
-                persian: "وظایف و پیگیری",
+                english: "Orders Managment",
+                persian: "مدیریت سفارشات",
                 index:1,
                 icon:"fa-bar-chart",
                 href:"/crm",

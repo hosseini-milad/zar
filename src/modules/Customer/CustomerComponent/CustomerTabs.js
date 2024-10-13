@@ -17,13 +17,13 @@ function CustomerTabs(props){
             <p>{tabletrans.general[props.lang]}</p>
           </div>
         </label>
-        <label className="label-page-2" htmlFor="page-2">
+        {/* <label className="label-page-2" htmlFor="page-2">
           <div className="nav-btn" style={index===1?activeTab:{}}
             onClick={()=>props.setTabIndex(1)}>
             <i className="tabIcon fas fa-edit"></i>
             <p>{tabletrans.supplementary[props.lang]}</p>
           </div>
-        </label>
+        </label> */}
         <label className="label-page-3" htmlFor="page-3">
           <div className="nav-btn"  style={index===2?activeTab:{}}
             onClick={()=>props.setTabIndex(2)}>

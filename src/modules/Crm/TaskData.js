@@ -9,12 +9,12 @@ function TaskData(props){
     return(
         <div className={taskData.result?taskData.result.Number?
             "taskData doneTitle":"taskData suspendTitle":"taskData"}>
-            <div className='titles'
-                onClick={()=>props.setOrderPop(1)}>
-                <h3 className={"task-title "+ 
+            <div className='titles'>
+                <h3 onClick={()=>props.setProductPop(taskData)} className={"task-title "+ 
                     findPriority(taskData.priority)+"task"}>
-                    {taskData.faktorNo}</h3>
+                    {taskData.title}</h3>
                 <ul>
+                    <li onClick={()=>props.setOrderPop(1)}>{taskData.faktorNo}</li>
                     <li>{taskData.cName}</li>
                     <li>{taskData.phone}</li>
                     <li>{new Date(taskData.initDate).toLocaleDateString('fa')}</li>

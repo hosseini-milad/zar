@@ -14,35 +14,26 @@ function QuickRow(props){
             <td data-cell="ردیف">
             <p>{props.index}</p>
             </td>
-
-            <td data-cell="کد کالا">
-            <p>{data.sku}</p>
-            </td>
-            <td data-cell="شرح کالا">
+            <td data-cell="شرح">
             <div className="product-title">
-                <img src="/img/business/oil1.png" alt="avatar"/>
+                {/* <img src="/img/business/oil1.png" alt="avatar"/> */}
                 <div className="product-name">
                 <p className="name">{data.title}</p>
 
                 </div>
             </div>
             </td>
-            <td data-cell="تعداد">
+            <td data-cell="عیار">
                 <p>{data.count}</p>
             </td>
-            <td data-cell="مبلغ واحد">
-            <p>{payValue(data.price,props.payValue,1)}</p>
-            </td>
-            <td data-cell="تخفیف">
-                
+            <td data-cell="وزن">
+            <p>{data.weight+"g"}</p>
             </td>
             <td data-cell="مبلغ کل">
-            <p>{payValue(data.price,props.payValue,data.count,data.discount)}</p>
-            </td>
-            <td>
-            
+            <p>{normalPriceCount(data.price)}</p>
             </td>
         </tr>
+        
         
         </>
     )

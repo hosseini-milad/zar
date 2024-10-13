@@ -8,51 +8,50 @@ const type = document.location.pathname.split('/')[2]
 
 const Printofficial = (props)=>{
     
-    const [faktorList,setFaktorList] = useState() 
-    const [userData,setUserData] =  useState() 
     const token=cookies.get('faktor-login')
-    const [error,setError] = useState('')
-    console.log(faktorList)
-    useEffect(()=>{
-        //console.log(search)
-        const postOptions={
-            method:'post',
-            headers: { 'Content-Type': 'application/json' ,
-            "x-access-token": token&&token.token,
-            "userId":token&&token.userId},
-            body:JSON.stringify({faktorId:url})
-          }
-        fetch(env.siteApi + "/panel/faktor/sepidar-find",postOptions)
-        .then(res => res.json())
-        .then(
-            (result) => {
-                console.log(result)
-                if(result.error){
-                    setError(result.error)
-                }
-                else if(result.faktor.error){
-                    setError(result.faktor.error)
-                }
-                else{
-                    setFaktorList(result.faktor) 
-                    setUserData(result.userDetail)
-                }
-            },
-            (error) => {
-                console.log(error)
-            })
-    },[])
-    if(error){
-        return(
-            <div className="container">
-                {error}</div>
-        )
-    }
-    else
+    // useEffect(()=>{
+    //     //console.log(search)
+    //     const postOptions={
+    //         method:'post',
+    //         headers: { 'Content-Type': 'application/json' ,
+    //         "x-access-token": token&&token.token,
+    //         "userId":token&&token.userId},
+    //         body:JSON.stringify({faktorId:url})
+    //       }
+    //     fetch(env.siteApi + "/panel/faktor/sepidar-find",postOptions)
+    //     .then(res => res.json())
+    //     .then(
+    //         (result) => {
+    //             console.log(result)
+    //             if(result.error){
+    //                 setError(result.error)
+    //             }
+    //             else if(result.faktor.error){
+    //                 setError(result.faktor.error)
+    //             }
+    //             else{
+    //                 setFaktorList(result.faktor) 
+    //                 setUserData(result.userDetail)
+    //             }
+    //         },
+    //         (error) => {
+    //             console.log(error)
+    //         })
+    // },[])
+    // if(error){
+    //     return(
+    //         <div className="container">
+    //             {error}</div>
+    //     )
+    // }
+    // else
     return(
+        // <div className="print-container">
+        //     {faktorList?<OfficialPrint orderData={faktorList} userInfo={userData}/>  :
+        //     <main>در حال دریافت اطلاعات</main>}
+        // </div>
         <div className="print-container">
-            {faktorList?<OfficialPrint orderData={faktorList} userInfo={userData}/>  :
-            <main>در حال دریافت اطلاعات</main>}
+            <OfficialPrint/>
         </div>
     )
 }
