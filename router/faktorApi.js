@@ -351,7 +351,7 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.post('/remove-cart',auth,jsonParser, async (req,res)=>{
+router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
     const userId=req.body.userId?req.body.userId:req.headers['userid']
     if(!id){
