@@ -16,7 +16,7 @@ const CalcPrice=(product,price,TAX)=>{
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
-    var finalPrice = parseInt(Math.round(totalPrice))
+    var finalPrice = parseInt(Math.round(totalPrice)/100)*100
     var priceDetail = {
         taxValue:TAX, taxPrice:taxPrice,
         ojratValue:OJRAT, ojratPrice:ojratPrice,
