@@ -207,6 +207,10 @@ router.post('/list-product',jsonParser,async (req,res)=>{
         
             const productList = products.slice(offset,
                 (parseInt(offset)+parseInt(pageSize)))  
+            for(var i=0;i<productList.length;i++){
+                var tempPrice = productList[i].price
+                productList[i].price = parseInt(Math.round(tempPrice)/100)*100
+            }
             const brandList = await BrandSchema.find()
            res.json({filter:productList,size:products.length,
             brands:brandList,exists:data.exists})
