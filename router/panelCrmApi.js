@@ -18,6 +18,7 @@ const cart = require('../models/product/cart');
 const SepidarOrder = require('../middleware/SepidarOrder');
 const ClassifyOrder = require('../middleware/ClassifyOrder');
 const faktorItems = require('../models/product/faktorItems');
+const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -100,12 +101,73 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
     const taskId = req.body.id?req.body.id:""
     var body = req.body
     try{
+        const faktorItem = await faktorItems.updateOne({_id:ObjectID(taskId)})
+        if(!faktorItem){
+            res.status(400).json({error:"شماره فاکتور موجود نیست"})
+            return
+        }
+
         if(taskId)
             await faktorItems.updateOne({_id:ObjectID(taskId)},{$set:body})
         
         const userId=req.headers["userid"]
         const tasksList = await calcTasks(userId)
+        await CreateFaktorLog(userId,faktorItem.faktorNo,"updateOrder",
+            body.status,faktorItem.status,"Task Updated",body)
        res.json({taskData:tasksList,message:taskId?"Task Updated":"Task Created"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    } 
+})
+router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
+    const url = req.url
+    var taskId = url.split('/')[2]
+    var buttons=[]
+    try{
+        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)})
+        if(!faktorItem){
+            res.status(400).json({error:"شماره فاکتور موجود نیست"})
+            return
+        }
+        if(faktorItem.status =="accept"){
+            buttons.push({title:"ثبت در ته حساب",color:"green",value:1})
+        }
+        
+        if(faktorItem.status =="needtobuild"){
+            buttons=[
+                {title:"تولید کننده",parameter:"factory",
+                    type:"text",color:"silver",value:0},
+                {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
+            ]
+        }
+        if(faktorItem.status =="needtobuild"){
+            buttons=[
+                {title:"تولید کننده",parameter:"factory",
+                    type:"text",color:"silver",value:0},
+                {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
+            ]
+        }
+        if(faktorItem.status =="send"){
+            buttons=[
+                {title:"بارکد مرسوله",parameter:"transportCode",
+                    type:"text",color:"silver",value:0},
+                {title:"نام پیک",parameter:"peykName",
+                    type:"text",color:"silver",value:0},
+                {title:"شماره تماس پیک",parameter:"peykPhone",
+                    type:"text",color:"silver",value:0},
+                {title:"ارسال مرسوله",type:"button",color:"blue",value:1}
+            ]
+        }
+        if(faktorItem.status =="built"){
+            buttons=[
+                {title:"کد محصول",parameter:"newSku",
+                    type:"text",color:"silver",value:0},
+                {title:"ثبت درخواست",type:"button",color:"green",value:1}
+            ]
+        }
+        
+       res.json({taskData:faktorItem,buttons,message:"Task Detail"})
     }
     catch(error){
         res.status(500).json({message: error.message})
