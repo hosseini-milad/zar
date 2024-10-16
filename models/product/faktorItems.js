@@ -16,6 +16,7 @@ const FaktorItems = new Schema({
     
     phone:{ type: String },
     status:{ type: String },
+    enTitle:{ type: String },
     progressDate: { type: Date },
     sku:{ type: String },
     newSku:{ type: String },

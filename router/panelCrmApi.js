@@ -19,6 +19,7 @@ const SepidarOrder = require('../middleware/SepidarOrder');
 const ClassifyOrder = require('../middleware/ClassifyOrder');
 const faktorItems = require('../models/product/faktorItems');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
+const FindNextStatus = require('../middleware/FindNextStatus');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -101,19 +102,21 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
     const taskId = req.body.id?req.body.id:""
     var body = req.body
     try{
-        const faktorItem = await faktorItems.updateOne({_id:ObjectID(taskId)})
+        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)})
         if(!faktorItem){
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
         }
-
+        const nextStatus = await FindNextStatus(faktorItem,body)
+        body.status=nextStatus.enTitle
+        body.statusFa=nextStatus.title
         if(taskId)
             await faktorItems.updateOne({_id:ObjectID(taskId)},{$set:body})
-        
+    
         const userId=req.headers["userid"]
         const tasksList = await calcTasks(userId)
         await CreateFaktorLog(userId,faktorItem.faktorNo,"updateOrder",
-            body.status,faktorItem.status,"Task Updated",body)
+            nextStatus.enTitle,faktorItem.status,"Task Updated",body)
        res.json({taskData:tasksList,message:taskId?"Task Updated":"Task Created"})
     }
     catch(error){
