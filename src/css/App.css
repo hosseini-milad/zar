@@ -29015,8 +29015,11 @@ pre[class*="language-"] {
     width: 100%;
     margin-inline: auto;
     display: table;
-    border-collapse: initial;
+    border: 1px solid grey;
+    border-radius: 1rem;
+    overflow: hidden;
     border-spacing: 0;
+    border-collapse: inherit;
   }
 }
 .zar-print .main table thead{
@@ -29032,13 +29035,14 @@ pre[class*="language-"] {
     background-color:#d4c8b6;
     height: 30px;
   }
-  th{
-    
-  }
-  th:first-child{
-    border-radius:0 0.5rem 0.5rem 0;
-  }
-  th:last-child{
-    border-radius:0.5rem 0 0 0.5rem;
+
+}
+.zar-print .main table tbody{
+  border-radius: 1rem;
+
+  td{
+    color: black;
+    text-align: center;
+    padding: 0.5rem;
   }
 }

@@ -79,12 +79,12 @@ function OrderPopUp(props){
                         </section>
                     </main>
                 </div>
-            {props.access&&props.access==="edit"?
+            {/* {props.access&&props.access==="edit"?
             <div className="crmAction">
                 <TaskAction content={content} token={token}
                 data={props.data} setBoard={(e)=>props.setBoardArray(e)}
                 close={props.close}/>
-            </div>:<></>}
+            </div>:<></>} */}
             </div>
             
         </div>

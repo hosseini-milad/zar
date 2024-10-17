@@ -3,7 +3,7 @@ import TaskMainPart from "./Tasks/TaskMainPart"
 import env, { defPay } from "../../env"
 import QuickCartHolder from "../../Order/QuickCart/QuickCartHolder"
 import ShowError from "../../components/Modal/ShowError"
-import TaskAction from "./Tasks/TaskAction"
+import TaskBtns from "./Tasks/TaskBtns"
 import QuickRow from "../../Order/QuickCart/QuickRow"
 
 function ProductPopUp(props){
@@ -14,6 +14,7 @@ function ProductPopUp(props){
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
     console.log(data)
+    
     
     
     return(
@@ -59,7 +60,7 @@ function ProductPopUp(props){
                 </div>
             {props.access&&props.access==="edit"?
             <div className="crmAction">
-                <TaskAction content={content} token={token}
+                <TaskBtns content={content} token={token}
                 data={props.data} setBoard={(e)=>props.setBoardArray(e)}
                 close={props.close}/>
             </div>:<></>}

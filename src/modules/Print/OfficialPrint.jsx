@@ -3,7 +3,7 @@ import Num2persian from 'num2persian';
 var token = JSON.parse(localStorage.getItem('token-lenz'));
 
 function OfficialPrint(props){
-    
+    const content =  props.content
 
     return(
         <div className="zar-print">
@@ -39,37 +39,38 @@ function OfficialPrint(props){
             <table>
               <thead>
                 <tr>
-                  <th>ردیف</th>
-                  <th>شرح</th>
-                  <th>عیار</th>
-                  <th>وزن 750</th>
-                  <th>وزن</th>
-                  <th>فی</th>
-                  <th>مبلغ(ریال)</th>
+                  <th className="xsmall-td">ردیف</th>
+                  <th className="larg-td">شرح</th>
+                  <th className="xsmall-td">عیار</th>
+                  <th className="meduim-td">وزن 750</th>
+                  <th className="small-td">وزن</th>
+                  <th className="small-td">فی</th>
+                  <th className="larg-td">مبلغ(ریال)</th>
                 </tr>
               </thead>
               <tbody className="sell-to-customer">
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
+                {content&&content.items&&content.items.map((Item,i)=>
+                <tr key={i}>
+                  <td className="xsmall-td">{i+1}</td>
+                  <td className="larg-td">{Item.title}</td>
+                  <td className="xsmall-td"></td>
+                  <td className="meduim-td"></td>
+                  <td className="small-td">{Item.weight}</td>
+                  <td className="small-td">{normalPriceCount(Item.unitPrice)}</td>
+                  <td className="larg-td"></td>
+                </tr>)}
               </tbody>
-              <tbody className="buy-from-customer">
+              {/* <tbody className="buy-from-customer">
                 <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td className="xsmall-td">ردیف</td>
+                  <td className="larg-td">شرح</td>
+                  <td className="xsmall-td">عیار</td>
+                  <td className="meduim-td">وزن 750</td>
+                  <td className="small-td">وزن</td>
+                  <td className="small-td">فی</td>
+                  <td className="larg-td">مبلغ(ریال)</td>
                 </tr>
-              </tbody>
+              </tbody> */}
             </table>
             <div className="more-info">
               <div className="zar-box">
