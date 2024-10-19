@@ -134,7 +134,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             return
         }
         if(faktorItem.status =="accept"){
-            buttons.push({title:"ثبت در ته حساب",color:"green",value:1})
+            buttons.push({title:"تایید",type:"button",color:"green",value:1})
         }
         
         if(faktorItem.status =="needtobuild"){
@@ -144,9 +144,14 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
             ]
         }
-        if(faktorItem.status =="needtobuild"){
+        if(faktorItem.status =="senttofactory"){
             buttons=[
-                {title:"تولید کننده",parameter:"factory",
+                {title:"تایید",type:"button",color:"yellow",value:1}
+            ]
+        }
+        if(faktorItem.status =="built"){
+            buttons=[
+                {title:"کد محصول جدید",parameter:"newSku", require:true,
                     type:"text",color:"silver",value:0},
                 {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
             ]
@@ -167,6 +172,16 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"کد محصول",parameter:"newSku",
                     type:"text",color:"silver",value:0},
                 {title:"ثبت درخواست",type:"button",color:"green",value:1}
+            ]
+        }
+        if(faktorItem.status =="waitnig"){
+            buttons=[
+                {title:"تایید",type:"button",color:"green",value:1}
+            ]
+        }
+        if(faktorItem.status =="delivered"){
+            buttons=[
+                {title:"ثبت ته حساب",type:"button",color:"green",value:1}
             ]
         }
         
