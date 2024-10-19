@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router()
 const { default: fetch } = require("node-fetch");
+var ObjectID = require('mongodb').ObjectID;
+const auth = require("../middleware/auth");
 const slider = require('../models/main/slider');
 const authApi = require('./authApi');
 const taskApi = require('./taskApi');
@@ -163,6 +165,28 @@ router.get('/sepidar-update-log', async (req,res)=>{
         const sepidarLog = await updateLog.find({}).sort({"date":-1})
         
         res.json({log:sepidarLog,message:"done"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
+
+router.get('/remain-credit',auth, async (req,res)=>{
+    var userId = req.headers['userid']
+    const userCode = await customers.findOne({_id:ObjectID(userId)})
+    if(!userCode){
+        res.status(400).json({error:"user not found"})
+        return('')
+    }
+    try{
+        const creditData = await GetTahHesab(
+            {
+                "getmandehesabbycode":
+                [userCode.cCode]
+            }
+        )
+        res.json({data:creditData,message:"user Credit"})
     }
     catch(error){
         res.status(500).json({message: error.message})

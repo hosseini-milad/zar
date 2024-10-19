@@ -60,10 +60,18 @@ router.post('/products', async (req,res)=>{
 router.post('/list-product', async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
-    const filter = req.body.filters
+    const search = req.body.search
+    const weight=req.body.weight
+    const isMojood = req.body.isMojood
     try{
    
-        const products = await productSchema.find({}).lean()
+        const products = await productSchema.aggregate([
+            {$match:search?{$or:[
+                {sku:{$regex: search, $options : 'i'}},
+                {title:{$regex: search, $options : 'i'}}
+            ]}:{}},
+            {$match:isMojood?{isMojood:true}:{}}
+        ])
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
