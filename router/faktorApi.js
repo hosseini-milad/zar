@@ -1012,7 +1012,7 @@ router.post('/list-complete-faktor',auth, async (req,res)=>{
                 [userCode.cCode]
             }
         )
-        res.json({data:creditData,message:"user Credit"})
+        res.json({data:creditData,user:userCode,message:"user Credit"})
     }
     catch(error){
         res.status(500).json({message: error.message})
