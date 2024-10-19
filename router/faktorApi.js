@@ -997,4 +997,24 @@ router.get('/sliders', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/list-complete-faktor',auth, async (req,res)=>{
+    var userId = req.headers['userid']
+    const userCode = await customers.findOne({_id:ObjectID(userId)})
+    if(!userCode){
+        res.status(400).json({error:"user not found"})
+        return('')
+    }
+    try{
+        const creditData = await GetTahHesab(
+            {
+                "getmandehesabbycode":
+                [userCode.cCode]
+            }
+        )
+        res.json({data:creditData,message:"user Credit"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 module.exports = router;
