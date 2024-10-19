@@ -44,6 +44,7 @@ const RegisterFaktor = require('../middleware/RegisterFaktor');
 const prepaid = require('../models/param/prepaid');
 const NormalNumber = require('../middleware/NormalNumber');
 const RegisterFaktorItem = require('../middleware/RegisterFaktorItem');
+const GetTahHesab = require('../middleware/GetTahHesab');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
