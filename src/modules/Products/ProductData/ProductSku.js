@@ -9,11 +9,6 @@ function ProductSKU(props){
     const brand=content&&content.brandList
     const category = content&&content.categoryList
     const filterList = content&&content.filterList
-    const autoFetch=(e)=>{
-      var result = parseDesc(def.description)
-      console.log(result)
-      props.setFilters(result)
-    }
     return(
         <div className="pd-row">
           <div className="row-title">
@@ -35,8 +30,6 @@ function ProductSKU(props){
                     ...prevState,
                     sku:e
                   }))}/>
-                  <div className="edit-btn autoFilter" onClick={autoFetch}>
-                      Auto Filter</div>
                 {/*<StyleInput title={tabletrans.quantity[props.lang]} direction={props.direction}
                  class={"formInput"} defaultValue={content?content.quantity:''} 
                  action={(e)=>props.setProductChange(prevState => ({
@@ -51,11 +44,11 @@ function ProductSKU(props){
                     brandId:e?e.brandCode:''
                   }))}/>
                   <StyleSelect title={tabletrans.category[props.lang]} direction={props.direction}
-                 class={"formInput halfWidth"} defaultValue={content?content.catData:''} 
-                 options={category?category:[]} label="title"
+                 class={"formInput halfWidth"} defaultValue={def?def.categories:[]} 
+                 options={category?category:[]} label="title" multiSelect={true}
                  action={(e)=>props.setProductChange(prevState => ({
                     ...prevState,
-                    catId:e?e.catCode:''
+                    categories:e
                   }))}/>
                 {filterList&&filterList.map((filter,i)=>(
                   <StyleSelect title={filter.title} direction={"rtl"}
