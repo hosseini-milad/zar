@@ -12,10 +12,17 @@ const ProductSchema = new Schema({
     offer:Boolean,
     range:Array,
     rangeText:String,
+    description:String,
+    productUrl:String,
+    metaTitle:String,
+    productMeta:String,
+    fullDesc:String,
+
 
     isMojood:Boolean,
     isReserve:{type:Boolean,default:false},
     sood:String,
+    isMaster:Boolean,
     ojrat:String,
     
     price:String,

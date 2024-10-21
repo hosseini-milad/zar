@@ -195,6 +195,7 @@ router.post('/list-product',jsonParser,async (req,res)=>{
         brand:req.body.brandId,
         active:req.body.active,
         offset:req.body.offset,
+        isMaster:req.body.isMaster,
         pageSize:pageSize
     }
         const products = await ProductSchema.aggregate([
@@ -202,7 +203,8 @@ router.post('/list-product',jsonParser,async (req,res)=>{
                 {sku:new RegExp('.*' + data.title + '.*', "i")}]}:{}},
             { $match:data.sku?{sku:new RegExp('.*' + data.sku + '.*')}:{}},
             { $match:data.category?{category:data.category}:{}},
-            { $match:data.active?{isMojood:true}:{}}
+            { $match:data.active?{isMojood:true}:{}},
+            { $match:data.isMaster?{isMaster:true}:{}}
             ])
         
             const productList = products.slice(offset,
@@ -225,7 +227,7 @@ router.post('/editProduct',jsonParser,async(req,res)=>{
     try{ 
         const data = {
             title:  req.body.title,
-            catId: req.body.catId,
+            categories: req.body.categories,
             brandId: req.body.brandId,
             sharifId: req.body.sharifId,
             type:req.body.type,
@@ -245,6 +247,7 @@ router.post('/editProduct',jsonParser,async(req,res)=>{
             imageUrl:  req.body.imageUrl,
             thumbUrl:  req.body.thumbUrl,
             range:req.body.range,
+            isMaster:req.body.isMaster,
             rangeText:req.body.rangeText
         }
         var productResult = ''
@@ -263,7 +266,7 @@ router.post('/updateProduct',jsonParser,async(req,res)=>{
     var productId= req.body.productId?req.body.productId:''
     productId=filterNumber(productId)
     if(productId === "new")productId=''
-    try{ 
+    try{
         const newData = result.data
         const location = "/upload/product/"
         const imageUrl = newData.image_url?location+productId+"."+newData.image_url.split('.').pop():
@@ -613,6 +616,39 @@ router.get('/list-status',jsonParser,async(req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+
+
+router.post('/update-to-master',jsonParser,auth,async(req,res)=>{
+    const master = req.body.master
+    const slave = req.body.products
+    if(!master || !slave){
+        res.status(400).json({error:"اطلاعات کامل نیست"})
+        return
+    }
+    try{ 
+        var masterData = await products.findOne({sku:master})
+        var query = {
+            enTitle:masterData.enTitle,
+            categories:masterData.categories,
+            imageUrl:masterData.imageUrl,
+            thumbUrl:masterData.thumbUrl,
+            description:masterData.description,
+            productUrl:masterData.productUrl,
+            metaTitle:masterData.metaTitle,
+            productMeta:masterData.productMeta,
+            fullDesc:masterData.fullDesc
+        }
+        var slaveResult = await products.updateMany({sku:{$in:slave}},
+            {$set:query}
+        )
+        
+        res.json({data:slaveResult,message:"بروز رسانی انجام شد"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
 router.post('/report-total',jsonParser,auth,async(req,res)=>{
     var nowDate = new Date();
     try{ 
@@ -759,7 +795,7 @@ var storage = multer.diskStorage(
   const uploadImg = multer({ storage: storage ,
     limits: { fileSize: "5mb" }})
 
-    router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
+router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
         const folderName = req.body.folderName?req.body.folderName:"temp"
         try{
         // to declare some path to store your converted image
@@ -781,6 +817,6 @@ var storage = multer.diskStorage(
         } catch (e) {
             res.send({"status":"failed",error:e});
         }
-    })
+})
 
 module.exports = router;
