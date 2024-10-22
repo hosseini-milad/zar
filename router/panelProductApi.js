@@ -649,6 +649,30 @@ router.post('/update-to-master',jsonParser,auth,async(req,res)=>{
     }
 })
 
+router.get('/find-similar',jsonParser,auth,async(req,res)=>{
+    try{ 
+        var similarData = []
+        var slaveData = await products.find({imageUrl:{$exists:false}})
+        var masterData = await products.find({isMaster:true})
+        for(var i=0;i<slaveData.length;i++){
+            if(slaveData[i].isMaster) continue
+            var sIndex = masterData.findIndex(index=>(index.title == slaveData[i].title))
+            if(sIndex !== -1){
+                similarData.push({
+                    master:masterData[sIndex].sku,
+                    masterName:masterData[sIndex].title,
+                    slave:slaveData[i].sku
+                })
+            }
+        }
+        
+        res.json({data:similarData,message:"اطلاعات آماده شد"})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
 router.post('/report-total',jsonParser,auth,async(req,res)=>{
     var nowDate = new Date();
     try{ 

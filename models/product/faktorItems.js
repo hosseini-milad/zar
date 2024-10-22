@@ -35,6 +35,17 @@ const FaktorItems = new Schema({
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
     isMojood:{ type: Boolean },
-    isReserve:{type:Boolean}
+    isReserve:{type:Boolean},
+
+    payStatus:{ type: String }, //unpaid, deposit , paid
+    waitPay:{type:Boolean},
+
+    deposit:{ type: String },
+    depositDate:{ type: Date },
+    depositTransaction:{ type: String },
+    
+    finalPay:{ type: String },
+    finalDate:{ type: Date },
+    finalTransaction:{ type: String }
 })
 module.exports = mongoose.model('faktorItems',FaktorItems);

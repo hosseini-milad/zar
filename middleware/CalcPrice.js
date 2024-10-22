@@ -22,7 +22,7 @@ const CalcPrice=(product,price,TAX)=>{
         ojratValue:OJRAT, ojratPrice:ojratPrice,
         senfiValue:SENFI , senfiPrice:senfiPrice,
         poolSang:poolSang, unitPrice:price,
-        goldPrice:roundPrice,
+        goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
     return({price:finalPrice,priceDetail:priceDetail})

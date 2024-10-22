@@ -20,5 +20,6 @@ const FaktorSchema = new Schema({
     totalWeight:{ type: String },
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
+    waitPay:{type:Boolean},
 })
 module.exports = mongoose.model('faktor',FaktorSchema);

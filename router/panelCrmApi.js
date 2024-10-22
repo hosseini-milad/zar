@@ -20,6 +20,7 @@ const ClassifyOrder = require('../middleware/ClassifyOrder');
 const faktorItems = require('../models/product/faktorItems');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const FindNextStatus = require('../middleware/FindNextStatus');
+const FindSideEffect = require('../middleware/FindSideEffect');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -110,6 +111,11 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
         const nextStatus = await FindNextStatus(faktorItem,body)
         body.status=nextStatus.enTitle
         body.statusFa=nextStatus.title
+        const sideEffect = await FindSideEffect(faktorItem,body)
+        if(sideEffect&&sideEffect.error){
+            res.status(400).json({error:sideEffect&&sideEffect.error})
+            return
+        }
         if(taskId)
             await faktorItems.updateOne({_id:ObjectID(taskId)},{$set:body})
     

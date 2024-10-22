@@ -510,11 +510,37 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
 router.post('/fetch-faktor-item',auth, async (req,res)=>{
     const faktorItemNo =req.body.faktorItemNo;
     try{
-        const FaktorItems = await faktorItems.findOne({faktorNo:faktorItemNo})
-        faktorData.items = FaktorItems
-        const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
+        const FaktorItems = await faktorItems.findOne({_id:ObjectID(faktorItemNo)}).lean()
+        //faktorData.items = FaktorItems
+        var newPrice;
+        if(FaktorItems.newSku){
+            var priceDetail = FaktorItems.priceDetail
+            const newItem = await products.findOne({sku:FaktorItems.newSku})
+            newPrice = CalcPrice(newItem,
+                priceDetail.unitPrice,priceDetail.taxValue)
+            var newDetail = newPrice.priceDetail
+            const remainPay = newPrice.price - NormalNumber(FaktorItems.price)
+            const remainDetail = {
+                unitPrice:priceDetail.unitPrice,
+                lastPrice:NormalNumber(FaktorItems.price),
+                lastWeight:priceDetail.weight,
+                lastOjrat:priceDetail.ojratValue,
+                newPrice:NormalNumber(newPrice.price),
+                newWeight:newDetail.weight,
+                newOjrat:newDetail.ojratValue,
+                defPay :NormalNumber(remainPay)
+            }
+            FaktorItems.newItem = newItem
+            FaktorItems.newPrice = newPrice
+            FaktorItems.remainPay=NormalNumber(remainPay)
+            FaktorItems.remainDetail = remainDetail
+
+        }
         
-        res.json({data:faktorData,userDetail:userDetail})
+        
+        const userDetail = await customers.findOne({phone:FaktorItems.phone})
+        
+        res.json({data:FaktorItems,userDetail:userDetail})
     }
     catch(error){
         res.status(500).json({error: error.message})
@@ -538,7 +564,7 @@ router.post('/list-faktor',auth, async (req,res)=>{
     }
 })
 
-router.post('/faktor-fetch', async (req,res)=>{
+router.post('/fetch-faktor-2', async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid'];
     const faktorID=req.body.faktorID
     try{
@@ -551,7 +577,7 @@ router.post('/faktor-fetch', async (req,res)=>{
             localField: "customerID", 
             foreignField: "CustomerID", 
             as : "userData"
-        }},
+        }}, 
         {$lookup:{
             from : "users", 
             localField: "userId", 
