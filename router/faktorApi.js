@@ -547,17 +547,22 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
     }
 })
 router.post('/list-faktor',auth, async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
     try{
         const faktorData = await FaktorSchema.find({}).sort({initDate:-1}).lean()
-
-        for(var i=0;i<faktorData.length;i++){
+        const faktorList = faktorData.slice(offset,
+            (parseInt(offset)+parseInt(pageSize))) 
+        for(var i=0;i<faktorList.length;i++){
             var faktorNo = faktorData[i].faktorNo
+            var userDetail = await customers.findOne({_id:ObjectID(faktorData[i].userId)})
             const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
             faktorData[i].items = faktorItemData
             faktorData[i].rahId	=faktorNo
+            faktorData[i].userDetail=userDetail
             //itemRefs.push(faktorItem)
         }
-        res.json({data:faktorData})
+        res.json({data:faktorData,size:faktorData.length})
     }
     catch(error){
         res.status(500).json({error: error.message})

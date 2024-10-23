@@ -4,12 +4,10 @@ const faktorItems = require("../models/product/faktorItems")
 var ObjectID = require('mongodb').ObjectID;
 
 const FindSideEffect=async(data,body)=>{
-//console.log(data)
-console.log(body)
 var error=''
     if(body.status=="senttofactory"){
         if(!body.factory){
-                return({error:"تولید کننده وارد نشده است"})
+            return({error:"تولید کننده وارد نشده است"})
         }
     }
     if(body.status=="built"){
