@@ -10,7 +10,7 @@ var error=''
             return({error:"تولید کننده وارد نشده است"})
         }
     }
-    if(body.status=="built"){
+    if(data.status=="built"){
         if(!body.newSku){
             return({error:"کد محصول وارد نشده است"})
         }
@@ -19,7 +19,7 @@ var error=''
         await faktor.updateOne({faktorNo:data.faktorNo},
         {$set:{waitPay:true}})
     }
-    if(body.status=="send"){
+    if(body.status=="waitnig"){
         if(data.waitPay){
              return({error:"پرداخت انجام نشده است"})  
         }

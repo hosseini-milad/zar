@@ -123,7 +123,7 @@ router.post('/update-faktor-tasks',auth,jsonParser,async (req,res)=>{
         const tasksList = await calcTasks(userId)
         await CreateFaktorLog(userId,faktorItem.faktorNo,"updateOrder",
             nextStatus.enTitle,faktorItem.status,"Task Updated",body)
-       res.json({taskData:tasksList,message:taskId?"Task Updated":"Task Created"})
+       res.json({taskData:tasksList,message:taskId?"تغییرات اعمال شد":"Task Created"})
     }
     catch(error){
         res.status(500).json({message: error.message})

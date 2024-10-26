@@ -191,8 +191,8 @@ router.post('/list-product',jsonParser,async (req,res)=>{
         category:req.body.category,
         title:req.body.title,
         sku:req.body.sku,
-        exists: req.body.exist?1:0,
-        brand:req.body.brandId,
+        exists: req.body.exist,
+        catId:req.body.catId,
         active:req.body.active,
         offset:req.body.offset,
         isMaster:req.body.isMaster,
@@ -202,9 +202,12 @@ router.post('/list-product',jsonParser,async (req,res)=>{
             { $match:data.title?{$or:[{title:new RegExp('.*' + data.title + '.*')},
                 {sku:new RegExp('.*' + data.title + '.*', "i")}]}:{}},
             { $match:data.sku?{sku:new RegExp('.*' + data.sku + '.*')}:{}},
-            { $match:data.category?{category:data.category}:{}},
+            { $match:data.catId?{categories:{$elemMatch:
+                {catCode:data.catId}}}:{}},
             { $match:data.active?{isMojood:true}:{}},
-            { $match:data.isMaster?{isMaster:true}:{}}
+            { $match:data.isMaster?{isMaster:true}:{}},
+            { $match:data.exists?data.exists=="1"?{isMojood:true}:
+                {isMojood:false}:{}}
             ])
         
             const productList = products.slice(offset,
@@ -213,9 +216,9 @@ router.post('/list-product',jsonParser,async (req,res)=>{
                 var tempPrice = productList[i].price
                 productList[i].price = parseInt(Math.round(parseInt(tempPrice))/100)*100
             }
-            const brandList = await BrandSchema.find()
+            const catList = await category.find()
            res.json({filter:productList,size:products.length,
-            brands:brandList,exists:data.exists})
+            catList,exists:data.exists})
     }
     catch(error){
         res.status(500).json({message: error.message})
