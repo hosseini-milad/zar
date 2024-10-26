@@ -765,6 +765,20 @@ dialog {
   display: flex;
   gap: 10px;
 }
+.taskAction .create-text{
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  
+}
+.taskAction .create-button{
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  outline: none;
+  
+}
 .btn-crm {
   border-radius: 4px;
   padding: 3px 15px;

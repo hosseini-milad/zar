@@ -27,6 +27,7 @@ function StyleSelect(props){
             <Autocomplete
             getOptionLabel={(option) => (option&&option[props.label])?
                 option[props.label]:option}
+                multiple={props.multiSelect?true:false}
             //className={stylisRTLPlugin}
             defaultValue={props.defaultValue?props.defaultValue:''}
             options={testOptions||[]}

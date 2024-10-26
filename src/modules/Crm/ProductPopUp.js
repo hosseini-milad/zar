@@ -3,41 +3,20 @@ import TaskMainPart from "./Tasks/TaskMainPart"
 import env, { defPay } from "../../env"
 import QuickCartHolder from "../../Order/QuickCart/QuickCartHolder"
 import ShowError from "../../components/Modal/ShowError"
-import TaskAction from "./Tasks/TaskAction"
+import TaskBtns from "./Tasks/TaskBtns"
 import QuickRow from "../../Order/QuickCart/QuickRow"
 
-function OrderPopUp(props){
+function ProductPopUp(props){
     const data =props.data
     const token = props.token
     const [payValue,setPayValue] = useState(defPay)
     const [content,setContent] = useState()
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
-    console.log(content)
-    useEffect(()=>{
-        const postOptions={
-            method:'post',
-            headers: {'Content-Type': 'application/json',
-                "x-access-token": token&&token.token,
-                "userId":token&&token.userId
-            },
-            body:JSON.stringify({faktorNo:data?data.faktorNo:''})
-          }
-      fetch(env.siteApi + "/panel/faktor/fetch-faktor",postOptions)
-      .then(res => res.json())
-      .then(
-        (result) => {
-            setContent(result)
-        },
-        (error) => {
-          console.log(error);
-        })
-    },[])
     console.log(data)
     
-    if(!content){
-        return
-    } else
+    
+    
     return(
     <section className="delete-modal">
         <div className="modal-backdrop show-modal">
@@ -65,13 +44,13 @@ function OrderPopUp(props){
                                         <th data-cell="وزن"><p>وزن</p></th>
                                         <th data-cell="مبلغ(ریال)"><p>ریال</p></th>
                                         </tr>
-                                    {content?
-                                    content.data&&content.data.items.map((item,i)=>(
-                                        <QuickRow data={item} key={i} index={i+1} payValue={props.payValue?props.payValue:"4"}
+                                    {data?
+                                    
+                                        <QuickRow data={data}
                                         action={props.delete} setError={props.setError}
                                         token={props.token} user={props.user} setCart={props.setCart}
                                         cartNo={props.cartNo} canEdit={props.canEdit}/>
-                                    )):
+                                    :
                                     <div>{env.loader}</div>}
                                     
                                 </tbody>
@@ -79,12 +58,12 @@ function OrderPopUp(props){
                         </section>
                     </main>
                 </div>
-            {/* {props.access&&props.access==="edit"?
+            {props.access&&props.access==="edit"?
             <div className="crmAction">
-                <TaskAction content={content} token={token}
+                <TaskBtns content={content} token={token}
                 data={props.data} setBoard={(e)=>props.setBoardArray(e)}
                 close={props.close}/>
-            </div>:<></>} */}
+            </div>:<></>}
             </div>
             
         </div>
@@ -94,4 +73,4 @@ function OrderPopUp(props){
     </section>
     )
 }
-export default OrderPopUp
+export default ProductPopUp

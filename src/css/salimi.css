@@ -234,6 +234,16 @@
   flex-wrap: wrap;
   width: 100%;
   margin-bottom: 20px;
+
+  .DatePicker{
+    height: 40px;
+    margin: 15px !important;
+    width: 225px;
+
+    .DatePicker__input{
+      width: 100%;
+    }
+  }
 }
 .info-input {
   width: calc(100% / 2);

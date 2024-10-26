@@ -97,7 +97,7 @@ function SalesSetting(props){
                             maxLength={2} 
                             className="num-input" 
                             placeholder="مالیات" 
-                            pattern="[0-9]{2}"
+                            pattern="[0-9]*"
                             onChange={(e)=>setChangeNum(prevState => ({
                                 ...prevState,
                                 tax:e?e.target.value:''

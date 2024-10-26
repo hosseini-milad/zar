@@ -7,6 +7,7 @@ import ErrorShow from "../../../components/Button/ErrorShow";
 import ErrorAction from "../../../components/Modal/ErrorAction";
 import StyleRadio from "../../../components/Button/Radio";
 import StyleSelect from "../../../components/Button/AutoComplete";
+import DatePickerSingle from "../../../components/Button/DatePickerSingle";
 
 function CustomerGeneral(props) {
   const userData = props.userData;
@@ -14,6 +15,7 @@ function CustomerGeneral(props) {
   const [formData, setFormData] = useState({ active: "false" }); // Initialize active as a string
   const [error, setError] = useState({ errorText: "", errorColor: "brown" });
   const [formalShow, setFormal] = useState(0);
+  console.log(userData)
   useEffect(() => {
     // Initialize formData.active with userData.active when userData changes
     if (userData && userData.active) {
@@ -297,7 +299,20 @@ function CustomerGeneral(props) {
                 }))
               }
             />
-<StyleSelect
+            <DatePickerSingle
+            title={formtrans.birthDay[props.lang]}
+            
+            defaultValue={userData.birthDay}
+            direction={props.lang.dir}
+            local={props.lang.dir === "ltr" ? "en" : "fa"}
+            action={(e) =>
+              setFormData((prevState) => ({
+                ...prevState,
+                birthDay: e,
+              }))
+            }
+            />
+            <StyleSelect
               title={formtrans.state[props.lang]}
               direction={props.direction}
               defaultValue={userData.state || ""}

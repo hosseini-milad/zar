@@ -14,7 +14,7 @@ function Column(props){
             body:JSON.stringify({...data,crmId:props.crm?props.crm._id:''})
           }
           console.log(postOptions)
-      fetch(env.siteApi + "/panel/crm/update-tasks",postOptions)
+      0&&fetch(env.siteApi + "/panel/crm/update-tasks",postOptions)
       .then(res => res.json())
       .then(
         (result) => {
@@ -28,7 +28,6 @@ function Column(props){
         }
       )
     }
-    console.log(props.column)
     return(
         <div className="board-item c">
             <h2 className="board-title">

@@ -113,9 +113,9 @@ function ProductName(props){
               <div className="contentTextEditor">
                 <textarea placeholder={tabletrans.productMeta[props.lang]} 
                 defaultValue={content?content.productMeta:''} 
-                action={(e)=>props.setProductChange(prevState => ({
+                onChange={(e)=>props.setProductChange(prevState => ({
                    ...prevState,
-                   productMeta:e
+                   productMeta:e.target.value
                  }))}/>
               </div>
               <div className="contentTextEditor">

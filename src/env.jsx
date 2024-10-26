@@ -1,10 +1,10 @@
 
 const env={
-    //siteApi:'http://localhost:6060/api',
+    // siteApi:'http://localhost:6060/api',
     // siteApi:'https://testadmin.sharifoilco.com/api',
     siteApi:'https://zaradmin.dkmehr.com/api',
     
-    //siteApiUrl:'http://localhost:6060',
+    // siteApiUrl:'http://localhost:6060',
     // siteApiUrl:'https://testadmin.sharifoilco.com',
     siteApiUrl:'https://zaradmin.dkmehr.com',
     cookieName:'zar-login',
