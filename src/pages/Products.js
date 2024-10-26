@@ -47,7 +47,7 @@ function Products(props) {
       store: filters.store,
       exist:filters.exist,
       brand: filters.brand,
-      brandId: filters.brandid,
+      catId: filters.catid,
       dateFrom: filters.date && filters.date.dateFrom,
       dateTo: filters.date && filters.date.dateTo,
       access: "manager",
@@ -188,7 +188,7 @@ function Products(props) {
           setStore={setStore}
           setFilters={handleFilterChange}
           updateUrlWithFilters={updateUrlWithFilters} // Pass the function as a prop
-          options={content.brands}
+          catList={content.catList}
           filters={filters}
           currentFilters={filters}
         />

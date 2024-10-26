@@ -6,7 +6,7 @@ import { useState } from "react";
 
 function ProductFilters(props){
   const lang = props.lang
-  const brands = props.options
+  const catList = props.catList
   const stock=[
     {
       "StockID": 5,
@@ -85,16 +85,16 @@ function ProductFilters(props){
           title={"موجودی"}
           direction={props.lang.dir}
           label="title"
-          options={[{title:"موجود",value:""},{title:"نمایش همه",value:"1"}]}
-          action={(e)=>handleFilterChange("exist", e.value)}
+          options={[{title:"موجود",value:"1"},{title:"ناموجود",value:"2"}]}
+          action={(e)=>handleFilterChange("exist", e?e.value:'')}
 
         />
         <StyleSelect
-          title={"برند"}
+          title={"دسته بندی"}
           direction={props.lang.dir}
           label="title"
-          options={props.options}
-          action={(e)=>handleFilterChange("brandid", e.brandCode)}
+          options={props.catList}
+          action={(e)=>handleFilterChange("catid", e?e.catCode:'')}
 
         />
         <StyleSelect

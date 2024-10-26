@@ -7,7 +7,6 @@ import QuickCounter from "./QuickCounter"
 
 function QuickRow(props){
     const data = props.data
-    console.log(data)
     
     return(<>
         <tr className="product-tr">

@@ -6,9 +6,6 @@ import CreatBtn from "../../../components/Button/CreatBtn"
 function TaskBtns(props){
     const token = props.token
     const data = props.data
-    const [showRemove,setShowRemove] = useState(0)
-    const [Loader,setLoader] = useState(0)
-    const [ShowAlert,setShowAlert] = useState(0)
     const [BtnObj,setBtnObj] = useState(0)
     const [TaskId,setTaskId] = useState("")
     const [Param,setParam]=useState()
@@ -22,14 +19,12 @@ function TaskBtns(props){
           },
           body: JSON.stringify(),
         };
-        console.log(postOptions);
         fetch(env.siteApi + `/panel/crm/faktor-get-status/${data._id}`, postOptions)
           .then((res) => res.json())
           .then(
             async (result) => {
                 setBtnObj(result.buttons)
                 setTaskId(result.taskData._id)
-
               }
             ,
             (error) => {
@@ -38,36 +33,6 @@ function TaskBtns(props){
             }
           );
       }, []);
-      console.log(BtnObj)
-    const updateTask=(action)=>{
-        setLoader(1)
-        const postOptions={
-            method:'post',
-            headers: {'Content-Type': 'application/json',
-            "x-access-token":token&&token.token,"userId":token&&token.userId},
-            body:JSON.stringify({_id:data?data._id:'',
-            status:action})
-          }
-      fetch(env.siteApi + "/panel/crm/update-tasks-status",postOptions)
-      .then(res => res.json())
-      .then(
-        (result) => {
-            if(result.error){
-
-            }
-            else{
-
-                setTimeout(()=>props.close(),2000)
-                props.setBoard(result.taskData)
-                setShowAlert(result.message)
-                setTimeout(()=>setShowAlert(0),2000)
-                setLoader(0)
-            }
-        },
-        (error) => {
-          console.log(error);
-        })
-    }
     return(
         // <div className="taskAction">
         //     {Loader?
@@ -109,7 +74,9 @@ function TaskBtns(props){
         // </div>
         <div className="taskAction">
             {BtnObj?BtnObj.map((Btn,i)=>(
-                <CreatBtn content={Btn} key={i} token={token} Param={Param} setParam={setParam} TaskId={TaskId}/>
+                <CreatBtn content={Btn} key={i} token={token} 
+                Param={Param} setParam={setParam} TaskId={TaskId}
+                setError={props.setError} setLoading={props.setLoading}/>
             )):<></>}
         </div>
     )
