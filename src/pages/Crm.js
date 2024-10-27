@@ -9,6 +9,7 @@ const cookies = new Cookies();
 
 function CRM(props){
     const [boardArray,setBoardArray] = useState()
+    const [loading,setLoading] = useState()
     const token=cookies.get(env.cookieName)
     useEffect(()=>{
         const body={
@@ -38,7 +39,7 @@ function CRM(props){
           console.log(error);
         }
       )
-    },[])
+    },[loading])
     const direction = props.lang?props.lang.dir:errortrans.defaultDir;
     const lang = props.lang?props.lang.lang:errortrans.defaultLang;
     //console.log(taskList)
@@ -180,7 +181,8 @@ function CRM(props){
                     }
                     return(column?<Column key={column.id} column={column} access={access}
                         tasks={newTasks} token={token} direction={direction}
-                        setBoardArray={setBoardArray} crm={boardArray.crm}/>:<></>)
+                        setBoardArray={setBoardArray} crm={boardArray.crm}
+                        setLoading={setLoading}/>:<></>)
                 })}
             </DragDropContext>:<div>Updating</div>}
         </div>

@@ -12,8 +12,6 @@ const CreatBtn = (props) => {
     }));
   };
   const updateTask=(value)=>{
-    
-    console.log(Param)
     const postOptions={
         method:'post',
         headers: {'Content-Type': 'application/json',
@@ -25,12 +23,13 @@ const CreatBtn = (props) => {
   .then(res => res.json())
   .then(
     (result) => {
-        if(result.error){
-          console.log(result.error)
-        }
+      if(result.error){
+        props.setError({message:result.error,color:"brown"})
+        setTimeout(()=>props.setError({message:""}),3000)
+      }
         else{
-
-          console.log(result)
+          props.setError({message:result.message,color:"green"})
+          setTimeout(()=>props.setLoading(Math.random()),2000)
         }
     },
     (error) => {

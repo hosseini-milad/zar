@@ -25,7 +25,7 @@ function ProductTable(props){
               <i></i>
             </th> */}
             <th>
-            <p>{tabletrans.price[lang]}</p>
+            <p>{tabletrans.category[lang]}</p>
               <i></i>
             </th>
             <th>

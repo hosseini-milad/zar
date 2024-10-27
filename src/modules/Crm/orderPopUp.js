@@ -13,7 +13,6 @@ function OrderPopUp(props){
     const [content,setContent] = useState()
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
-    console.log(content)
     useEffect(()=>{
         const postOptions={
             method:'post',
@@ -33,7 +32,6 @@ function OrderPopUp(props){
           console.log(error);
         })
     },[])
-    console.log(data)
     
     if(!content){
         return

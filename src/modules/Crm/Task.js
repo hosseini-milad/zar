@@ -14,7 +14,6 @@ function Task(props){
     const creator = taskData.creatorInfo
     const customer = taskData.customerInfo
     const taskUser = taskData.userInfo
-    console.log(ProductPop)
     return(<Draggable key={taskData._id}
         draggableId ={taskData._id} index={props.index}>
             {(provided,snapshot)=>(
@@ -50,6 +49,7 @@ function Task(props){
                     customer={customer} creator={creator}
                     direction={props.direction} access={props.access}
                     setBoardArray={props.setBoardArray}
+                    setLoading={props.setLoading}
                     data={ProductPop} close={()=>setProductPop(0)}
                     />:<></>}
                     

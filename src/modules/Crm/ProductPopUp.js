@@ -13,7 +13,6 @@ function ProductPopUp(props){
     const [content,setContent] = useState()
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
-    console.log(data)
     
     
     
@@ -67,9 +66,9 @@ function ProductPopUp(props){
                 </div>
             {props.access&&props.access==="edit"?
             <div className="crmAction">
-                <TaskBtns content={content} token={token}
+                <TaskBtns content={content} token={token} setError={setError}
                 data={props.data} setBoard={(e)=>props.setBoardArray(e)}
-                close={props.close}/>
+                close={props.close} setLoading={props.setLoading}/>
             </div>:<></>}
             </div>
             

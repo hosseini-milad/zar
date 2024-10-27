@@ -35,7 +35,9 @@ function ProductTableRow(props){
               
               <td>
                 <div className="order-price">
-                  <p>{normalPriceCount(product.price&&product.price)}</p>
+                  <p>{product.categories&&product.categories.map((cat,i)=>(
+                    <small key={i}>{cat.title} | </small>
+                  ))}</p>
                 </div>
               </td>
               <td>
