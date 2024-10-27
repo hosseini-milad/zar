@@ -217,8 +217,9 @@ router.post('/list-product',jsonParser,async (req,res)=>{
                 productList[i].price = parseInt(Math.round(parseInt(tempPrice))/100)*100
             }
             const catList = await category.find()
+            const masterList = await ProductSchema.find({isMaster:true})
            res.json({filter:productList,size:products.length,
-            catList,exists:data.exists})
+            catList,exists:data.exists,masterList})
     }
     catch(error){
         res.status(500).json({message: error.message})
