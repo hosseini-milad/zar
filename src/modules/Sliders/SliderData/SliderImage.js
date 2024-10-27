@@ -17,7 +17,7 @@ function SliderImage(props){
             },
             body:JSON.stringify({base64image:image&&image.base64,
                                 imgName:image&&image.fileName,
-                              folderName:"brand"})
+                              folderName:"slider"})
         }//URL.createObjectURL(image)
         //console.log(postOptions)
         image&&fetch(env.siteApi+"/panel/user/upload",postOptions)
