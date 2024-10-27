@@ -71,7 +71,7 @@ router.post('/list-product', async (req,res)=>{
                 {sku:{$regex: search, $options : 'i'}},
                 {title:{$regex: search, $options : 'i'}}
             ]}:{}},
-            {$match:imageUrl?{imageUrl:{$exists:true}}:{}},
+            {$match:{imageUrl:{$exists:true}}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
