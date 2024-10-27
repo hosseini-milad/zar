@@ -37,7 +37,7 @@ const Printofficial = (props)=>{
         //     <main>در حال دریافت اطلاعات</main>}
         // </div>
         <div className="print-container">
-            <OfficialPrint content={Content}/>
+            <OfficialPrint content={Content} user={UserData}/>
         </div>
     )
 }

@@ -18,8 +18,8 @@ function Task(props){
         draggableId ={taskData._id} index={props.index}>
             {(provided,snapshot)=>(
                 <li className={snapshot.isDragging?"board-task dragTask":"board-task"}
-                    //{...provided.draggableProps}
-                    {...provided.dragHandleProps}
+                    // {...provided.draggableProps}
+                    // {...provided.dragHandleProps}
                     ref={provided.innerRef} 
                     data-dragging={snapshot.isDragging}>
                         
