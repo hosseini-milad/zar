@@ -23,6 +23,7 @@ const ProductSchema = new Schema({
     isReserve:{type:Boolean,default:false},
     sood:String,
     isMaster:Boolean,
+    masterSku:String,
     ojrat:String,
     
     price:String,

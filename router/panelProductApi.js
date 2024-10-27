@@ -639,7 +639,8 @@ router.post('/update-to-master',jsonParser,auth,async(req,res)=>{
             productUrl:masterData.productUrl,
             metaTitle:masterData.metaTitle,
             productMeta:masterData.productMeta,
-            fullDesc:masterData.fullDesc
+            fullDesc:masterData.fullDesc,
+            masterSku:master
         }
         var slaveResult = await products.updateMany({sku:{$in:slave}},
             {$set:query}

@@ -95,6 +95,29 @@ router.post('/list-product', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/fetch-product', async (req,res)=>{
+    const sku = req.body.sku
+    try{
+        var productData = await productSchema.findOne({sku:sku})
+        if(!productData.isMojood){
+            const productTemp = await productSchema.findOne(
+            {masterSku:sku, isMojood:true,imageUrl:{$exists:true}}).lean()
+            if(productTemp){
+                productData = productTemp
+            }
+        }
+        const priceRaw = await FindPrice()
+            
+        var TAX = await tax.findOne().sort({date:-1})
+        const fullPrice =  CalcPrice(productData,priceRaw,TAX&&TAX.percent)
+        productData.price = fullPrice.price
+        res.json({data:productData})
+
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.get('/list-filters', async (req,res)=>{
     try{
         const brandData = await brand.find()
