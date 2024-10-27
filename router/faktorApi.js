@@ -83,12 +83,10 @@ router.post('/list-product', async (req,res)=>{
             const fullPrice =  CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
             productList[i].price = fullPrice.price
         }
+        const categoryList = await category.find({imageUrl:{$exists:true}})
         res.json({data:productList,type:[],hasChild:1,
             size:products.length,success:true,
-            categoryList:[{
-                title: "دسته بندی1", 
-                link: "class1"
-            }],
+            categoryList,
             subCategoryList	:[]
         })
 
