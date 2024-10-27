@@ -63,7 +63,7 @@ router.post('/list-product', async (req,res)=>{
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     const search = req.body.search
     const weight=req.body.weight
-    const isMojood = req.body.isMojood
+    const isMojood = req.body.isMojood?req.body.isMojood:true
     try{
    
         const products = await productSchema.aggregate([
@@ -71,6 +71,7 @@ router.post('/list-product', async (req,res)=>{
                 {sku:{$regex: search, $options : 'i'}},
                 {title:{$regex: search, $options : 'i'}}
             ]}:{}},
+            {$match:imageUrl?{imageUrl:{$exists:true}}:{}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
