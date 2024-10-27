@@ -105,6 +105,14 @@ const menutrans ={
                 url:"config"
             },
             {
+                english: "News",
+                persian: "خبرها",
+                index:0,
+                icon:"fa-newspaper-o",
+                href:"/news",
+                url:"news"
+            },
+            {
                 english: "Sliders",
                 persian: "اسلایدرها",
                 index:0,
@@ -134,14 +142,7 @@ const menutrans ={
             href:"/filter",
             url:"filter"
         },
-        {
-            english: "News",
-            persian: "خبرها",
-            index:1,
-            icon:"fa-bull-horn",
-            href:"/news",
-            url:"news"
-        },
+        
         {       
             english: "User Management",
             persian: "مدیریت کاربران",

@@ -4,7 +4,7 @@ var token = JSON.parse(localStorage.getItem('token-lenz'));
 
 function OfficialPrint(props){
     const content =  props.content
-
+    const user=props.user
     return(
         <div className="zar-print">
           <div className="header">
@@ -13,9 +13,9 @@ function OfficialPrint(props){
             </div>
             <div className="info-wrapper">
             <div className="user-info">
-                <p>مهسا رنجبر</p>
-                <p><span>کد:</span>3352</p>
-                <p>091366002001</p>
+                <p>{user.username}</p>
+                <p><span>کد:</span>{user.otp}</p>
+                <p>{user.phone}</p>
               </div>
             </div>
             <div className="info-wrapper">
@@ -27,7 +27,7 @@ function OfficialPrint(props){
                   </div>
                   <div className="number">
                     <p>شماره سند:</p>
-                    <p></p>
+                    <p>{content.faktorNo}</p>
                   </div>
                 
               </div>
@@ -53,11 +53,11 @@ function OfficialPrint(props){
                 <tr key={i}>
                   <td className="xsmall-td">{i+1}</td>
                   <td className="larg-td">{Item.title}</td>
-                  <td className="xsmall-td"></td>
+                  <td className="xsmall-td">18</td>
                   <td className="meduim-td"></td>
                   <td className="small-td">{Item.weight}</td>
                   <td className="small-td">{normalPriceCount(Item.unitPrice)}</td>
-                  <td className="larg-td"></td>
+                  <td className="larg-td">{normalPriceCount(Item.price)}</td>
                 </tr>)}
               </tbody>
               {/* <tbody className="buy-from-customer">
@@ -73,7 +73,7 @@ function OfficialPrint(props){
               </tbody> */}
             </table>
             <div className="more-info">
-              <div className="zar-box">
+              <div className="zar-box first-box">
                 <p className="date"></p>
                 <p className="title">مانده این سند:</p>
               </div>
@@ -81,11 +81,12 @@ function OfficialPrint(props){
               <div className="zar-box"><p></p></div>
             </div>
             <div className="gold-info">
-              <div className="date"></div>
-              <div className="zar-box">
+              
+              <div className="zar-box gold-day">
+                <div className="date"></div>
                 <div className="zar-box-item">
                   <p>یک گرم طلا بدون اجرت:</p>
-                  <p></p>
+                  <p>{normalPriceCount(content.unitPrice)}</p>
                 </div>
                 <div className="zar-box-item">
                   <p>یک مثقال طلای 17 عیار:</p>
@@ -96,14 +97,14 @@ function OfficialPrint(props){
                   <p></p>
                 </div>
               </div>
-              <div className="zar-box">
+              <div className="zar-box history">
                 <div className="zar-box-item">
-                  <div className="title"><p>قبل:</p></div>
+                  <div className="content title"><p>قبل:</p></div>
                   <div className="content"><p></p></div>
                   <div className="content"><p></p></div>
                 </div>
                 <div className="zar-box-item">
-                  <div className="title"><p>نهایی:</p></div>
+                  <div className="content title"><p>نهایی:</p></div>
                   <div className="content"><p></p></div>
                   <div className="content"><p></p></div>
                 </div>
@@ -111,15 +112,15 @@ function OfficialPrint(props){
             </div>
           </div>
           <div className="footer">
-            <div className="title"></div>
+            <div className="title">اشتباه از طرفین قابل برگشت هست</div>
             <div className="container">
-              <div className="item"><p>صادرکننده</p></div>
-              <div className="item">
+              <div className="item sign-item"><p>صادرکننده</p></div>
+              <div className="item ">
                 <p>Tel: 021 916 915 19</p>
                 <p>Instagram: BarzegarGold</p>
                 <p>WhatsApp: 09103186010</p>
               </div>
-              <div className="item"><p>تحویل گیرنده اصلی</p></div>
+              <div className="item sign-item"><p>تحویل گیرنده اصلی</p></div>
             </div>
           </div>
         </div>
