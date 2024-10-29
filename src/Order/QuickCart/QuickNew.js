@@ -2,7 +2,7 @@ import { useState } from "react"
 import QuickCounter from "./QuickCounter"
 import QuickOff from "./QuickOff"
 import QuickSearch from "./QuickSearch"
-import env, { payValue } from "../../env"
+import env, { payValue,normalPriceCount } from "../../env"
 import DataModal from "../../components/Modal/dataModal"
 
 function QuickNew(props){
@@ -12,6 +12,7 @@ function QuickNew(props){
     const [showDesc,setShowDesc] = useState(0)
     const [description,setDescription] = useState()
     const token = props.token
+    const tab = props.tab
     const user=props.user
     //const [error,setError] = useState({message:'',color:"brown"})
     const addItem=()=>{
@@ -22,20 +23,15 @@ function QuickNew(props){
             headers: { 'Content-Type': 'application/json' ,
             "x-access-token": token&&token.token,
             "userId":token&&token.userId},
-            body:JSON.stringify({userId:user?user.Code?user.Code:
-                user._id:(token&&token.userId),
+            body:JSON.stringify({
+                userId:user&&user._id,
                 date:Date.now,
-                cartItem:{
-                    id:selectedItem.ItemID,
-                    sku:selectedItem.sku,
-                    title:selectedItem.title,
-                    count:count?count:1,
-                    discount:discount?discount:0,
-                    price:selectedItem.priceData,
-                    description:description},
-                    payValue:props.payValue})
-          }
-        fetch(env.siteApi + "/panel/faktor/update-cart",postOptions)
+                price:selectedItem.price,
+                sku:selectedItem.sku,
+                count:count?count:1,
+                
+            })}
+        fetch(env.siteApi + "/panel/faktor/add-cart",postOptions)
         .then(res => res.json())
         .then(
             (result) => {
@@ -78,7 +74,7 @@ function QuickNew(props){
             <td data-cell="ردیف"></td>
             
             <td className="search-td" data-cell="کد کالا">
-                <QuickSearch data={props.data} token={token}
+                <QuickSearch data={props.data} setdata={props.setdata} token={token}
                 search={props.search} setSearch={props.setSearch}
                 setSelectedItem={setSelectedItem}/>
             </td>
@@ -86,21 +82,17 @@ function QuickNew(props){
                 {selectedItem?selectedItem.title:''}<br/>
                 <small>{selectedItem?selectedItem.sku:''}</small>
             </td>
-            <td data-cell="تعداد">
-            <QuickCounter unit = {(selectedItem&&selectedItem.perBox)?selectedItem.perBox:10} 
-                count={count} setCount={setCount}/>
+            <td data-cell="وزن">
+                {selectedItem?selectedItem.weight:''}
             </td>
             <td data-cell="مبلغ واحد">
                 {selectedItem? 
-                payValue(selectedItem.priceData,props.payValue,1):''}
+                normalPriceCount(selectedItem.unitPrice):''}
             </td>
-            <td data-cell="تخفیف">
-                <QuickOff change={(e)=>setDiscount(e)
-                    } discount={discount?discount:0}/>
-            </td>
+           
             <td data-cell="مبلغ کل">
-                {selectedItem?
-                payValue(selectedItem.priceData,props.payValue,count,0):''}
+                {selectedItem? 
+                normalPriceCount(selectedItem.price):''}
             </td>
             <td>
             <div className="more-btn">

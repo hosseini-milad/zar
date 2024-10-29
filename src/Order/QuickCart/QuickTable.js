@@ -1,6 +1,6 @@
 import { useState } from "react"
 import QuickNew from "./QuickNew"
-import QuickRow from "./QuickRow"
+import QuickRowOrder from "./QuickRowOrder"
 
 function QuickTable(props){
   const qCart= props.cart
@@ -18,14 +18,11 @@ function QuickTable(props){
               <th data-cell="شرح کالا">
                 <p>شرح کالا</p>
               </th>
-              <th data-cell="تعداد">
-                <p>تعداد</p>
+              <th data-cell="وزن">
+                <p>وزن</p>
               </th>
               <th data-cell="مبلغ واحد">
                 <p>مبلغ واحد</p>
-              </th>
-              <th data-cell="تخفیف">
-                <p>تخفیف</p>
               </th>
               <th data-cell="مبلغ کل">
                 <p>مبلغ کل</p>
@@ -34,7 +31,7 @@ function QuickTable(props){
             </tr>
           </thead>
           <tbody>
-            {reload?<QuickNew data={props.data} token={props.token}
+            {reload?<QuickNew tab={props.tab} data={props.data} token={props.token}
               payValue={props.payValue?props.payValue:"4"} setCart={props.setCart}
               user={props.user} action={props.action} setError={props.setError}
               search={props.search} setSearch={props.setSearch}
@@ -42,8 +39,8 @@ function QuickTable(props){
               <tr className="input-tr">
               <td colSpan={5}><p>در حال ثبت</p></td>
             </tr>}
-            {qCart&&qCart.cartItems&&qCart.cartItems.map((item,i)=>(
-              <QuickRow data={item} key={i} index={i+1} payValue={props.payValue?props.payValue:"4"}
+            {qCart.map((item,i)=>(
+              <QuickRowOrder tab={props.tab} data={item} key={i} index={i+1} payValue={props.payValue?props.payValue:"4"}
               action={props.delete} setError={props.setError}
               token={props.token} user={props.user} setCart={props.setCart}
               cartNo={props.cartNo} canEdit={props.canEdit}/>
