@@ -81,7 +81,7 @@ router.post('/list-product', async (req,res)=>{
         var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<productList.length;i++){
             const fullPrice =  CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
-            productList[i].price = fullPrice.price
+            productList[i].price = fullPrice.price?fullPrice.price:"12300000"
         }
         const categoryList = await category.find({imageUrl:{$exists:true}})
         res.json({data:productList,type:[],hasChild:1,
