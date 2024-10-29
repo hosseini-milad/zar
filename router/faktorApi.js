@@ -348,6 +348,17 @@ router.get('/get-cart',auth, async (req,res)=>{
     }
 })
 
+router.post('/cart',auth, async (req,res)=>{
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    try{ 
+        const cartDetails = await CalcCart(userId)
+        res.json({...cartDetails})
+    }
+    catch(error){ 
+        res.status(500).json({message: error.message})
+    }
+})
+
 router.post('/add-cart',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     if(!req.body.sku){
