@@ -87,7 +87,7 @@ router.post('/list-product', async (req,res)=>{
         const categoryList = await category.find({imageUrl:{$exists:true}})
         res.json({data:productList,type:[],hasChild:1,
             size:products.length,success:true,
-            categoryList,
+            categoryList, unitPrice:priceRaw,
             subCategoryList	:[]
         })
 
