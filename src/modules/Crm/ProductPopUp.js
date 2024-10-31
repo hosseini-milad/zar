@@ -37,7 +37,7 @@ function ProductPopUp(props){
                 </div>
                 <i className="fa fa-remove closeModal" 
                     onClick={props.close}></i>
-                <div className="sharif" style={{padding: "70px 10px 10px"}}>
+                <div className="sharif pop-sharif" style={{padding: "70px 10px 10px"}}>
                     <main className="sharif-order-main">
                         <section className="admin-table-sec single-product-table">
                             <table>
