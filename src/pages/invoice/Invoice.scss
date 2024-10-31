@@ -1,0 +1,133 @@
+.invoice {
+  height: 100%;
+  &__header {
+    height: 140px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      width: 60px;
+    }
+    .title {
+      font-size: 25px;
+      color: #111b5c;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__content {
+    margin-top: 8px;
+    padding: 12px 28px;
+    background-color: #fff;
+    height: 550px;
+    overflow-y: scroll;
+    .report {
+      border: 2px solid #cccccc;
+
+      &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 70px;
+
+        .children {
+          color: #111b5c;
+          font-size: 20px;
+          font-weight: 700;
+        }
+      }
+
+      .seperator {
+        border: 1px solid #cccccc;
+      }
+
+      .inner-content {
+        .single-invoice {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          .children {
+            border-bottom: 1px solid #cccccc;
+            color: #111b5c;
+            font-size: 15px;
+            width: 33%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            .download-file {
+              width: 98%;
+              background-color: #bcbcbc;
+              color: #fff;
+              transition: all 3s;
+              font-size: 12px;
+              font-family: IRANSansX;
+              font-weight: bold;
+              border-radius: 6px;
+              height: 38px;
+              &:hover,
+              &:active {
+                background-color: #162271;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.invoice-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  &__image {
+    width: 90px;
+    height: 90px;
+    padding: 15px 0;
+  }
+  &__message {
+    color: #a0a0a0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .invoice {
+    &__content {
+      padding: 12px 0;
+      height: 360px;
+      overflow-y: scroll;
+      margin-bottom: 20px;
+      .report {
+        // height: 520px !important;
+        // height: 346px !important;
+        &__header {
+          height: 55px;
+          .children {
+            font-size: 15px;
+          }
+        }
+        .seperator {
+          margin: 2px 0;
+        }
+
+        .inner-content {
+          .single-invoice {
+            .children {
+              font-size: 13px;
+              .download-file {
+                width: 95%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

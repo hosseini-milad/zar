@@ -1,0 +1,270 @@
+.order {
+  height: 100%;
+  background-color: #fff;
+  &__header {
+    height: 140px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      width: 60px;
+    }
+    .title {
+      font-size: 25px;
+      color: #111b5c;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+  }
+
+  &__content {
+    margin-top: 8px;
+    padding: 15px;
+    position: relative;
+    .wrapper-cards {
+      margin-block: 20px 80px;
+      overflow-y: scroll;
+      height: 540px;
+      padding: 0 10px;
+      .wrapper-single-card {
+        position: relative;
+
+        .single-card {
+          border-radius: 15px;
+
+          align-items: center;
+          display: flex;
+          padding: 10px;
+          height: 78px;
+          margin-right: 30px;
+          position: relative;
+          box-shadow: 0px 0px 15px 1px #9d9d9d;
+          &.active {
+            background-color: #111b5c;
+
+            .single-card__header {
+              .label,
+              .content {
+                color: #fff;
+              }
+              .order-number,
+              .total-price,
+              .register-date-time {
+                &:not(:last-child) {
+                  border-left: 1px solid #fff;
+                }
+              }
+            }
+
+            .arrow-bottom {
+              color: #fff;
+            }
+          }
+          &__header {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            z-index: 3;
+            .label,
+            .content {
+              color: #111b5c;
+              font-size: 16px;
+              font-weight: 700;
+              .date {
+                padding-right: 5px;
+              }
+              .morning {
+                padding-left: 5px;
+              }
+            }
+            .order-number {
+              padding-right: 20px;
+            }
+            .order-number,
+            .total-price,
+            .register-date-time {
+              display: flex;
+              flex-direction: column;
+              flex-basis: 33%;
+              &:not(:last-child) {
+                border-left: 1px solid #dddddd;
+              }
+              &:not(:first-child) {
+                padding-right: 10px;
+              }
+            }
+          }
+          .order-information {
+            position: absolute;
+            left: 10px;
+            top: 28px;
+            width: 40px;
+            height: 40px;
+            color: #fff;
+            z-index: 99999;
+          }
+
+          .arrow-left {
+            color: #8a8a8a;
+          }
+        }
+
+        .order-action {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+          margin-top: 8px;
+          .cancel {
+            background-color: #b11e23;
+          }
+          .accepted {
+            background-color: #111b5c;
+          }
+
+          .btn-order {
+            border-radius: 6px;
+            height: 47px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 700;
+            width: 50%;
+            color: #fff;
+            font-family: "IRANSansX" !important;
+            .status-action {
+              padding-left: 5px;
+              width: 30px;
+              height: 20px;
+            }
+          }
+        }
+      }
+    }
+    .empty-order {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      left: 0;
+      margin: 0 auto;
+      height: inherit;
+      &__message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        &--image {
+          width: 90px;
+          height: 90px;
+          max-height: 100px;
+          max-width: 100px;
+        }
+        .message {
+          color: #ce1f28;
+          font-size: 20px;
+          font-weight: 700;
+          padding-top: 25px;
+        }
+      }
+      .show-products {
+        background-color: #162271;
+        color: #fff;
+        border-radius: 8px;
+        height: 45px;
+        width: 350px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+    }
+  }
+}
+.status {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  position: absolute;
+  right: 2px;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  width: 34px;
+  height: 98px;
+  text-align: center;
+  border-radius: 0px 10px 10px 0px;
+  z-index: 0;
+  padding-right: 7px;
+}
+
+.gold {
+  background-color: #bb9531;
+}
+.grey {
+  background-color: #878787;
+}
+.color-white {
+  color: #fff !important;
+}
+
+.mt-8 {
+  margin-top: 8px;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .order {
+    &__content {
+      // padding: 15px 0px;
+      .wrapper-cards {
+        height: 350px;
+        // height: 305px;
+        &:last-child {
+          margin-bottom: 75px;
+        }
+        .wrapper-single-card {
+          &:first-child {
+            margin-top: 5px;
+          }
+
+          .single-card {
+            .order-information {
+              top: 30px;
+              width: 30px;
+              height: 30px;
+              left: 0;
+            }
+            &__header {
+              .label {
+                font-size: 12px;
+              }
+              .order-number {
+                padding-right: 10px;
+                flex-basis: 26%;
+              }
+              .total-price {
+                flex-basis: 28%;
+              }
+              .register-date-time {
+                flex-grow: 1;
+                padding-right: 3px;
+              }
+              .content {
+                font-size: 11px;
+                .date {
+                  padding-right: 0;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.gold-color {
+  color: #bb9531 !important;
+}

@@ -1,0 +1,181 @@
+.accountReport {
+  &__header {
+    height: 120px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      width: 60px;
+    }
+    .title {
+      font-size: 23px;
+      color: #111b5c;
+      margin-right: 12px;
+      font-weight: 700;
+    }
+  }
+  &__content {
+    .search {
+      height: 100px;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .from-date,
+      .to-date {
+        display: flex;
+        align-items: center;
+        width: 15%;
+        .title {
+          color: #8b8b8b;
+          font-size: 14px;
+          display: inline-flex;
+          width: 48px;
+        }
+        input[type="text"] {
+          // width: 90px;
+          // height: 40px;
+          width: 215px;
+          height: 35px;
+          font-size: 14px;
+          text-align: center;
+          font-family: IRANSansNumber;
+          background-color: #d9d9d9;
+          color: #8b8b8b;
+        }
+      }
+      .to-date {
+        margin-right: 30px;
+      }
+      .report {
+        background-color: #bc1f25;
+        height: 38px;
+        margin-right: 20px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        font-family: inherit;
+        border-radius: 6px;
+        align-self: center;
+        width: 10%;
+      }
+    }
+    .result {
+      padding: 10px;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      @media (min-width: 320px) and (max-width: 768px) {
+        height: 270px;
+      }
+      @media (min-width: 769px) {
+        height: 400px;
+      }
+      .message {
+        color: #8b8b8b;
+        font-size: 14px;
+      }
+      .selected-download-file-type {
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+        .excel-report {
+          background-color: #1a8e3a;
+        }
+        .pdf-report {
+          background-color: #b11e23;
+          margin-top: 15px;
+        }
+        .btn {
+          color: #fff;
+          font-size: 14px;
+          font-weight: 700;
+          font-family: inherit;
+          border-radius: 6px;
+          width: 400px;
+          height: 45px;
+          display: flex;
+          align-items: center;
+          .title {
+            width: 130px;
+          }
+        }
+        .download-icon {
+          padding-left: 10px;
+          display: flex;
+          align-self: center;
+          width: 22px;
+          height: 22px;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .accountReport {
+    &__content {
+      .search {
+        .from-date,
+        .to-date {
+          width: 38%;
+          input[type="text"] {
+            width: 75px;
+            height: 35px;
+          }
+        }
+        .to-date {
+          margin-right: 10px;
+        }
+        .report {
+          margin-right: 12px;
+        }
+      }
+
+      .result {
+        .selected-download-file-type {
+          .btn {
+            width: 340px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (min-width: 481px) and (max-width: 768px) {
+  .accountReport {
+    background-color: red !important;
+    &__content {
+      .search {
+        .from-date,
+        .to-date {
+          width: 30%;
+          input[type="text"] {
+            width: 130px;
+            height: 35px;
+          }
+        }
+        .to-date {
+          margin-right: 10px;
+        }
+        .report {
+          margin-right: 12px;
+          width: 20%;
+        }
+      }
+
+      .result {
+        .selected-download-file-type {
+          .btn {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}

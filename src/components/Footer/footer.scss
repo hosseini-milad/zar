@@ -1,0 +1,139 @@
+.footer {
+  width: 100%;
+  height: 75px;
+  z-index: 4;
+  background-color: #fff;
+  position: fixed;
+  box-shadow: 0 0px 75px 40px #dfdfdf;
+  left: 0;
+  right: 0;
+  border-radius: 12px 12px 0 0;
+  .curve {
+    z-index: 2;
+    position: absolute;
+    width: 110px;
+    height: 58px;
+    border-radius: 100px 100px 0 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: -38px;
+    background-color: #fff;
+    user-select: none;
+    svg {
+      width: 50px;
+      height: 50px;
+      color: #cdcdcd;
+    }
+  }
+  .menu-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 100%;
+    &.sub-menu {
+      justify-content: space-between;
+    }
+    .single-menu {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 63px;
+      height: 63px;
+      border-radius: 50%;
+      z-index: 5;
+      &.sub-menu {
+        &__item {
+          width: 33%;
+          flex-direction: row;
+          img {
+            padding-left: 10px;
+          }
+        }
+      }
+
+      &.wrapper-basket-counter {
+        position: relative;
+      }
+
+      
+      .icon {
+        // width: 30px;
+        // height: 30px;
+      }
+
+      &.sub-menu__item {
+        .title {
+          color: #6b6b6b;
+        }
+        &.selected {
+          .title {
+            color: #162271;
+          }
+        }
+      }
+      .title {
+        display: none;
+        color: #162271;
+        font-weight: 700;
+        font-size: 16px;
+        margin-top: 8px;
+      }
+
+      &.active {
+        background-color:rgba(205, 137, 69, 1);
+        ;
+        .title {
+          color: #fff;
+        }
+        border-left: unset;
+      }
+
+      .counter-basket {
+        width: 28px;
+        height: 28px;
+        position: absolute;
+        right: 40%;
+        top: 2px;
+        margin: 0 auto;
+        background-color: #162271;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 12px;
+        font-weight: bolder;
+      }
+    }
+  }
+  .others {
+    background-color: #d9d9d9;
+  }
+}
+
+.show-others {
+  bottom: 77px;
+}
+
+.hide-others {
+  bottom: 0;
+}
+
+@media (min-width: 32px) and (max-width: 480px) {
+  .footer {
+    .menu-wrapper {
+      .single-menu {
+        .title {
+          font-size: 11px;
+        }
+        .counter-basket {
+          right: 13% !important;
+        }
+      }
+    }
+  }
+}

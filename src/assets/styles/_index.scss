@@ -1,0 +1,85 @@
+@import url("./_fonts.scss");
+
+* {
+  // padding: 0;
+  // margin: 0;
+}
+
+html,
+body {
+  height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body {
+  font-family: IRANSansX !important;
+  background-color: #d9d9d9 !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  width: min(800px,100%);
+  margin-inline: auto;
+
+  .header,.main,.footer{
+    margin-inline: auto !important;
+    width: min(800px,100%);
+  }
+  .header{
+    padding: 0;
+  }
+}
+
+.persian-number {
+  font-family: IRANSansNumber !important;
+}
+
+.font-iransans {
+  font-family: "IRANSansX" !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.d-ltr {
+  direction: ltr;
+}
+
+.error {
+  color: #db212c;
+  font-weight: 700;
+}
+
+//-------------------------------------
+.search-product {
+  background-color: #fff;
+  padding: 10px;
+  .search-field {
+    width: 100%;
+    background-color: #e0e0e0;
+  }
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  .message {
+    background-color: #fff;
+    width: 130px;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    height: 26px;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    margin-top: 5px;
+  }
+}

@@ -1,0 +1,37 @@
+.slider-wrapper {
+  //height: 330px;
+  position: relative;
+  overflow: hidden;
+  .single-slide {
+    img {
+      height: 300px;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.slick-dots {
+  bottom: 20px !important;
+  li {
+    button {
+      width: 30px !important;
+      height: 30px !important;
+      &::before {
+        font-size: 11px !important;
+        color: #9292923d !important;
+        width: 30px;
+        height: 30px;
+      }
+    }
+    &.slick-active {
+      button {
+        &::before {
+          color: #fff !important;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

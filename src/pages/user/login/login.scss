@@ -1,0 +1,200 @@
+.login {
+  background-color: #fff;
+  height: 82vh;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  .form-wrapper-login-with-mobile {
+    width: 100%;
+    .hero-element {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 85%;
+      margin: 0 auto;
+      .single-field {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+          color: #000000;
+          font-size: 14px;
+          font-weight: 700;
+          padding-bottom: 10px;
+          padding-right: 5px;
+        }
+        input {
+          background-color: #e0e0e0;
+          color: #000;
+          height: 25px;
+        }
+        &:not(:first-child) {
+          margin-top: 10px;
+        }
+
+        .line {
+          border: 1px solid #ccc;
+          width: 0px;
+          height: 39px;
+          margin-left: 6px;
+        }
+
+        .flag {
+          display: flex;
+          flex-direction: column;
+          .size {
+            width: 27px;
+            height: 8px;
+          }
+          &__top {
+            background-color: #34710f;
+          }
+          &__center {
+            background-color: #ebebeb;
+          }
+          &__bottom {
+            background-color: #d12222;
+          }
+        }
+
+        .city-code {
+          font-size: 14px;
+          font-weight: 700;
+          margin-left: 5px;
+        }
+      }
+
+      .hero-action {
+        display: flex;
+        margin-top: 10px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 15px;
+        .btn {
+          border-radius: 6px;
+          color: #fff;
+          height: 40px;
+          width: 50%;
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .login-with-code {
+          border: 1px solid #989898;
+          color: #000;
+          width: 50%;
+        }
+        .login {
+          background-color: #bb9531;
+        }
+        .seperator-auth {
+          position: relative;
+          &::after {
+            content: " ";
+            width: 390px;
+            height: 1px;
+            position: absolute;
+            left: 20px;
+            top: 13px;
+            background-color: #ccc;
+          }
+          &::before {
+            content: " ";
+            width: 390px;
+            height: 1px;
+            position: absolute;
+            right: 20px;
+            top: 13px;
+            background-color: #ccc;
+          }
+        }
+      }
+    }
+  }
+  .form-wrapper-insert-otp {
+    width: 100%;
+    .hero-otp {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 85%;
+      margin: 0 auto;
+      .message {
+        color: #111b5c;
+        font-size: 15px;
+        font-weight: 700;
+        text-align: center;
+        .mobile-number {
+          padding: 0 5px;
+        }
+      }
+      .otp {
+        margin: 10px 0;
+        .otp-container {
+          direction: ltr;
+          &:focus-visible {
+            .otp-fields {
+              border: 1px solid green !important;
+            }
+          }
+          .otp-fields {
+            width: 56px !important;
+            height: 56px !important;
+            border-radius: 8px;
+            background-color: #e0e0e0;
+            margin: 0 10px;
+            color: #000;
+            border: unset;
+            font-size: 18px;
+            font-weight: 700;
+            &:focus-visible,
+            &:focus,
+            &:active {
+              border: 1px solid red !important;
+            }
+          }
+        }
+      }
+      .edit-user-name {
+        font-size: 13px;
+        color: #111b5c;
+        font-weight: 700;
+      }
+      .login-wrapper {
+        margin-top: 10px;
+        .login-with-recive-code {
+          background-color: #111b5c;
+          color: #fff;
+          border-radius: 8px;
+          height: 40px;
+          font-size: 13px;
+          font-weight: 700;
+          width: 300px;
+        }
+      }
+    }
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .hero-action {
+    .btn {
+      width: 100% !important;
+    }
+  }
+  .seperator-auth {
+    &::after,
+    &::before {
+      width: 160px !important;
+    }
+  }
+}
