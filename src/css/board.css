@@ -1080,10 +1080,11 @@ li.board-task {
   display: flex;
   list-style: none;
   padding-right: 0;
+  justify-content: space-between;
+
 }
 .footerIcons li {
   direction: rtl;
-  margin-right: auto;
 }
 .footerIcons i {
   font-size: 16px;
