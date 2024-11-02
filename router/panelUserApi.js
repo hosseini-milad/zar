@@ -146,7 +146,8 @@ router.post('/fetch-customer',jsonParser,async (req,res)=>{
     var userId = req.body.userId
     try{
         const userData = await customer.findOne({_id: ObjectID(userId)})
-       res.json({data:userData})
+        const groupList = await customer.distinct('group')
+       res.json({data:userData,groupList})
     }
     catch(error){
         res.status(500).json({message: error.message})
