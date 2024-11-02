@@ -13,7 +13,7 @@ import News from "@/pages/news";
 import Basket from "@/pages/basket";
 import Login from "@/pages/user/login";
 import Order from "@/pages/user/order";
-
+import ProductDetail from "@/pages/productDetail";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -56,12 +56,18 @@ const router = createBrowserRouter([
         path: "order",
         element: <Order />,
       },
+      
     ],
+  },
+  {
+    path: "/product-detail/:productId",
+    element: <ProductDetail />,
   },
   {
     path: "*",
     element: <NotFound />,
   },
+  
 ]);
 
 export default router;

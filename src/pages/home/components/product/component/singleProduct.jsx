@@ -1,6 +1,7 @@
 import List from "@/assets/images/icons/list.svg";
 import Plus from "@/assets/images/icons/plus.svg";
 import { moneyFormater } from "@utils/money.js";
+import { useLocation, useNavigate } from "react-router-dom";
 const url = import.meta.env.VITE_BASE_URL;
 //--------------------------------------------------
 import Button from "@mui/material/Button";
@@ -48,6 +49,10 @@ const SingleProduct = ({
     };
     showDetail(modelProductDetail);
   };
+  const navigate = useNavigate();
+  const changeLocation = (path) => {
+    navigate(path);
+  };
   return (
     <section className="single-product-card">
       <section className="single-product-card__image">
@@ -77,7 +82,7 @@ const SingleProduct = ({
         {/* className="single-product-card__action" */}
         <section className="action">
           <Button
-            // onClick={() => showSingleProductDetail()}
+            onClick={() => changeLocation(`/product-detail/${sku}`)}
             className="view-details btn blue-dark-color font-iransans"
           >
             <img className="icon" src={List} alt="" />
