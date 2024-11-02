@@ -1,5 +1,6 @@
 import StyleInput from "../../../components/Button/Input";
 import StyleSelect from "../../../components/Button/AutoComplete";
+import { notNull } from "../../../env";
 
 function CustomerFilters(props) {
   const handleFilterChange = (property, value) => {
@@ -22,6 +23,15 @@ function CustomerFilters(props) {
         direction={props.lang.dir}
         options={props.options}
         action={(e) => handleFilterChange("access", e)}
+
+      />
+      <StyleSelect
+        title={"گروه"}
+        class="filterComponent"
+        label="group"
+        direction={props.lang.dir}
+        options={notNull(props.groupList,"group")}
+        action={(e) => handleFilterChange("groupCode", e?e.groupCode:'')}
 
       />
 

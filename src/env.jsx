@@ -94,6 +94,7 @@ export function normalArrayRound(priceArray){
   )
 }
 export function notNull(array,item){
+  if(!array) return([])
   var notNullArray = []
   for(var i =0;i<array.length;i++){
     if(array[i][item])

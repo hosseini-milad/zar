@@ -30,11 +30,11 @@ function TaskData(props){
                         <li title={taskData.factory}>
                             <i className="fa fa-footer fa-filter"></i>
                             <small>{taskData.factory}</small>
-                        </li>:<> </>}
+                        </li>:<>_</>}
 
                     {taskData.peykPhone?
                         <li><i className="fa fa-footer fa-calendar"></i>
-                        {taskData.peykName}</li>:<> </>}
+                        {taskData.peykName}</li>:<>_</>}
                     
                 </ul>
             </div>

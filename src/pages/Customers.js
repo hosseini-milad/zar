@@ -45,6 +45,7 @@ function Customers(props) {
       dateFrom: filters.date && filters.date.dateFrom,
       dateTo: filters.date && filters.date.dateTo,
       access: filters.access,
+      groupCode: filters.groupCode,
     };
     const postOptions = {
       method: "post",
@@ -158,6 +159,7 @@ function Customers(props) {
           filters={filters}
           currentFilters={filters}
           options={content.access}
+          groupList={content.groupList}
         />
         <div className="user-list">
           <CustomerTable userList={content} lang={props.lang} />
