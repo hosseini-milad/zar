@@ -146,11 +146,13 @@ router.post('/fetch-customer',jsonParser,async (req,res)=>{
     var userId = req.body.userId
     try{
         const userData = await customer.findOne({_id: ObjectID(userId)})
-        const groupList = await customer.aggregate([
-            { $group: {_id: null, group: {$addToSet: "$groupdata"}}},
-            { $unwind: "$groupCode" },
-            { $project: { _id: 0 }},
-        ])
+        const groupList = await customer.aggregate([ 
+            {$group:{_id:{group:'$group', groupCode:'$groupCode'}, count:{$sum:1}}}, 
+            {$sort:{groupCode:-1}},
+            {$group:{_id:'$_id.groupCode', group:{$first:'$_id.group'}, 
+                groupCode:{$first:'$_id.groupCode'},
+              count:{$first:'$count'}}}
+        ]);
        res.json({data:userData,groupList})
     }
     catch(error){
@@ -191,36 +193,7 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
 })
 router.post('/update-customer',jsonParser,async (req,res)=>{
     var userId = req.body.userId
-    const data={
-        cName:req.body.cName,
-        sName:req.body.sName,
-        //username:req.body.sName+" "+req.body.cName,
-        email:req.body.email,
-        phone:req.body.phone,
-        mobile:req.body.mobile,
-        meliCode:req.body.meliCode,
-        cCode:req.body.cCode,
-        Address:req.body.Address,
-        postalCode:req.body.postalCode,
-        city:req.body.city,
-        state:req.body.state,
-        country:req.body.country,
-        about:req.body.about,
-        roleId:req.body.roleId,
-        nif:req.body.nif,
-        active:req.body.active,
-        official:req.body.official,
-
-        birthDay:req.body.birthDay,
-        clothSize:req.body.clothSize,
-        call:req.body.call,
-        urgCall:req.body.urgCall,
-        contractCall:req.body.contractCall,
-        zone:req.body.zone,
-        gps:req.body.gps,
-        workTime:req.body.workTime,
-        website:req.body.website,
-    }
+    const data=req.body
     if(req.body.imageUrl1) data.imageUrl1 = req.body.imageUrl1
     if(req.body.imageUrl2) data.imageUrl2 = req.body.imageUrl2
     if(req.body.kasbUrl) data.kasbUrl = req.body.kasbUrl
@@ -234,9 +207,6 @@ router.post('/update-customer',jsonParser,async (req,res)=>{
         })
         return
     }
-    if(!data.cName) data.cName = userOld.cName
-    if(!data.sName) data.sName = userOld.sName
-    data.username=data.sName+" "+data.cName;
     try{
         const userData = await customer.updateOne({_id: ObjectID(userId)},
         {$set:data})
