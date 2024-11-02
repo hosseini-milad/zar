@@ -131,8 +131,8 @@
     cursor: pointer;
   }
 }
-@media screen and (min-width:800px){
-  .sharif-order-header .nav-bar .f-customer-dropdpwn{
+@media screen and (min-width: 800px) {
+  .sharif-order-header .nav-bar .f-customer-dropdpwn {
     width: 500px;
     max-height: 500px;
   }
@@ -246,14 +246,14 @@
   flex-wrap: wrap;
   width: 100%;
 }
-.sharif-order-header .tile-filter-wrapper .product-filter-tile-wrapper{
+.sharif-order-header .tile-filter-wrapper .product-filter-tile-wrapper {
   margin-right: 2rem;
   position: relative;
 
-  .title{
+  .title {
     position: absolute;
-    height:95.5%;
-    background-color:#c0c0c0;
+    height: 95.5%;
+    background-color: #c0c0c0;
     right: -2.8rem;
     display: flex;
     align-items: center;
@@ -264,14 +264,14 @@
     border-radius: 1rem;
     width: 40px;
 
-    p{
+    p {
       transform: rotate(90deg);
-      min-width:fit-content;
+      min-width: fit-content;
       white-space: nowrap;
       font-size: 1rem;
       font-weight: 600;
       text-align: center;
-      color:#24344d;
+      color: #24344d;
       margin: 0;
     }
   }
@@ -551,6 +551,7 @@
 .sharif-order-main .admin-table-sec .product-title {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
   gap: 1rem;
   min-width: 300px;
 }
@@ -564,6 +565,7 @@
 .sharif-order-main .admin-table-sec .product-name {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   flex-direction: column;
 }
 .sharif-order-main .admin-table-sec .product-name p {
@@ -1573,23 +1575,26 @@ input[type="number"] {
   .view-active {
     background-image: linear-gradient(195deg, #c0c0c0 0%, #c0c0c0 100%);
   }
-  .admin-table-sec{
+  .admin-table-sec {
     background-color: unset;
 
-    .slidemenu{
+    .slidemenu {
       width: 100%;
       border-radius: 0.5rem 0.5rem 0 0;
       padding-inline: 6px;
     }
   }
   .admin-table-sec th {
-    background-color: #4b5258;
+    background-color: rgba(205, 137, 69, 1);
     p {
       color: white;
     }
   }
   .admin-table-sec tbody tr {
     background-color: #c0c0c0;
+  }
+  .admin-table-sec .product-tr:hover {
+    background-color: rgba(205, 137, 69, 1) !important;
   }
   .admin-table-sec .input-tr {
     background-color: rgb(244, 246, 248);
@@ -1630,11 +1635,12 @@ input[type="number"] {
     box-shadow: 0 0 6px 3px #bababa;
   }
   .product-table-btn-wrapper .temp-btn {
-    background-color: #4b5258;
+    background-color: rgba(205, 137, 69, 1);
     box-shadow: unset;
 
     p {
-      color: white;
+      color: rgb(42, 42, 42);
+      font-weight: 600;
     }
   }
   .sharif-order-main .product-sec {
@@ -1747,4 +1753,29 @@ input[type="number"] {
   .product-table-sec tbody {
     background-color: #eaecf0;
   }
+}
+.pop-sharif {
+  background-color: rgba(248, 252, 255, 1);
+
+  .admin-table-sec th {
+    background-color: rgba(205, 137, 69, 1);
+
+    p {
+      color: rgb(81, 81, 81);
+    }
+  }
+}
+.orderModalTitle {
+  color: black;
+  font-weight: 600;
+}
+.orderModalDate {
+  color: black;
+}
+.closeModal {
+  color: black;
+}
+.crmAction {
+  background-color: rgba(248, 252, 255, 1) !important;
+  border-radius: 0 0 1rem 1rem;
 }
