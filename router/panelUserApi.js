@@ -167,12 +167,14 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
         status:req.body.status,
         customer:req.body.customer,
         access:req.body.access,
+        groupCode:req.body.groupCode,
         offset:req.body.offset,
         brand:req.body.brand,
         official:req.body.official
     }
         const reportList = await customer.aggregate([
             { $match:data.access?{access:data.access}:{}},
+            { $match:data.groupCode?{groupCode:data.groupCode}:{}},
             { $match:data.customer?{$or:[
                 {meli:new RegExp('.*' + data.customer + '.*')},
                 {phone:new RegExp('.*' + data.customer + '.*')},
@@ -181,11 +183,19 @@ router.post('/list-customers',jsonParser,async (req,res)=>{
                 {mobile:new RegExp('.*' + data.customer + '.*')}
             ]}:{}}
         ])
+        const groupList = await customer.aggregate([ 
+            {$group:{_id:{group:'$group', groupCode:'$groupCode'}, count:{$sum:1}}}, 
+            {$sort:{groupCode:-1}},
+            {$group:{_id:'$_id.groupCode', group:{$first:'$_id.group'}, 
+                groupCode:{$first:'$_id.groupCode'},
+              count:{$first:'$count'}}}
+        ]);
         const filter1Report =reportList;
         const orderList = filter1Report.slice(offset,
             (parseInt(offset)+parseInt(pageSize)))  
         const accessUnique = [...new Set(filter1Report.map((item) => item.access))];
-       res.json({filter:orderList,size:filter1Report.length,access:accessUnique})
+       res.json({filter:orderList,size:filter1Report.length,
+        access:accessUnique,groupList})
     }
     catch(error){
         res.status(500).json({message: error.message})
