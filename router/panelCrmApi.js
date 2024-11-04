@@ -140,26 +140,26 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             return
         }
         if(faktorItem.status =="accept"){
-            buttons.push({title:"تایید",type:"button",color:"green",value:1})
+            buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1})
         }
         
         if(faktorItem.status =="needtobuild"){
             buttons=[
                 {title:"تولید کننده",parameter:"factory",
                     type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
+                {title:"ثبت درخواست",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="senttofactory"){
             buttons=[
-                {title:"تایید",type:"button",color:"yellow",value:1}
+                {title:"تایید",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="built"){
             buttons=[
                 {title:"کد محصول جدید",parameter:"newSku", require:true,
                     type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"yellow",value:1}
+                {title:"ثبت درخواست",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="send"){
@@ -170,24 +170,24 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                     type:"text",color:"silver",value:0},
                 {title:"شماره تماس پیک",parameter:"peykPhone",
                     type:"text",color:"silver",value:0},
-                {title:"ارسال مرسوله",type:"button",color:"blue",value:1}
+                {title:"ارسال مرسوله",type:"button",color:"#cacaca",value:1}
             ]
         }
         if(faktorItem.status =="built"){
             buttons=[
                 {title:"کد محصول",parameter:"newSku",
                     type:"text",color:"silver",value:0},
-                {title:"ثبت درخواست",type:"button",color:"green",value:1}
+                {title:"ثبت درخواست",type:"button",color:"lightgreen",value:1}
             ]
         }
         if(faktorItem.status =="waitnig"){
             buttons=[
-                {title:"تایید",type:"button",color:"green",value:1}
+                {title:"تایید",type:"button",color:"lightgreen",value:1}
             ]
         }
         if(faktorItem.status =="delivered"){
             buttons=[
-                {title:"ثبت ته حساب",type:"button",color:"green",value:1}
+                {title:"ثبت ته حساب",type:"button",color:"lightgreen",value:1}
             ]
         }
         
