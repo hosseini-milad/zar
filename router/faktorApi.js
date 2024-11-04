@@ -100,7 +100,7 @@ router.post('/list-product', async (req,res)=>{
 router.post('/fetch-product', async (req,res)=>{
     const sku = req.body.sku
     try{
-        var productData = await productSchema.findOne({sku:sku})
+        var productData = await productSchema.findOne({sku:sku}).lean()
         if(!productData.isMojood){
             const productTemp = await productSchema.findOne(
             {masterSku:sku, isMojood:true,imageUrl:{$exists:true}}).lean()
