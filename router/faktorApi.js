@@ -414,11 +414,12 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         weight:req.body.weight,
         ayar:req.body.ayar,
         title:req.body.title,
+        price:req.body.price,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
     try{
-        const cartItems = await CreateCartPurchase(data.ayar,userId,data.weight)
+        const cartItems = await CreateCartPurchase(data.ayar,userId,data.weight,data.price)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return
