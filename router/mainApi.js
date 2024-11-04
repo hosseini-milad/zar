@@ -88,6 +88,7 @@ router.use('/panel/crm',CRMPanelApi)
                 [from,to]
             }
         )
+        console.log(customerList)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0

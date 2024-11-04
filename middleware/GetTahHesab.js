@@ -4,7 +4,7 @@ const { TAH_HESAB_URL,TAH_HESAB_TOKEN} = process.env;
 
 const GetTahHesab=async(body)=>{
     var header = {"Authorization":TAH_HESAB_TOKEN,"Content-Type":"application/json"}
-    console.log(JSON.stringify(body))
+    
     var response = ''; 
     const agent = new https.Agent({
         rejectUnauthorized: false 
@@ -12,7 +12,9 @@ const GetTahHesab=async(body)=>{
     try{   response = await fetch(TAH_HESAB_URL,
             {method: 'POST' ,header:header, agent,
         body:JSON.stringify(body)});
+        console.log(header)
         const result = await response.json();
+        console.log(result)
          return(result)
     } 
     catch(error){

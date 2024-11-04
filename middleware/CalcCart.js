@@ -11,7 +11,13 @@ const CalcCart=async(userId)=>{
     const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
         unitPrice = cartDetails[c].unitPrice
-        totalPrice += parseFloat(cartDetails[c].price)
+        var cartPrice = parseFloat(cartDetails[c].price)
+        if(cartDetails[c].purchase){
+            totalPrice -= cartPrice
+        }
+        else 
+            totalPrice += cartPrice 
+        
         totalWeight += parseFloat(cartDetails[c].weight&&
             cartDetails[c].weight.replace(/\//g,'.'))
     }
@@ -20,7 +26,7 @@ const CalcCart=async(userId)=>{
             "unitPrice": unitPrice,
             "cartDiscount": 0,
             "cartPrice": totalPrice,
-            "cartWeight": NormalNumber(totalWeight)
+            "cartWeight": totalWeight
         }
     })
 }

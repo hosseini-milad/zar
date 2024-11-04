@@ -46,6 +46,7 @@ const NormalNumber = require('../middleware/NormalNumber');
 const RegisterFaktorItem = require('../middleware/RegisterFaktorItem');
 const GetTahHesab = require('../middleware/GetTahHesab');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
+const CreateCartPurchase = require('../middleware/CreateCartPurchase');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -328,10 +329,16 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
 
 router.get('/recalc-cart',auth, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const userData = await customers.findOne({_id:ObjectID(userId)})
     try{ 
         await CalcCartRecalc(userId)
+        const clientRemain = userData&&await GetTahHesab(
+            {"getmandehesabbycode":[userData.cCode]}
+        )
         const cartDetails = await CalcCart(userId)
-        res.json({message:"cart recalculated",...cartDetails})
+
+        res.json({message:"cart recalculated",...cartDetails,
+            clientRemain,userData,userId})
     }
     catch(error){ 
         res.status(500).json({message: error.message})
@@ -378,6 +385,35 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
         const cartData = await cart.find({userId:userId})
         
         const cartItems = await CreateCart(cartData,data.sku,userId)
+        if(cartItems.error){
+            res.status(400).json({error:cartItems.error})
+            return
+        }
+        else{
+            const cart = await CalcCart(userId)
+            res.json({...cart,message:"آیتم اضافه شد"})
+            return
+        } 
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    
+    const data={
+        userId:userId,
+        purchase:req.body.purchase,
+        weight:req.body.weight,
+        ayar:req.body.ayar,
+        date:req.body.date?req.body.date:Date.now(),
+        progressDate:Date.now()
+    }
+    try{
+        const cartItems = await CreateCartPurchase(data.ayar,userId,data.weight)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return

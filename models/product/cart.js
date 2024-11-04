@@ -11,6 +11,7 @@ const CartSchema = new Schema({
     sku:{type:String},
     isMojood:{type:Boolean},
     isReserve:{type:Boolean},
+    purchase:{type:Boolean},
     fullPrice:{type:String},
     priceDetail:{ type: Object },
     weight:{type:String},
