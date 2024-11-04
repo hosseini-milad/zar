@@ -369,21 +369,7 @@ function CustomerGeneral(props) {
               </textarea>
             </div>
           </div>
-          {userData.agent ? (
-            <div
-              className="delete-user-btn formal-btn"
-              onClick={() => setFormal(1)}
-            >
-              رسمی کردن مشتری
-            </div>
-          ) : (
-            <div
-              className="delete-user-btn formal-btn"
-              onClick={() => setFormal(1)}
-            >
-              غیر رسمی کردن
-            </div>
-          )}
+          
 
           <ErrorShow message={error.errorText} color={error.errorColor} />
           {formalShow ? (
