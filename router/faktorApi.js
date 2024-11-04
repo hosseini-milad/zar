@@ -67,6 +67,7 @@ router.post('/list-product', async (req,res)=>{
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     const search = req.body.search
     const weight=req.body.weight
+    const category=req.body.category
     const isMojood = req.body.isMojood?req.body.isMojood:false
     try{
    
@@ -76,8 +77,8 @@ router.post('/list-product', async (req,res)=>{
                 {title:{$regex: search, $options : 'i'}}
             ]}:{}},
             {$match:{imageUrl:{$exists:true}}},
-            { $match:data.category?{categories:{$elemMatch:
-                {catCode:data.category}}}:{}},
+            { $match:category?{categories:{$elemMatch:
+                {catCode:category}}}:{}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
