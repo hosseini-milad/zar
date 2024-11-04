@@ -65,7 +65,7 @@ router.post('/list-product', async (req,res)=>{
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
     const search = req.body.search
     const weight=req.body.weight
-    const isMojood = req.body.isMojood?req.body.isMojood:true
+    const isMojood = req.body.isMojood?req.body.isMojood:false
     try{
    
         const products = await productSchema.aggregate([
