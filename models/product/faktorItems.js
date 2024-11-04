@@ -31,6 +31,7 @@ const FaktorItems = new Schema({
     weight:{ type: String },
     newWeight:{ type: String },
     title:{ type: String },
+    purchaseType:{type:String},
 
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
