@@ -333,7 +333,7 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
     }
 })
  
-router.get('/recalc-cart',auth, async (req,res)=>{
+router.post('/recalc-cart',auth, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     const userData = await customers.findOne({_id:ObjectID(userId)})
     try{ 
