@@ -76,6 +76,8 @@ router.post('/list-product', async (req,res)=>{
                 {title:{$regex: search, $options : 'i'}}
             ]}:{}},
             {$match:{imageUrl:{$exists:true}}},
+            { $match:data.category?{categories:{$elemMatch:
+                {catCode:data.category}}}:{}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
@@ -414,12 +416,13 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         weight:req.body.weight,
         ayar:req.body.ayar,
         title:req.body.title,
+        purchaseType:req.body.purchaseType,
         price:req.body.price,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
     try{
-        const cartItems = await CreateCartPurchase(data.ayar,userId,data.weight,data.price)
+        const cartItems = await CreateCartPurchase(data,userId)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return
