@@ -6,11 +6,11 @@ const CalcPrice = require("./CalcPrice");
 const CalcPurchase = require("./CalcPurchase");
 const FindPrice = require("./FindPrice");
 
-const CreateCartPurchase=async(ayar,userId,weight,price)=>{
+const CreateCartPurchase=async(ayar,userId,weight,priceFix)=>{
     
     const priceRaw = await FindPrice()
     const priceDetail = CalcPurchase(ayar,priceRaw,weight)
-    const price = price?price:priceDetail.price
+    const price = priceFix?priceFix:priceDetail.price
     await cart.create({
         title:"خرید متفرقه",
         weight:weight,
