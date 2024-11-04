@@ -32,7 +32,12 @@ const CalcCart=async(userId,remainRaw)=>{
             "cartWeight": totalWeight,
             "remainUser":remain,
             "finalPrice":totalPrice-remain
-        }
+        },
+        purchaseType:[
+            {title:"خرید متفرقه",id:1,unitPrice:unitPrice},
+            {title:"خرید آبشده",id:2,unitPrice:unitPrice},
+            {title:"خرید سکه",id:3,unitPrice:unitPrice}
+        ]
     })
 }
 

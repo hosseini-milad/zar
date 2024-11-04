@@ -16,6 +16,7 @@ const CartSchema = new Schema({
     priceDetail:{ type: Object },
     weight:{type:String},
     title:{type:String},
+    purchaseType:{type:String},
     price:{type:String},
     unitPrice:{type:String}
 })
