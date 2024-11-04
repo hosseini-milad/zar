@@ -5,24 +5,35 @@ import ProductQuickDetail from "./ProductComponent/ProductQuickDetail"
 
 function ProductTableRow(props){
   const [openOption,setOpenOption] = useState(0)
-  const [checkState,setCheckState] = useState(false)
   const [Count,setCount] = useState("")
   const activeAcc = props.index===props.detail
   const product=props.product
-  const stockId=props.stockId
-  const token = props.token
+  const selectItems = props.selectItems
+  var index = props.index
+  
+  const updateCheckBox=(e)=>{
+    props.setSelectItems(existingItems => {
+      return [
+        ...existingItems.slice(0, index),
+        e.target.checked?product.sku:false,
+        ...existingItems.slice(index + 1),
+      ]
+    })
+  }
+
+  
   return(<React.Fragment>
         <tr 
             className={activeAcc?"activeAccordion":"accordion"}>
               <td className="checkBoxStyle">
-              <input type="checkbox" name="" id="" checked={checkState}
-              onChange={(e)=>setCheckState(checkState?false:true)}/>
+              {product.isMaster?<></>:<input type="checkbox" checked={selectItems[index]}
+              onChange={(e)=>updateCheckBox(e)}/>}
               </td>
             
               <td>
               <div className="cu-avatar">
                   <img src={product.thumbUrl?(env.siteApiUrl+product.thumbUrl):env.defaultProduct} 
-                  alt={product?product.title:"default"}/>
+                  alt={product?product.title:"default"} className={product.isMaster?"masterImage":"slaveImage"}/>
                   <div className="cu-name" onClick={()=>
                   window.location.href="/products/detail/"+product._id}>
                     <p className="name">{product.title}</p>
@@ -35,7 +46,9 @@ function ProductTableRow(props){
               
               <td>
                 <div className="order-price">
-                  <p>{normalPriceCount(product.price&&product.price)}</p>
+                  <p>{product.categories&&product.categories.map((cat,i)=>(
+                    <small key={i}>{cat.title} | </small>
+                  ))}</p>
                 </div>
               </td>
               <td>

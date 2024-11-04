@@ -22,6 +22,7 @@ function OrderHolder(props) {
   const [products, setProduct] = useState();
   const [payValue, setPayValue] = useState(defPay);
   const [error, setError] = useState({ message: "", color: "brown" });
+  const [tab,setTab] = useState(0)
   const access = CheckAccess(token,"orders")
   console.log(access)
   useEffect(() => {
@@ -34,10 +35,7 @@ function OrderHolder(props) {
         userId: token && token.userId,
       },
       body: JSON.stringify({
-        userId: user? user.Code
-            ? user.Code
-            : user._id
-          : '',
+        userId: user&&user._id
       }),
     };
     fetch(env.siteApi + "/panel/faktor/cart", postOptions)
@@ -109,7 +107,7 @@ function OrderHolder(props) {
       );
   }, [appFilter]);
   return (
-    <div className="sharif" style={{ direction: "rtl" }}>
+    <div className="sharif new-sharif" style={{ direction: "rtl" }}>
       <header className="sharif-order-header">
         <OrderHeader
           lang={props.lang}
@@ -121,16 +119,16 @@ function OrderHolder(props) {
           setUser={setUser}
           setFilters={setFilters}
         />
-        <OrderFilters
+        {/* <OrderFilters
           grid={grid}
           setFilters={setFilters}
           filters={filters}
           setAppFilter={setAppFilter}
           appFilter={appFilter}
-        />
+        /> */}
       </header>
       <main className="sharif-order-main">
-        {filters && (filters.brand || filters.category) ? (
+        {/* {filters && (filters.brand || filters.category) ? (
           <ProductList
             filters={filters}
             products={products}
@@ -142,29 +140,31 @@ function OrderHolder(props) {
           />
         ) : (
           <></>
-        )}
+        )} */}
         {user ? (
           <QuickCartHolder
+            tab={tab}
+            setTab={setTab}
             token={token}
             user={user}
             canEdit={1}
             payValue={payValue}
             setPayValue={setPayValue}
-            cart={cart && cart.quickCart}
+            cart={cart && cart.cart}
             setCart={setCart}
             setError={setError}
-            cartDetail={cart && cart.qCartDetail}
+            cartDetail={cart && cart.cartDetail}
           />
         ) : (
           <></>
         )}
-        <PreQuickHolder token={token} user={user} cart={cart} />
+        {/* <PreQuickHolder token={token} user={user} cart={cart} />
         
         {(cart&&cart.isSale)?
-      <PreOrderSale token={token} user={user}
-      cart={cart} access={access}/>:
-      <PreOrderHolder token={token} user={user}
-        cart={cart}/>}
+        <PreOrderSale token={token} user={user}
+        cart={cart} access={access}/>:
+        <PreOrderHolder token={token} user={user}
+          cart={cart}/>} */}
       </main>
       {error && error.message ? (
         <ShowError

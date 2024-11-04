@@ -28962,22 +28962,23 @@ pre[class*="language-"] {
     justify-content: center;
     flex-direction: column;
 
-    .user-info{
+    .user-info {
+      margin: 0;
       margin-top: auto;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       flex-direction: row;
-      gap:0.5rem;
+      gap: 0.5rem;
       flex-wrap: wrap;
 
-      p{
-        font-size:1.2rem;
+      p {
+        font-size: 1.2rem;
         color: black;
         font-weight: 600;
+        margin: 0;
       }
-      
     }
 
     .container {
@@ -28988,13 +28989,14 @@ pre[class*="language-"] {
       width: 100%;
       gap: 2rem;
 
-      p{
-        margin:0;
+      p {
+        margin: 0;
         color: black;
         font-weight: 600;
       }
 
-      .date,.number{
+      .date,
+      .number {
         display: flex;
         width: 100%;
         align-items: flex-start;
@@ -29003,15 +29005,14 @@ pre[class*="language-"] {
     }
   }
 }
-.zar-print .main{
+.zar-print .main {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
 
-
-  table{
+  table {
     width: 100%;
     margin-inline: auto;
     display: table;
@@ -29022,27 +29023,181 @@ pre[class*="language-"] {
     border-collapse: inherit;
   }
 }
-.zar-print .main table thead{
-
-  tr{
+.zar-print .main table thead {
+  tr {
     overflow: hidden;
   }
-  th{
+  th {
     color: black;
     text-align: center;
     padding: 0.5rem;
     border: 1px solid grey;
-    background-color:#d4c8b6;
+    background-color: #d4c8b6;
     height: 30px;
+  }
+}
+.zar-print .main table tbody {
+  border-radius: 1rem;
+
+  td {
+    color: black;
+    text-align: center;
+    padding: 0.2rem;
+    border-right: 1px solid black;
+  }
+  td:first-child {
+    border: unset;
+  }
+  .xsmall-td {
+    width: 2%;
+  }
+  .small-td {
+    width: 10%;
+  }
+  .meduim-td {
+    width: 15%;
+  }
+  .larg-td {
+    width: 24%;
+  }
+}
+.zar-print .main .more-info {
+  width: 100%;
+  margin: 1rem auto;
+  border: 1px solid grey;
+  background-color: #d4c8b6;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 45px;
+
+  .zar-box {
+    border-right: 1px solid grey;
+    width: calc(100% / 3);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      margin: 0;
+      color: black;
+      font-weight: 600;
+    }
+  }
+  .first-box {
+    border: unset;
+    justify-content: space-between;
+  }
+}
+.zar-print .main .gold-info{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+
+  .zar-box{
+    border: 1px solid grey;
+    width: calc(100% / 2.02);
+    border-radius: 1rem;
+    height: 100px;
+  }
+}
+.zar-print .main .gold-info .gold-day{
+  padding: 0.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 1rem;
+  .date{
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    right: 0;
+    margin-inline:auto;
+  }
+  .zar-box-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    p{
+      margin: 0;
+    }
+  }
+}
+.zar-print .main .gold-info .history{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  
+  .zar-box-item{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .zar-box-item:first-child{
+    border-bottom: 1px solid grey;
+  }
+  .content{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid grey;
+    height: 100%;
+
+    p{
+      margin: 0;
+    }
+  }
+  .title{
+    width: 20%;
+    border: unset;
+
+    p{
+      margin: 0;
+    }
   }
 
 }
-.zar-print .main table tbody{
-  border-radius: 1rem;
-
-  td{
-    color: black;
-    text-align: center;
-    padding: 0.5rem;
+.zar-print .footer{
+  width: 100%;
+  display: flex;
+  flex-direction:column;
+  margin-top: 2rem;
+  .title{
+    width: 100%;
+    text-align: right;
+  }
+  .container{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 150px;
+    .item{
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-direction: column;
+      p{
+        margin: 0;
+        color: black;
+      }
+    }
+    .sign-item{
+      justify-content: flex-end;
+    }
   }
 }

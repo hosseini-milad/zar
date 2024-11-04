@@ -20,6 +20,7 @@ function CustomerDetailHolder(props) {
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [userData, setUserData] = useState();
   const [tabIndex, setTabIndex] = useState(0);
+  const [groupList, setGroupList] = useState();
   const token = cookies.get(env.cookieName);
 
   useEffect(() => {
@@ -37,6 +38,7 @@ function CustomerDetailHolder(props) {
       .then(
         (result) => {
           setUserData(result.data);
+          setGroupList(result.groupList)
         },
         (error) => {
           console.log(error);
@@ -60,6 +62,7 @@ function CustomerDetailHolder(props) {
         {tabIndex === 0 ? (
           <CustomerGeneral
             direction={direction}
+            groupList={groupList}
             token={token}
             lang={lang}
             userData={userData}

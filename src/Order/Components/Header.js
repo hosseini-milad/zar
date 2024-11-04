@@ -108,7 +108,7 @@ function OrderHeader(props) {
       {/*<button onClick={() => gotToOpenOrders()} className="view-open-order">
         سفارشهای باز
       </button>*/}
-      <div className="view-btn-wrapper">
+      {/* <div className="view-btn-wrapper">
         <label
           htmlFor="list-view"
           className={props.grid ? "list-btn view-active" : "list-btn"}
@@ -125,7 +125,7 @@ function OrderHeader(props) {
           <i className="fa-solid fa-table no-font"></i>
         </label>
         <input type="radio" name="view" id="tile-view" />
-      </div>
+      </div> */}
       {showDrop ? (
         <div className="f-customer-dropdpwn">
           {customers &&

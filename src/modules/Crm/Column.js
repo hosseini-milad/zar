@@ -56,6 +56,7 @@ function Column(props){
                             crm={props.crm}
                             setBoardArray={props.setBoardArray}
                             action={action} 
+                            setLoading={props.setLoading}
                             index={i}/>
                     ))}
                 {provided.placeholder}

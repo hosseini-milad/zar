@@ -7121,3 +7121,10 @@ table {
 }
 
 /* end of profile css  -----------------------------------------*/
+
+.masterImage{
+  border:3px solid chocolate;
+}
+.slaveImage{
+  border:3px solid khaki;
+}

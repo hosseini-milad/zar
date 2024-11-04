@@ -88,7 +88,7 @@ function QuickActions(props){
     },[props.payValue])
     return(
     <div className="btn-wrapper">
-        <button type="button" className="product-table-btn pay-metod-btn">
+        {/* <button type="button" className="product-table-btn pay-metod-btn">
             <div className={props.payValue==3?"cash-pay display-on":"cash-pay"}
                 onClick={()=>props.setPayValue(4)}>
             <p>نقدی</p>
@@ -99,7 +99,7 @@ function QuickActions(props){
             <p>غیرنقدی</p>
             <i className="fa-solid fa-credit-card"></i>
             </div>
-        </button>
+        </button> */}
         <button type="button" className="product-table-btn"
         onClick={()=>setShowDesc(1)}>
             <p>توضیحات</p><i className="fa-solid fa-comment"></i>

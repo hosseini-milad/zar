@@ -14,16 +14,15 @@ function QuickTotal(props){
           headers: { 'Content-Type': 'application/json' ,
           "x-access-token": token&&token.token,
           "userId":token&&token.userId},
-          body:JSON.stringify({userId:user?user.Code?user.Code:
-              user._id:(token&&token.userId)})
+          body:JSON.stringify({userId:user&&user._id})
         }
         //console.log(postOptions)
-      fetch(env.siteApi + "/panel/faktor/quick-to-cart",postOptions)
+      fetch(env.siteApi + "/panel/faktor/cart-to-faktor",postOptions)
       .then(res => res.json())
       .then(
           (result) => {
               if(!result.error){
-                  props.setError({message:"کالا اضافه شد",color:"green"})
+                  props.setError({message:result.message,color:"green"})
                   setTimeout(()=>props.setError({message:"",color:"brown"}),2000)
                   props.setCart(result)
                   setLoading(0)
@@ -46,8 +45,8 @@ function QuickTotal(props){
   else return(
     <div className="total-amount">
       <div className="t-wrapper">
-        <p>تعداد</p>
-        <p>{qCart.totalCount}</p>
+        <p>وزن کل</p>
+        <p>{qCart.cartWeight}</p>
       </div>
       <div className="t-wrapper">
         <p>مجموع فاکتور</p>
@@ -55,7 +54,7 @@ function QuickTotal(props){
       </div>
       <div className="t-wrapper">
         <p>تخفیف</p>
-        <p>{normalPriceRound(qCart.totalDiscount,1)||"-"}</p>
+        <p>{normalPriceRound(qCart.cartDiscount)||"-"}</p>
       </div>
       <div className="t-wrapper">
         <p>مالیات</p>
@@ -63,7 +62,7 @@ function QuickTotal(props){
       </div>
       <div className="t-wrapper">
         <p>مبلغ کل </p>
-        <p>{normalPriceRound(qCart.totalPrice)}</p>
+        <p>{normalPriceRound(qCart.cartPrice)}</p>
       </div>
       {props.action?<></>:
       !0?<button type="button" className="product-table-btn temp-btn"

@@ -1627,3 +1627,7 @@ dialog {
   margin: 0;
   font-weight: 600;
 }
+
+.single-product-table .product-tr td:first-child{
+  display: none;
+}

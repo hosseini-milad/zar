@@ -7,14 +7,13 @@ import QuickCounter from "./QuickCounter"
 
 function QuickRow(props){
     const data = props.data
-    console.log(data)
     
     return(<>
         <tr className="product-tr">
             <td data-cell="ردیف">
             <p>{props.index}</p>
             </td>
-            <td data-cell="شرح">
+            <td data-cell="نام کالا">
             <div className="product-title">
                 {/* <img src="/img/business/oil1.png" alt="avatar"/> */}
                 <div className="product-name">
@@ -29,7 +28,10 @@ function QuickRow(props){
             <td data-cell="وزن">
             <p>{data.weight+"g"}</p>
             </td>
-            <td data-cell="مبلغ کل">
+            <td data-cell="اجرت">
+            <p>{normalPriceCount(data.priceDetail.ojratPrice)}</p>
+            </td>
+            <td data-cell="قیمت نهایی(ریال)">
             <p>{normalPriceCount(data.price)}</p>
             </td>
         </tr>

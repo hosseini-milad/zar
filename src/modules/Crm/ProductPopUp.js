@@ -13,7 +13,6 @@ function ProductPopUp(props){
     const [content,setContent] = useState()
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
-    console.log(data)
     
     
     
@@ -22,27 +21,34 @@ function ProductPopUp(props){
         <div className="modal-backdrop show-modal">
             <div className="task-popup fullPopUp">
                 <div className="orderModalTitle">
-                    {data.username} 
+                    <span>{data.cName} </span>
                     <sub>({data.phone})</sub>
                     <span> شماره سفارش: {data.faktorNo}</span>
                     <div className="address-status">
                          آدرس:  
                     {(props.customer&&props.customer[0])?
                         props.customer[0].Address:"-"} </div>
-                    </div>
+                </div>
+                <div className="orderModalDate">
+                <p className="date">{new Date(data.initDate)
+                  .toLocaleDateString('fa')}</p>
+                  <p className="time">{new Date(data.initDate)
+                  .toLocaleTimeString('fa')}</p>
+                </div>
                 <i className="fa fa-remove closeModal" 
                     onClick={props.close}></i>
-                <div className="sharif" style={{padding: "70px 10px 10px"}}>
+                <div className="sharif pop-sharif" style={{padding: "70px 10px 10px"}}>
                     <main className="sharif-order-main">
-                        <section className="admin-table-sec ">
+                        <section className="admin-table-sec single-product-table">
                             <table>
                                 <tbody>
                                     <tr>
-                                        <th data-cell="ردیف"><p>ردیف</p></th>
-                                        <th data-cell="شرح"><p>شرح</p></th>
+                                        
+                                        <th data-cell="نام کالا"><p>نام کالا</p></th>
                                         <th data-cell="عیار"><p>عیار</p></th>
                                         <th data-cell="وزن"><p>وزن</p></th>
-                                        <th data-cell="مبلغ(ریال)"><p>ریال</p></th>
+                                        <th data-cell="اجرت"><p>اجرت</p></th>
+                                        <th data-cell="قیمت نهایی(ریال)"><p>قیمت نهایی(ریال)</p></th>
                                         </tr>
                                     {data?
                                     
@@ -60,9 +66,9 @@ function ProductPopUp(props){
                 </div>
             {props.access&&props.access==="edit"?
             <div className="crmAction">
-                <TaskBtns content={content} token={token}
+                <TaskBtns content={content} token={token} setError={setError}
                 data={props.data} setBoard={(e)=>props.setBoardArray(e)}
-                close={props.close}/>
+                close={props.close} setLoading={props.setLoading}/>
             </div>:<></>}
             </div>
             

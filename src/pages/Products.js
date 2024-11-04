@@ -14,6 +14,7 @@ import {
   defaultFilterValues,
   handleFilterChange,
 } from "../utils/filterUtils"; // Import the utility functions
+import ProductMaster from "../modules/Products/ProductComponent/ProductMaster";
 
 const cookies = new Cookies();
 
@@ -24,7 +25,7 @@ function Products(props) {
   const [filters, setFilters] = useState(
     getFiltersFromUrl() || { active: "1" }
   );
-  const [tempProduct, setTempProduct] = useState("");
+  const [selectItems,setSelectItems] = useState([])
   const [loading, setLoading] = useState(0);
   const [counter, setCounter] = useState(0);
   const [store,setStore] = useState(-1)
@@ -47,7 +48,7 @@ function Products(props) {
       store: filters.store,
       exist:filters.exist,
       brand: filters.brand,
-      brandId: filters.brandid,
+      catId: filters.catid,
       dateFrom: filters.date && filters.date.dateFrom,
       dateTo: filters.date && filters.date.dateTo,
       access: "manager",
@@ -75,16 +76,7 @@ function Products(props) {
         }
       );
   }, [filters]);
-  const RefreshItems = async () => {
-    const productList = content.full;
-    setCounter(content.full.length);
-    /*for(var i=0;i<productList.length;i++){
-      const outData =await fetchData(productList[i].sku)
-      if(outData&&outData.success){
-        updateSite(productList[i]._id,outData)
-      }
-    }*/
-  };
+
   useEffect(() => {
     if (!content || !content.full) {
       setCounter(0);
@@ -159,6 +151,8 @@ function Products(props) {
         }
       );
   };
+
+  console.log(selectItems)
   //window.scrollTo(0, 270);},[pageNumber,filters,perPage,refreshTable])
   return (
     <div className="user" style={{ direction: direction }}>
@@ -171,15 +165,12 @@ function Products(props) {
         <div className="od-header-btn">
           <div
             className="edit-btn add-btn"
-            onClick={() => (window.location.href = "/products/detail/new")}
-          >
+            onClick={() => (window.location.href = "/products/detail/new")} >
             <i className="fa-solid fa-plus"></i>
             <p>{tabletrans.addNew[lang]}</p>
           </div>
-          <div className="edit-btn" onClick={() => RefreshItems()}>
-            <i className="fa-solid fa-refresh"></i>
-            <p>{tabletrans.update[lang]}</p>
-          </div>
+          <ProductMaster masterList={content.masterList} selectItems={selectItems}
+          token={token}/>
         </div>
       </div>
       <div className="list-container">
@@ -188,7 +179,7 @@ function Products(props) {
           setStore={setStore}
           setFilters={handleFilterChange}
           updateUrlWithFilters={updateUrlWithFilters} // Pass the function as a prop
-          options={content.brands}
+          catList={content.catList}
           filters={filters}
           currentFilters={filters}
         />
@@ -196,7 +187,8 @@ function Products(props) {
           {loading ? (
             env.loader
           ) : (
-            <ProductTable product={content} lang={lang} store={store} token={token}/>
+            <ProductTable product={content} lang={lang} store={store} 
+            token={token} selectItems={selectItems} setSelectItems={setSelectItems}/>
           )}
         </div>
         <Paging

@@ -26,23 +26,16 @@ function TaskData(props){
                     </div>*/}
             <div className="footerTask" onClick={()=>props.setTaskPop(1)}>
                 <ul className="footerIcons">
-                    {taskData.content?
-                        <li title={taskData.content}>
-                            <i className="fa fa-footer fa-comment-o"></i>
-                        </li>:<></>}
+                    {taskData.factory?
+                        <li title={taskData.factory}>
+                            <i className="fa fa-footer fa-filter"></i>
+                            <small>{taskData.factory}</small>
+                        </li>:<>_</>}
 
-                    {taskData.dueDate?
+                    {taskData.peykPhone?
                         <li><i className="fa fa-footer fa-calendar"></i>
-                        {taskData.dueDate.month+"/"+
-                        taskData.dueDate.day}</li>:<></>}
-                    {taskData.checkList&&taskData.checkList.length?
-                    <li><i className="fa fa-footer fa-list"></i>
-                        {taskData.checkList.filter(item=>item.status).length}/
-                        {taskData.checkList.length}
+                        {taskData.peykName}</li>:<>_</>}
                     
-                    {
-                    
-                    }</li>:<></>}
                 </ul>
             </div>
             {taskData.result&&taskData.result.Number?

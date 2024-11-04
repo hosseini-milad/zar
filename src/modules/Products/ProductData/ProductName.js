@@ -138,16 +138,16 @@ function ProductName(props){
                   </div>
               <hr/>
               
-              {/* <div className="images">
+              <div className="images">
                 <h5>{tabletrans.images[props.lang]}</h5>
                 <ImageSimple cardName="Input Image" imageGallery={[]} 
                     setImage={setImage} setImageUrl={setImageUrl} part={1}
                     setThumb={setThumb}/>
                 <img src={props.productChange.imageUrl?env.siteApiUrl+props.productChange.imageUrl:
-                  (content?(env.siteApiUrl+content.imageUrl):'')} 
+                  (content?(env.siteApiUrl+content.thumbUrl):'')} 
                   alt={content?content.title:env.default}/>
                   
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

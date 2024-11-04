@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import StyleInput from "../../../components/Button/Input";
-import env from "../../../env";
+import env, { notNull } from "../../../env";
 import formtrans from "../../../translate/forms";
 import CustomerAvatar from "../CustomerComponent/CustomerAvatar";
 import ErrorShow from "../../../components/Button/ErrorShow";
@@ -15,7 +15,7 @@ function CustomerGeneral(props) {
   const [formData, setFormData] = useState({ active: "false" }); // Initialize active as a string
   const [error, setError] = useState({ errorText: "", errorColor: "brown" });
   const [formalShow, setFormal] = useState(0);
-  console.log(userData)
+  console.log(props.groupList)
   useEffect(() => {
     // Initialize formData.active with userData.active when userData changes
     if (userData && userData.active) {
@@ -190,41 +190,15 @@ function CustomerGeneral(props) {
              <StyleInput
               title={formtrans.name[props.lang]}
               direction={props.direction}
-              defaultValue={userData.cName}
+              defaultValue={userData.username}
               class={"formInput"}
               action={(e) =>
                 setFormData((prevState) => ({
                   ...prevState,
-                  cName: e,
+                  username: e,
                 }))
               }
             />
-            <StyleInput
-              title={formtrans.fname[props.lang]}
-              direction={props.direction}
-              defaultValue={userData.sName}
-              class={"formInput"}
-              action={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  sName: e,
-                }))
-              }
-            />
-
-            <StyleInput
-              title={formtrans.emailAddress[props.lang]}
-              direction={props.direction}
-              defaultValue={userData.email}
-              class={"formInput"}
-              action={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  email: e,
-                }))
-              }
-            />
-
             <StyleInput
               title={formtrans.phoneNumber[props.lang]}
               direction={props.direction}
@@ -249,19 +223,6 @@ function CustomerGeneral(props) {
                 }))
               }
             />
-            <StyleInput
-              title={formtrans.EmergencyContact[props.lang]}
-              direction={props.direction}
-              defaultValue={userData.urgCall}
-              class={"formInput"}
-              action={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  urgCall: e,
-                }))
-              }
-            />
-
             <StyleInput
               title={formtrans.customercode[props.lang]}
               direction={props.direction}
@@ -361,15 +322,17 @@ function CustomerGeneral(props) {
             <span style={{ whiteSpace: "pre-wrap" }}></span>
 
             <StyleSelect
-              title={"حقوقی/حقیقی"}
+              title={"گروه بندی"}
               direction={props.direction}
-              defaultValue={userData.activity}
+              defaultValue={userData.group}
               class={"formInput"}
-              options={["حقیقی", "حقوقی"]}
+              label="group"
+              options={notNull(props.groupList,"group")}
               action={(e) =>
                 setFormData((prevState) => ({
                   ...prevState,
-                  activity: e,
+                  groupCode: e.groupCode,
+                  group:e.group
                 }))
               }
             />
