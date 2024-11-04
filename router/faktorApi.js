@@ -435,6 +435,15 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/find-purchase-price',jsonParser, async (req,res)=>{
+    const priceRaw = await FindPrice()
+    const data={
+        ayar:req.body.ayar,
+        weight:req.body.weight
+    }
+    const priceDetail = CalcPurchase(data.ayar,priceRaw,data.weight)
+    res.json(priceDetail)
+    })
 router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
     const id=req.body.id
     const sku = req.body.sku
