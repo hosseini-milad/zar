@@ -10,11 +10,10 @@ const GetTahHesab=async(body)=>{
         rejectUnauthorized: false 
     })
     try{   response = await fetch(TAH_HESAB_URL,
-            {method: 'POST' ,header:header, agent,
+            {method: 'POST' ,headers:header, agent,
         body:JSON.stringify(body)});
-        console.log(header)
         const result = await response.json();
-        console.log(result)
+        
          return(result)
     } 
     catch(error){

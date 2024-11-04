@@ -47,6 +47,8 @@ const RegisterFaktorItem = require('../middleware/RegisterFaktorItem');
 const GetTahHesab = require('../middleware/GetTahHesab');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const CreateCartPurchase = require('../middleware/CreateCartPurchase');
+const CalcPurchase = require('../middleware/CalcPurchase');
+const ClientStatus = require('../middleware/ClientStatus');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -327,7 +329,7 @@ router.post('/update-category',jsonParser,auth, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-
+ 
 router.get('/recalc-cart',auth, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     const userData = await customers.findOne({_id:ObjectID(userId)})
@@ -336,10 +338,11 @@ router.get('/recalc-cart',auth, async (req,res)=>{
         const clientRemain = userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         )
-        const cartDetails = await CalcCart(userId)
+        const clientStatus = ClientStatus(clientRemain)
+        const cartDetails = await CalcCart(userId,clientStatus.remain)
 
         res.json({message:"cart recalculated",...cartDetails,
-            clientRemain,userData,userId})
+            clientStatus})
     }
     catch(error){ 
         res.status(500).json({message: error.message})
@@ -410,6 +413,7 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         purchase:req.body.purchase,
         weight:req.body.weight,
         ayar:req.body.ayar,
+        title:req.body.title,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
@@ -504,7 +508,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
-
+            
         }
 
         const faktorData = {
@@ -522,6 +526,83 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
         res.json({faktorNo:faktorNo,message:"سفارش ثبت شد"})
+        return
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.get('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    try{
+        const priceRaw = await FindPrice()
+        const userData = await customers.findOne({_id:userId})
+        const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
+        const faktorNo = await NewCode("z"+userCode)
+        const cartDetail = await CalcCart(userId)
+        
+        var TAX = await tax.findOne().sort({date:-1})
+        var PRE = await prepaid.findOne().sort({date:-1})
+        var totalPrice = 0
+        var totalWeight = 0
+        var totalFull = 0
+        if(!cartDetail.cart||!cartDetail.cart.length){
+            res.status(400).json({error:"سبد خرید خالی است"})
+            return
+        }
+        for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
+            var cartItem = cartDetail.cart[i]
+            if(cartItem.purchase){
+                var priceDetail = cartItem.priceDetail
+                const cartItems = CalcPurchase(priceDetail.Ayar,
+                    priceRaw,priceDetail.weight.toString())
+                const price = cartItems.price
+                totalFull-=price
+                totalPrice-=price
+                totalWeight-= parseFloat(priceDetail.weight)
+                const { _id: _, ...newObj } = cartItem;
+                const faktorItem ={...newObj,faktorNo:faktorNo,
+                    price,unitPrice:priceRaw, status:"status",purchase:true,
+                    weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
+                await faktorItems.create(faktorItem)
+                await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
+            }
+            else{
+            const productDetail = await products.findOne({sku:cartItem.sku})
+            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const fullPrice = priceData.price
+            totalFull+=fullPrice
+            const price = cartItem.isReserve?
+                (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
+            totalPrice+=price
+            totalWeight+= parseFloat(productDetail&&productDetail.weight.replace( /\//g, '.'))
+            const { _id: _, ...newObj } = cartItem;
+            var status = cartItem.isReserve?"needtobuild":"accept"
+            await faktorItems.create({...newObj,faktorNo:faktorNo,
+                fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
+                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
+            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
+            }
+        }
+
+        const faktorData = {
+            faktorNo:faktorNo,
+            userId:userId, 
+            initDate:Date.now(),
+            progressDate:Date.now(),
+            status:"inprogress",
+            isActive:true, isEdit:false,
+            totalPrice:NormalNumber(totalPrice),
+            fullPrice:NormalNumber(totalFull),
+            totalWeight:totalWeight,
+            unitPrice:NormalNumber(priceRaw)
+        }
+        await faktor.create(faktorData)
+        await cart.deleteMany({userId:userId})
+        res.json({faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         

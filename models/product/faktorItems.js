@@ -39,7 +39,7 @@ const FaktorItems = new Schema({
 
     payStatus:{ type: String }, //unpaid, deposit , paid
     waitPay:{type:Boolean},
-
+    purchase:{type:Boolean,default:false},
     deposit:{ type: String },
     depositDate:{ type: Date },
     depositTransaction:{ type: String },
