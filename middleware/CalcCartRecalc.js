@@ -19,7 +19,8 @@ const CalcCartRecalc=async(userId)=>{
         var tempPrice = priceDetail.price
         
         await cart.updateOne({_id:ObjectID(cartDetails[c]._id)},
-            {$set:{price:tempPrice,unitPrice:priceRaw,progressDate:Date.now()}})
+            {$set:{price:tempPrice,unitPrice:priceRaw,
+                priceDetail:priceDetail&&priceDetail.priceDetail,progressDate:Date.now()}})
     }
     return(1)
 }
