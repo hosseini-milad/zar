@@ -440,6 +440,41 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const id = req.body.id
+    if(!id){
+        res.status(400).json({error:"کد سطر وارد نشده است"})
+        return
+    }
+    const data={
+        userId:userId,
+        weight:req.body.weight,
+        ayar:req.body.ayar,
+        title:req.body.title,
+        purchaseType:req.body.purchaseType,
+        price:req.body.price,
+        progressDate:Date.now()
+    }
+    try{
+        const cartItems = await cart.updateOne({_id:ObjectID(id)},
+            {$set:data})
+        if(cartItems.error){
+            res.status(400).json({error:cartItems.error})
+            return
+        }
+        else{
+            const cart = await CalcCart(userId)
+            res.json({...cart,message:"سبد بروز شد"})
+            return
+        } 
+        //const cartDetails = await findCartFunction(userId,req.headers['userid'])
+        
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.post('/find-purchase-price',jsonParser, async (req,res)=>{
     const priceRaw = await FindPrice()
     const data={
