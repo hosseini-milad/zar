@@ -344,7 +344,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
         const clientStatus = ClientStatus(clientRemain)
         const cartDetails = await CalcCart(userId,clientStatus.remain)
 
-        res.json({message:"cart recalculated",...cartDetails,
+        res.json({message:"سبد بروز شد",...cartDetails,
             clientStatus})
     }
     catch(error){ 
@@ -548,7 +548,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-router.get('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
+router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{
         const priceRaw = await FindPrice()
