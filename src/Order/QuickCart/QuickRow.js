@@ -14,10 +14,10 @@ function QuickRow(props){
             <p>{props.index}</p>
             </td>
             <td data-cell="نام کالا">
-            <div className="product-title">
+            <div className="product-titleFull">
                 {/* <img src="/img/business/oil1.png" alt="avatar"/> */}
                 <div className="product-name">
-                <p className="name">{data.title}</p>
+                <p className="name">{data.title}({data.sku})</p>
 
                 </div>
             </div>
