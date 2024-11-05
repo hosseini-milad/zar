@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react"
 import env,{findBox} from "../../env"
 import CountCalculator from "./CountCalculator"
-
+import CartTab from "./CartTab"
+import StyleSelect from "../../components/Button/AutoComplete"
 function SalesQuickSearch(props){
     const data = props.data
     const [showDrop,setShowDrop] = useState(0)
     const [query,setQuery] = useState('')
+    console.log(props.pType)
     useEffect(() => {
         const timeOutId = setTimeout(() => props.setSearch(query), 1000);
         return () => clearTimeout(timeOutId);
         //props.setSearch
       }, [query]);
     return(<>
-        <div className="code-input-wrapper">
+        <CartTab setSelectedItem={props.setSelectedItem} setTab={props.setTab} tab={props.tab} />
+        {!props.tab?<div className="code-input-wrapper">
             <input 
             className="dp-input" 
             type="text" 
@@ -20,7 +23,17 @@ function SalesQuickSearch(props){
             onChange={(e)=>setQuery(e.target.value)}
             />
             <i className="fa-solid fa-angle-down"></i>
-        </div>
+        </div>:
+        
+            <StyleSelect
+            class={"code-input-wrapper"}
+            title="نوع خرید"
+            // direction={props.lang.dir}
+            options={props.pType}
+            label="title"
+            action={(e) => props.setSelectedItem(e)}
+            />
+        }
         
         {query?
         <div className="code-drop-menu">

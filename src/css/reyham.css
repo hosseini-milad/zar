@@ -1631,3 +1631,11 @@ dialog {
 .single-product-table .product-tr td:first-child{
   display: none;
 }
+.new-input.new-input{
+  width: 100px !important;
+
+  input{
+    width: unset;
+    text-align: center;
+  }
+}

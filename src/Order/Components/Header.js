@@ -7,26 +7,12 @@ function OrderHeader(props) {
   const navigate = useNavigate();
   const token = props.token;
   const [showDrop, setShowDrop] = useState(0);
+  const [showProduct, setShowProduct] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
-  const updateGrid = (value) => {
-    props.setGrid(value);
-    var shopVar = JSON.parse(localStorage.getItem(env.shopExpert));
-    shopVar
-      ? localStorage.setItem(
-          env.shopExpert,
-          JSON.stringify({
-            ...shopVar,
-            grid: value,
-          })
-        )
-      : localStorage.setItem(
-          env.shopExpert,
-          JSON.stringify({
-            grid: value,
-          })
-        );
-  };
   const [customers, setCustomers] = useState();
+  const [ProductList,setProductList]=useState("")
+  const ProductInfo=props.ProductInfo
+  const setProductInfo=props.setProductInfo
   const findCustomer = (search) => {
     if (search.length < 3) {
       //setShowPop(0)
@@ -52,6 +38,28 @@ function OrderHeader(props) {
             } else {
               setCustomers(result.customers);
             }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  };
+  const findProduct = (search) => {
+    
+    const postOptions = {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token && token.token,
+        userId: token && token.userId,
+      },
+      body: JSON.stringify({ search: search }),
+    };
+    fetch(env.siteApi + "/esale/list-product", postOptions)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setProductList(result)
         },
         (error) => {
           console.log(error);
@@ -87,7 +95,7 @@ function OrderHeader(props) {
             onClick={() => props.setUser("")}
           ></i>
         </div>
-      ) : (
+      ) : (<>
         <div className="f-customer">
           <input
             type="search"
@@ -104,28 +112,25 @@ function OrderHeader(props) {
             onClick={() => setShowUsers(1)}
           ></i>
         </div>
+        <div className="f-customer">
+          <input
+            type="search"
+            name=""
+            id="p-search"
+            placeholder="کد اتیکت"
+            onChange={(e) => findProduct(e.target.value)}
+            onFocus={() => setShowProduct(1)}
+            onBlur={() => setTimeout(() => setShowProduct(0), 200)}
+          />
+          <i
+            className="fa-solid fa-search"
+            style={{ margin: "0", color: "#000" }}
+          ></i>
+        </div></>
       )}
       {/*<button onClick={() => gotToOpenOrders()} className="view-open-order">
         سفارشهای باز
       </button>*/}
-      {/* <div className="view-btn-wrapper">
-        <label
-          htmlFor="list-view"
-          className={props.grid ? "list-btn view-active" : "list-btn"}
-          onClick={() => updateGrid(1)}
-        >
-          <i className="fa-solid fa-list no-font"></i>
-        </label>
-        <input type="radio" name="view" id="list-view" />
-        <label
-          htmlFor="tile-view"
-          className={props.grid ? "tile-btn" : "tile-btn view-active"}
-          onClick={() => updateGrid(0)}
-        >
-          <i className="fa-solid fa-table no-font"></i>
-        </label>
-        <input type="radio" name="view" id="tile-view" />
-      </div> */}
       {showDrop ? (
         <div className="f-customer-dropdpwn">
           {customers &&
@@ -186,6 +191,38 @@ function OrderHeader(props) {
       ) : (
         <></>
       )}
+      {showProduct ? (
+              <div className="f-customer-dropdpwn">
+                {ProductList &&
+                  ProductList.data.map((product, i) => (
+                    <div
+                      className="menu-item"
+                      key={i}
+                      onClick={() => setProductInfo(product)}
+                    >
+                      <p className="bu-name">
+                        {product.title}
+                      </p>
+                      <div className="info-holder col">
+                        <span>
+                          <i
+                            className="fa-solid fa-credit-card no-font id-icon"
+                            aria-hidden="true"
+                          ></i>
+                          {product.sku}
+                        </span>
+                        <span>
+                          <i
+                            className="fa-solid fa-phone no-font id-icon"
+                            aria-hidden="true"
+                          ></i>
+                          {product.weight}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+      ):<></>}
       <ManageUser show={showUsers} close={() => setShowUsers(0)} />
     </div>
   );

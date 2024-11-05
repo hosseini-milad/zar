@@ -106,15 +106,18 @@ function QuickRow(props){
                 <p className="name">{data.title}</p>
             </div>
             </td>
+            <td data-cell="عیار">
+            <p></p>
+            </td>
             <td data-cell="وزن">
             <p>{data.weight+"g"}</p>
             </td>
             <td data-cell="مبلغ واحد">
-            <p>{normalPriceCount(data.priceDetail.unitPrice)}</p>
+            <p>{normalPriceCount(data.unitPrice)}</p>
             </td>
             
             <td data-cell="مبلغ کل">
-            <p>{normalPriceCount(data.fullPrice)}</p>
+            <p>{normalPriceRound(data.fullPrice)}</p>
             </td>
             <td>
             {editMode?<div className="more-btn">

@@ -45,8 +45,8 @@ function QuickCartHolder(props){
 
     return(
     <section className="admin-table-sec ">
-        <CartTab setTab={setTab} tab={tab}/>
-        <QuickTable tab={tab} data={content} token={token} canEdit={props.canEdit}
+        
+        <QuickTable pType={props.pType} setTab={setTab} tab={tab} data={content} token={token} canEdit={props.canEdit}
           cart={props.cart} setCart={props.setCart}
           user={props.user} action={props.addToCart}
           delete={props.deleteFromCart} setError={props.setError}

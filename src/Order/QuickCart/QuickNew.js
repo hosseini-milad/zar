@@ -8,13 +8,58 @@ import DataModal from "../../components/Modal/dataModal"
 function QuickNew(props){
     const [selectedItem,setSelectedItem] = useState()
     const [count,setCount] = useState(1)
+    const [Weight,setWeight] = useState(1)
+    const [Ayar,setAyar] = useState(1)
     const [discount,setDiscount] = useState(0)
     const [showDesc,setShowDesc] = useState(0)
     const [description,setDescription] = useState()
+
     const token = props.token
     const tab = props.tab
     const user=props.user
+    console.log(selectedItem)
     //const [error,setError] = useState({message:'',color:"brown"})
+    const addPayItem=()=>{
+        if(!selectedItem)return
+        props.setReload(0)
+        const postOptions={
+            method:'post',
+            headers: { 'Content-Type': 'application/json' ,
+            "x-access-token": token&&token.token,
+            "userId":token&&token.userId},
+            body:JSON.stringify({
+                userId:user&&user._id,
+                weight:Weight,
+                ayar:Ayar,
+                title:selectedItem.title,
+                
+                
+                
+            })}
+        fetch(env.siteApi + "/panel/faktor/add-purchase-cart",postOptions)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                if(result.error){
+                    setTimeout(()=>props.setReload(1),500)
+                    props.setError({message:result.error,color:"brown"})
+                    setTimeout(()=>props.setError({message:'',
+                        color:"brown"}),3000)
+                }
+                else{
+                    setTimeout(()=>props.setReload(1),500)
+                    
+                    props.setCart(result)
+                    props.setError({message:result.message,color:"green"})
+                    setTimeout(()=>props.setError({message:'',
+                        color:"brown"}),3000)
+                }
+            },
+            (error) => {
+                console.log(error)
+            })
+    
+    }
     const addItem=()=>{
         if(!selectedItem)return
         props.setReload(0)
@@ -74,7 +119,7 @@ function QuickNew(props){
             <td data-cell="ردیف"></td>
             
             <td className="search-td" data-cell="کد کالا">
-                <QuickSearch data={props.data} setdata={props.setdata} token={token}
+                <QuickSearch pType={props.pType} cart={props.cart} tab={props.tab} setTab={props.setTab} data={props.data} setdata={props.setdata} token={token}
                 search={props.search} setSearch={props.setSearch}
                 setSelectedItem={setSelectedItem}/>
             </td>
@@ -82,8 +127,27 @@ function QuickNew(props){
                 {selectedItem?selectedItem.title:''}<br/>
                 <small>{selectedItem?selectedItem.sku:''}</small>
             </td>
+            <td data-cell="عیار">
+            {props.tab?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="عیار"
+                        onChange={(e)=>setWeight(e.target.value)}
+                    /></div>:<></>}
+                    
+                
+            </td>
             <td data-cell="وزن">
-                {selectedItem?selectedItem.weight:''}
+                {props.tab?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="وزن"
+                        onChange={(e)=>setAyar(e.target.value)}
+                    /></div>:<>{selectedItem&&selectedItem.weight}</>}
+                    
+                
             </td>
             <td data-cell="مبلغ واحد">
                 {selectedItem? 
@@ -98,9 +162,11 @@ function QuickNew(props){
             <div className="more-btn">
                 <i className="fa-solid fa-comment"
                 onClick={()=>setShowDesc(1)}></i>
+                {props.tab?<i className="fa-solid fa-plus"
+                onClick={addPayItem}></i>:
                 <i className="fa-solid fa-plus"
                 onClick={props.action?
-                defAction:addItem}></i>
+                defAction:addItem}></i>}
             </div>
             {showDesc?<DataModal action={(e)=>setDescription(e)}
             close={()=>setShowDesc(0)} color="darkblue"

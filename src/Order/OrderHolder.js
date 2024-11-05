@@ -9,6 +9,7 @@ import env, {CheckAccess, defPay } from "../env";
 import Cookies from "universal-cookie";
 import ShowError from "../components/Modal/ShowError";
 import PreQuickHolder from "./PreOrder/PreQuickList";
+import ProductInfoHolder from "./QuickCart/ProductInfoHolder";
 const cookies = new Cookies();
 var shopVar = JSON.parse(localStorage.getItem(env.shopExpert));
 
@@ -23,6 +24,7 @@ function OrderHolder(props) {
   const [payValue, setPayValue] = useState(defPay);
   const [error, setError] = useState({ message: "", color: "brown" });
   const [tab,setTab] = useState(0)
+  const [ProductInfo,setProductInfo]=useState("")
   const access = CheckAccess(token,"orders")
   console.log(access)
   useEffect(() => {
@@ -106,6 +108,7 @@ function OrderHolder(props) {
         }
       );
   }, [appFilter]);
+  console.log(ProductInfo)
   return (
     <div className="sharif new-sharif" style={{ direction: "rtl" }}>
       <header className="sharif-order-header">
@@ -118,6 +121,9 @@ function OrderHolder(props) {
           user={user}
           setUser={setUser}
           setFilters={setFilters}
+          setProductInfo={setProductInfo}
+          ProductInfo={ProductInfo}
+          
         />
         {/* <OrderFilters
           grid={grid}
@@ -151,6 +157,7 @@ function OrderHolder(props) {
             payValue={payValue}
             setPayValue={setPayValue}
             cart={cart && cart.cart}
+            pType={cart.purchaseType}
             setCart={setCart}
             setError={setError}
             cartDetail={cart && cart.cartDetail}
@@ -158,6 +165,11 @@ function OrderHolder(props) {
         ) : (
           <></>
         )}
+        {ProductInfo ?(
+          <ProductInfoHolder ProductInfo={ProductInfo} token={token}/>
+        ):<></>
+
+        }
         {/* <PreQuickHolder token={token} user={user} cart={cart} />
         
         {(cart&&cart.isSale)?
