@@ -616,7 +616,8 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         }
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
-        res.json({faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
+        const cartDetails = await CalcCart(userId)
+        res.json({...cartDetails,faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
