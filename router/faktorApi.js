@@ -571,7 +571,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             if(cartItem.purchase){
                 var priceDetail = cartItem.priceDetail
                 const cartItems = CalcPurchase(priceDetail.Ayar,
-                    priceRaw,priceDetail.weight.toString())
+                    priceRaw,priceDetail.weight&&priceDetail.weight.toString())
                 const price = cartItems.price
                 totalFull-=price
                 totalPrice-=price
