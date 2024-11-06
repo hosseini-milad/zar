@@ -53,6 +53,6 @@ const calcUnit=(goldArray)=>{
         total += goldArray[i].price
         weight += goldArray[i].weight
     }
-    return(total/weight)
+    return(NormalNumber(total/weight))
 }
 module.exports =CalcCart
