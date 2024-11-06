@@ -1,3 +1,5 @@
+const FloatDec = require("./FloatDec")
+
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
 const CalcPrice=(product,price,TAX)=>{
     if(!product) return(0)
@@ -22,7 +24,7 @@ const CalcPrice=(product,price,TAX)=>{
         ojratValue:OJRAT, ojratPrice:ojratPrice,
         senfiValue:SENFI , senfiPrice:senfiPrice,
         poolSang:poolSang, unitPrice:price,
-        unitGold:totalPrice/floatWeight,
+        unitGold:FloatDec(totalPrice/floatWeight,1),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }

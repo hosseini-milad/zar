@@ -1,6 +1,7 @@
-const FloatDec=(number,dec)=>{
+const FloatDec=(number,decRaw)=>{
+    var dec = decRaw?decRaw:100
     var finalNumber = 0
-    finalNumber = parseInt(number*100)/100
+    finalNumber = parseInt(number*dec)/dec
     return(finalNumber)
 }
 
