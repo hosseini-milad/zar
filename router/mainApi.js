@@ -135,6 +135,10 @@ router.post('/get-product', async (req,res)=>{
         var newProduct = 0
         for(var i=1;i<10000;i++){
             if(productList[i]){
+            var sku = Number(productList[i].Code)
+            var newSood = Number(productList[i].DarsadVazn)
+            if(sku>400)
+                newSood -=3
             outPut.push(productList[i])
             var query = {title:productList[i].Name,
                 sku:productList[i].Code,
@@ -142,7 +146,7 @@ router.post('/get-product', async (req,res)=>{
                 size:productList[i].Size,
                 sood:productList[i].DarsadSood,
                 poolSang:productList[i].PoolSang,
-                ojrat:productList[i].DarsadVazn,
+                ojrat:newSood,
                 isMojood:productList[i].IsMojood=="1"?true:false,
                 price:productList[i].OnlinePrice}
             var updateResult = await products.updateOne({sku:productList[i].Code},

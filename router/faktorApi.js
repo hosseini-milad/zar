@@ -50,6 +50,7 @@ const CreateCartPurchase = require('../middleware/CreateCartPurchase');
 const CalcPurchase = require('../middleware/CalcPurchase');
 const ClientStatus = require('../middleware/ClientStatus');
 const banks = require('../models/param/banks');
+const SetTahHesabItem = require('../middleware/SetTahHesabItem');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -628,8 +629,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 const faktorItem ={...newObj,faktorNo:faktorNo,
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
-                await faktorItems.create(faktorItem)
-                await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
+                0&&await faktorItems.create(faktorItem)
+                await SetTahHesabItem(faktorItem,i)
+                0&&await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
             const productDetail = await products.findOne({sku:cartItem.sku})
@@ -642,14 +644,17 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             totalWeight+= parseFloat(productDetail&&productDetail.weight.replace( /\//g, '.'))
             const { _id: _, ...newObj } = cartItem;
             var status = cartItem.isReserve?"needtobuild":"accept"
-            await faktorItems.create({...newObj,faktorNo:faktorNo,
+            const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
-                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
-            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
+                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
+            0&&await faktorItems.create(faktorItem)
+            0&&await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            await SetTahHesabItem(faktorItem,i)
+            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             }
         }
-
+        res.json({data:"done"})
+        return
         const faktorData = {
             faktorNo:faktorNo,
             userId:userId, 
@@ -662,6 +667,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             totalWeight:totalWeight,
             unitPrice:NormalNumber(priceRaw)
         }
+        //await SetTahHesab()
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
         await setTransaction(bankData,userId,faktorNo)
