@@ -68,6 +68,7 @@ router.post('/list-product', async (req,res)=>{
     const search = req.body.search
     const weight=req.body.weight
     const categoryFilter=req.body.category
+    const isMaster = req.body.isMaster?req.body.isMaster:true
     const isMojood = req.body.isMojood?req.body.isMojood:false
     try{
    
@@ -79,6 +80,7 @@ router.post('/list-product', async (req,res)=>{
             {$match:{imageUrl:{$exists:true}}},
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
+            {$match:isMaster?{isMaster:true}:{}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
@@ -457,8 +459,17 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
         progressDate:Date.now()
     }
     try{
-        const cartItems = await cart.updateOne({_id:ObjectID(id)},
-            {$set:data})
+        const cartDetail = await cart.findOne({_id:ObjectID(id)})
+        console.log(cartDetail.priceDetail)
+        const cartItems = await CalcPurchase(data.ayar?data.ayar:cartDetail.priceDetail.Ayar,
+            cartDetail.unitPrice,data.weight?data.weight:cartDetail.priceDetail.weight.toString())
+        if(data.price)
+            cartItems.priceDetail.roundPrice = data.price
+        const cartUpdate = await cart.updateOne({_id:ObjectID(id)},
+            {$set:{...data,priceDetail:cartItems.priceDetail,
+                price:data.price?data.price:cartItems.price
+            }}) 
+        console.log(cartItems)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return

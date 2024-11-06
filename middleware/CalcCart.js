@@ -1,6 +1,7 @@
 const customers = require("../models/auth/customers");
 const cart = require("../models/product/cart");
 const products = require("../models/product/products");
+const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
 var ObjectID = require('mongodb').ObjectID;
 
@@ -17,7 +18,7 @@ const CalcCart=async(userId,remainRaw)=>{
             totalPrice -= cartPrice
             totalWeight -= parseFloat(cartDetails[c].weight&&
                 cartDetails[c].weight.replace(/\//g,'.'))
-        }
+        } 
         else {
             totalPrice += cartPrice 
             totalWeight += parseFloat(cartDetails[c].weight&&
@@ -29,7 +30,7 @@ const CalcCart=async(userId,remainRaw)=>{
             "unitPrice": unitPrice,
             "cartDiscount": 0,
             "cartPrice": totalPrice,
-            "cartWeight": totalWeight,
+            "cartWeight": FloatDec(totalWeight,2),
             "remainUser":remain,
             "finalPrice":totalPrice-remain
         },

@@ -75,7 +75,9 @@ router.use('/panel/crm',CRMPanelApi)
         console.log(error)
     }
  })
- schedule.scheduleJob('*/60 * * * *', async() => { 
+ schedule.scheduleJob('*/10 * * * *', async() => { 
+    var response = await fetch(ONLINE_URL + "/get-product",
+        { method: 'POST' });
     
  })
  router.post('/get-customers', async (req,res)=>{
@@ -119,8 +121,8 @@ router.use('/panel/crm',CRMPanelApi)
     }
 })
 router.post('/get-product', async (req,res)=>{
-    const from = req.body.from
-    const to = req.body.to
+    const from = req.body.from?req.body.from:0
+    const to = req.body.to?req.body.to:10000
     try{
         const productList = await GetTahHesab(
             {
