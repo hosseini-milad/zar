@@ -39,9 +39,22 @@ const CalcCart=async(userId,remainRaw)=>{
             "finalPrice":totalPrice-remain
         },
         purchaseType:[
-            {title:"خرید متفرقه",id:1,unitPrice:unitPrice},
-            {title:"خرید آبشده",id:2,unitPrice:unitPrice},
-            {title:"خرید سکه",id:3,unitPrice:unitPrice}
+            {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
+                parameters:[
+                    {title:"توضیحات",value:"description"}
+                ]
+            },
+            {title:"خرید آبشده",id:2,unitPrice:unitPrice,
+                parameters:[
+                    {title:"نام آزمایشگاه",value:"lab"},
+                    {title:"شماره ری.انگ",value:"riang"}
+                ]
+            },
+            {title:"خرید سکه",id:3,unitPrice:unitPrice,
+                parameters:[
+                    {title:"توضیحات",value:"description"}
+                ]
+            }
         ]
     })
 }
