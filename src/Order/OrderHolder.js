@@ -161,6 +161,7 @@ function OrderHolder(props) {
             setCart={setCart}
             setError={setError}
             cartDetail={cart && cart.cartDetail}
+            bankList={cart && cart.bankList}
           />
         ) : (
           ProductInfo ?(

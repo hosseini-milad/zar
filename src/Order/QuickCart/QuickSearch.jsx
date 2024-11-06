@@ -7,7 +7,6 @@ function SalesQuickSearch(props){
     const data = props.data
     const [showDrop,setShowDrop] = useState(0)
     const [query,setQuery] = useState('')
-    console.log(props.pType)
     useEffect(() => {
         const timeOutId = setTimeout(() => props.setSearch(query), 1000);
         return () => clearTimeout(timeOutId);

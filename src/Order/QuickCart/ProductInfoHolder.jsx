@@ -31,6 +31,7 @@ const ProductInfoHolder = (props) => {
   return (
     <div className="admin-table-sec" >
       <table>
+        <caption><p >هر گرم تمام شده: <span>{normalPriceCount(Price.unitGold)}</span></p></caption>
         <thead>
           <tr>
             <th data-cell="نام کالا">
@@ -71,6 +72,7 @@ const ProductInfoHolder = (props) => {
           </tr>
         </tbody>
       </table>
+      
     </div>
   )
 }

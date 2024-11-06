@@ -1639,3 +1639,6 @@ dialog {
     text-align: center;
   }
 }
+.have-des{
+  color: lightgreen !important;
+}

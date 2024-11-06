@@ -12,12 +12,12 @@ function QuickNew(props){
     const [Ayar,setAyar] = useState("")
     const [discount,setDiscount] = useState(0)
     const [showDesc,setShowDesc] = useState(0)
+    const [showParam,setShowParam] = useState(0)
     const [description,setDescription] = useState()
-
+    console.log(description)
     const token = props.token
     const tab = props.tab
     const user=props.user
-    console.log(selectedItem)
     //const [error,setError] = useState({message:'',color:"brown"})
     const addPayItem=()=>{
         if(!selectedItem)return
@@ -114,6 +114,7 @@ function QuickNew(props){
                 price:selectedItem.priceData,
                 description:"ویرایش شده"})
     }
+    console.log(showParam)
     return(
         <tr className="input-tr">
             <td data-cell="ردیف"></td>
@@ -160,17 +161,35 @@ function QuickNew(props){
             </td>
             <td>
             <div className="more-btn">
-                <i className="fa-solid fa-comment"
-                onClick={()=>setShowDesc(1)}></i>
+                {props.tab?
+                (selectedItem&&selectedItem.parameters&&selectedItem.parameters.map((param,i)=>(<i key={i} className={`fa-solid ${param.icon?param.icon:"fa-comment"} ${description&&description[param.value]?"have-des":""}`}
+                onClick={()=>setShowParam(param)}></i>)))
+                :<i className="fa-solid fa-comment"
+                onClick={()=>setShowDesc(1)}></i>}
                 {props.tab?<i className="fa-solid fa-plus"
                 onClick={addPayItem}></i>:
                 <i className="fa-solid fa-plus"
                 onClick={props.action?
                 defAction:addItem}></i>}
             </div>
-            {showDesc?<DataModal action={(e)=>setDescription(e)}
+            {showDesc?
+            <DataModal action={(e)=>setDescription(e)}
             close={()=>setShowDesc(0)} color="darkblue"
             buttonText="ثبت توضیحات" def={description} title={"افزودن توضیحات"}/>:
+            <></>}
+            {showParam?
+            
+                <DataModal 
+                action={(e) =>
+                    setDescription((prevState) => ({
+                      ...prevState,
+                      [showParam.value]: e,
+                    }))
+                  }
+                close={()=>setShowParam(0)} color="darkblue"
+                buttonText="ثبت" def={description&&description[showParam.value]} title={showParam.title}/>
+            
+            :
             <></>}
             </td>
         </tr>

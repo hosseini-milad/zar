@@ -42,7 +42,7 @@
 .sharif-order-header .nav-bar .fa-search {
   color: rgba(168, 168, 168, 0.637) !important;
   margin-top: 8px;
-  cursor:unset;
+  cursor: unset;
 }
 .sharif-order-header .nav-bar .view-btn-wrapper {
   display: flex;
@@ -70,7 +70,7 @@
   min-height: 50px;
   border-radius: 8px;
   border: 1px solid #d2d2d2;
-  background:#f0f2f5;
+  background: #f0f2f5;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.07);
   padding-inline: 1rem;
 }
@@ -78,7 +78,7 @@
 .sharif-order-header .nav-bar .f-customer-dropdpwn {
   position: absolute;
   z-index: 10;
-  background-color: var(--light-grey);
+  background-color: #f0f2f5 !important;
   border-radius: 0.3rem;
   width: 300px;
   top: 80px;
@@ -93,7 +93,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #cd8945;
     padding: 0.5rem;
 
     .bu-name {
@@ -131,7 +131,7 @@
     }
   }
   .menu-item:hover {
-    background-color: white;
+    background-color: #ffbb005b;
     margin-bottom: 0;
     cursor: pointer;
   }
@@ -169,8 +169,8 @@
   background: #f0f2f5;
 }
 .sharif-order-header .nav-bar .logo-wrapper {
-  width: 90px;
-  img{
+  width: 65px;
+  img {
     width: 100%;
     display: block;
   }
@@ -1313,23 +1313,23 @@ input[type="number"] {
   .sharif-order-main .admin-table-sec tr td:nth-child(2) {
     grid-area: 1 / 1 / 2 / 3;
   }
-  .sharif-order-main .admin-table-sec tr .search-td{
+  .sharif-order-main .admin-table-sec tr .search-td {
     gap: 6px !important;
     align-items: center;
-    .slidemenu{
+    .slidemenu {
       width: 48%;
       height: 45px;
     }
-    .code-input-wrapper{
+    .code-input-wrapper {
       width: 48%;
       height: 45px;
 
-      .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+      .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
         border-width: 0 !important;
       }
     }
   }
-  .sharif-order-main .admin-table-sec tr .search-td::before{
+  .sharif-order-main .admin-table-sec tr .search-td::before {
     content: none;
   }
   .sharif-order-main .admin-table-sec tr td:nth-child(3) {
@@ -1408,7 +1408,7 @@ input[type="number"] {
     position: relative;
     padding-block: 0.3rem;
     text-align: right;
-    border: 1px solid rgba(205, 137, 69, 0.705) ;
+    border: 1px solid rgba(205, 137, 69, 0.705);
   }
 
   .sharif-order-main .admin-table-sec th {
@@ -1452,7 +1452,7 @@ input[type="number"] {
   .filter-sec .main-filters {
     flex-direction: column;
   }
-  .new-sharif{
+  .new-sharif {
     padding: 0.5rem !important;
   }
   .sharif-order-header .nav-bar {
@@ -1470,7 +1470,7 @@ input[type="number"] {
       width: 50%;
       order: 1;
     }
-    .logo-wrapper{
+    .logo-wrapper {
       margin-inline: auto;
       width: 150px;
     }
@@ -1647,15 +1647,14 @@ input[type="number"] {
       border-radius: 0.5rem;
       padding-inline: 6px;
 
-      label span{
+      label span {
         font-size: 0.7rem;
         font-weight: 500;
-        
       }
-      .sliderMenuSelect .sliderMenu{
-        background-color:  rgba(205, 137, 69, 1);
+      .sliderMenuSelect .sliderMenu {
+        background-color: rgba(205, 137, 69, 1);
       }
-      .sliderMenuSelect span{
+      .sliderMenuSelect span {
         color: white;
       }
     }
@@ -1668,13 +1667,13 @@ input[type="number"] {
   }
   .admin-table-sec tbody tr {
     background-color: #ffffff;
-    border-bottom: 1px solid rgba(205, 137, 69, 1) ;
+    border-bottom: 1px solid rgba(205, 137, 69, 1);
   }
   .admin-table-sec .product-tr:hover {
     background-color: rgba(235, 190, 145, 0.542) !important;
   }
   .admin-table-sec .input-tr {
-    background-color:rgba(255, 248, 229, 0.484);
+    background-color: rgba(255, 248, 229, 0.484);
   }
   .admin-table-sec .input-tr .code-input-wrapper {
     border-color: #c0c0c0;
@@ -1860,11 +1859,22 @@ input[type="number"] {
   background-color: rgba(248, 252, 255, 1) !important;
   border-radius: 0 0 1rem 1rem;
 }
-.code-input-wrapper{
-  label{
+.code-input-wrapper {
+  label {
     background-color: #f4f6f8 !important;
   }
-  .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+  .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
     border-width: 0 !important;
+  }
+}
+.admin-table-sec caption{
+  text-align: right;
+
+  p{
+    color: black;
+    font-weight: 600;
+    background-color: #cd8945a9;
+    padding: 0.5rem;
+    border-radius: 1rem;
   }
 }
