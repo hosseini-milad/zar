@@ -139,6 +139,7 @@ router.post('/get-product', async (req,res)=>{
             var query = {title:productList[i].Name,
                 sku:productList[i].Code,
                 weight:productList[i].Vazn,
+                size:productList[i].size,
                 sood:productList[i].DarsadSood,
                 poolSang:productList[i].PoolSang,
                 ojrat:productList[i].DarsadVazn,

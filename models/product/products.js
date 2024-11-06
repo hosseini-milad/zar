@@ -17,7 +17,7 @@ const ProductSchema = new Schema({
     metaTitle:String,
     productMeta:String,
     fullDesc:String,
-
+    size:String,
 
     isMojood:Boolean,
     isReserve:{type:Boolean,default:false},
