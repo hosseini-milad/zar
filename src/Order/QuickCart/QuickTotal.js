@@ -112,7 +112,7 @@ function QuickTotal(props){
     <div className="total-amount">
       <div className="t-wrapper">
         <p>وزن کل</p>
-        <p>{qCart.cartWeight}</p>
+        <p>{(qCart.cartWeight)}</p>
       </div>
       <div className="t-wrapper">
         <p>مجموع فاکتور</p>

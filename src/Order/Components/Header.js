@@ -71,7 +71,9 @@ function OrderHeader(props) {
   };
   return (
     <div className="nav-bar">
-      <p>سفارشات</p>
+      <div className="logo-wrapper">
+        <img src="\img\zar-logo.PNG" alt="Logo" />
+      </div>
       {props.user ? (
         <div className="f-customer">
           <div className="user-item">
@@ -138,7 +140,7 @@ function OrderHeader(props) {
               <div
                 className="menu-item"
                 key={i}
-                onClick={() => props.setUser(customer)}
+                onClick={() => {props.setUser(customer);props.setProductInfo("")}}
               >
                 <p className="bu-name">
                   {customer.username}

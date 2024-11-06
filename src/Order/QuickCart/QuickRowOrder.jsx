@@ -14,21 +14,25 @@ function QuickRow(props){
     const [editMode,setEditMode] = useState(0)
     const [changes,setChanges]= useState()
     const [showRemove,setShowRemove] = useState()
-    const updateField=(changes)=>{
-        if(!changes) return
+    const [Weight,setWeight] = useState("")
+    const [Ayar,setAyar] = useState("")
+    const [Total,setTotal] = useState("")
+    const updateField=()=>{
+        
         const postOptions={
             method:'post',
             headers: { 'Content-Type': 'application/json' ,
             "x-access-token": token&&token.token,
             "userId":token&&token.userId},
-            body:JSON.stringify({userId:user?user.Code?user.Code:
-                user._id:(token&&token.userId),
-                cartNo:props.cartNo,
-                cartID:data.id,changes})
+            body:JSON.stringify({userId:
+                user._id,
+                price:Total,
+                weight:Weight,
+                ayar:Ayar,
+            id:data._id})
           }
           console.log(postOptions)
-        fetch(env.siteApi + (props.cartNo?`/panel/${tab?"quote":"faktor"}/update-Item-cart`:
-            `/panel/${tab?"quote":"faktor"}/update-Item`) ,postOptions)
+        fetch(env.siteApi + "/panel/faktor/update-purchase-cart" ,postOptions)
         .then(res => res.json())
         .then(
             (result) => {
@@ -43,7 +47,7 @@ function QuickRow(props){
                     props.setError({message:result.message,color:"orange"})
                     setTimeout(()=>props.setError({message:'',
                         color:"brown"}),3000)
-                        
+                    setEditMode(false)    
                 }
             },
             (error) => {
@@ -58,12 +62,12 @@ function QuickRow(props){
             headers: { 'Content-Type': 'application/json' ,
             "x-access-token": token&&token.token,
             "userId":token&&token.userId},
-            body:JSON.stringify({userId:user?user.Code?user.Code:
-                user._id:(token&&token.userId),
-                cartID:data.id})
+            body:JSON.stringify({
+                userId:user._id,
+                id:data._id})
           }
           console.log(postOptions)
-        fetch(env.siteApi + `/panel/${tab?"quote":"faktor"}/remove-cart`,postOptions)
+        fetch(env.siteApi + "/panel/faktor/remove-cart-item",postOptions)
         .then(res => res.json())
         .then(
             (result) => {
@@ -73,7 +77,7 @@ function QuickRow(props){
                         color:"brown"}),3000)
                 }
                 else{
-                    props.setCart(result) 
+                    props.setCart(result.cart) 
                     props.setError({message:result.message,color:"orange"})
                     setTimeout(()=>props.setError({message:'',
                         color:"brown"}),3000)
@@ -99,7 +103,7 @@ function QuickRow(props){
             </td>
 
             <td data-cell="کد کالا">
-            <p>{data.sku}</p>
+                {data.purchase?<p>خرید</p>:<p>{data.sku}</p>}
             </td>
             <td data-cell="شرح کالا">
             <div className="product-title">
@@ -107,22 +111,43 @@ function QuickRow(props){
             </div>
             </td>
             <td data-cell="عیار">
-            <p></p>
+            {editMode?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="عیار"
+                        onChange={(e)=>setAyar(e.target.value)}
+                    /></div>:
+                        <p>{data.priceDetail.Ayar}</p>}
             </td>
             <td data-cell="وزن">
-            <p>{data.weight+"g"}</p>
+                {editMode?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="وزن"
+                        onChange={(e)=>setWeight(e.target.value)}
+                    /></div>:
+                <p>{data.weight+"g"}</p>}
             </td>
             <td data-cell="مبلغ واحد">
             <p>{normalPriceCount(data.unitPrice)}</p>
             </td>
             
             <td data-cell="مبلغ کل">
-            <p>{normalPriceRound(data.fullPrice)}</p>
+                {editMode?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="مبلغ کل"
+                        onChange={(e)=>setTotal(e.target.value)}
+                    /></div>:
+                    <p>{normalPriceRound(data.fullPrice)}</p>}
             </td>
             <td>
             {editMode?<div className="more-btn">
                 <i className="fa-solid fa-save"
-                onClick={saveChanges}></i>
+                onClick={updateField}></i>
                 <i className="fa-solid fa-remove"
                 onClick={()=>setEditMode(0)}></i>
                 </div>:

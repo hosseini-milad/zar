@@ -32,11 +32,17 @@
   color: white;
   font-size: 1.5rem;
   gap: 0.5rem;
+  padding-right: 0;
 }
 .sharif-order-header .nav-bar i {
   color: white;
   margin-top: 8px;
   cursor: pointer;
+}
+.sharif-order-header .nav-bar .fa-search {
+  color: rgba(168, 168, 168, 0.637) !important;
+  margin-top: 8px;
+  cursor:unset;
 }
 .sharif-order-header .nav-bar .view-btn-wrapper {
   display: flex;
@@ -64,7 +70,7 @@
   min-height: 50px;
   border-radius: 8px;
   border: 1px solid #d2d2d2;
-  background: var(--light-grey);
+  background:#f0f2f5;
   box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.07);
   padding-inline: 1rem;
 }
@@ -160,7 +166,14 @@
   border: none;
   outline: none;
   padding-block: 0.8rem;
-  background: var(--light-grey);
+  background: #f0f2f5;
+}
+.sharif-order-header .nav-bar .logo-wrapper {
+  width: 90px;
+  img{
+    width: 100%;
+    display: block;
+  }
 }
 
 /* Filters section */
@@ -508,9 +521,7 @@
   vertical-align: middle;
   outline: 0px;
 }
-.sharif-order-main .admin-table-sec tr:hover {
-  background-color: rgb(244, 246, 248);
-}
+
 .sharif-order-main .admin-table-sec .input-tr {
   background-color: rgb(255, 255, 255);
 }
@@ -695,6 +706,12 @@
   border: none;
   background-color: transparent;
 }
+.sharif-order-main .admin-table-sec .product-tr input,
+.sharif-order-main .admin-table-sec .product-tr select {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
 .search-td {
   display: flex !important;
   align-items: center;
@@ -712,6 +729,19 @@
 }
 .sharif-order-main .admin-table-sec .input-tr .code-input-wrapper input,
 .sharif-order-main .admin-table-sec .input-tr .code-input-wrapper select {
+  width: 150%;
+}
+.sharif-order-main .admin-table-sec .product-tr .code-input-wrapper {
+  min-width: 60px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--gold);
+  border-radius: 0.5rem;
+  padding: 0.3rem 0.5rem;
+}
+.sharif-order-main .admin-table-sec .product-tr .code-input-wrapper input,
+.sharif-order-main .admin-table-sec .product-tr .code-input-wrapper select {
   width: 150%;
 }
 .anbar-select {
@@ -1110,6 +1140,7 @@
 .sharif-order-main .product-table-btn-wrapper .total-amount p {
   padding: 0.1rem 0.2rem;
   text-align: right;
+  direction: ltr;
 }
 .sharif-order-main
   .product-table-btn-wrapper
@@ -1127,6 +1158,7 @@
   background-color: var(--light-blue-sec);
   width: 50%;
   font-weight: 600;
+  text-align: left;
 }
 
 .sharif-order-main .product-table-btn-wrapper .product-table-btn {
@@ -1370,14 +1402,13 @@ input[type="number"] {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    flex-wrap: wrap;
     gap: 0.2rem 1rem;
     width: 100%;
     max-height: 80px;
     position: relative;
     padding-block: 0.3rem;
     text-align: right;
-    border: 1px solid rgba(0, 0, 0, 0.226);
+    border: 1px solid rgba(205, 137, 69, 0.705) ;
   }
 
   .sharif-order-main .admin-table-sec th {
@@ -1415,14 +1446,18 @@ input[type="number"] {
     padding: 24px 10px;
   }
   .sharif-order-header .nav-bar .f-customer-dropdpwn {
-    top: 120px;
+    top: 280px;
     right: 20px;
   }
   .filter-sec .main-filters {
     flex-direction: column;
   }
+  .new-sharif{
+    padding: 0.5rem !important;
+  }
   .sharif-order-header .nav-bar {
     flex-wrap: wrap;
+
     .f-customer {
       width: 100%;
       order: 2;
@@ -1434,6 +1469,10 @@ input[type="number"] {
     p {
       width: 50%;
       order: 1;
+    }
+    .logo-wrapper{
+      margin-inline: auto;
+      width: 150px;
     }
   }
   .sharif-order-main .product-table-btn-wrapper {
@@ -1628,16 +1667,21 @@ input[type="number"] {
     }
   }
   .admin-table-sec tbody tr {
-    background-color: #c0c0c0;
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(205, 137, 69, 1) ;
   }
   .admin-table-sec .product-tr:hover {
-    background-color: rgba(205, 137, 69, 1) !important;
+    background-color: rgba(235, 190, 145, 0.542) !important;
   }
   .admin-table-sec .input-tr {
-    background-color: rgb(244, 246, 248);
+    background-color:rgba(255, 248, 229, 0.484);
   }
   .admin-table-sec .input-tr .code-input-wrapper {
     border-color: #c0c0c0;
+  }
+  .admin-table-sec .product-tr .code-input-wrapper {
+    border-color: #c0c0c0;
+    background-color: #ffffff;
   }
   .admin-table-sec .input-tr .off-input-wrapper {
     border-color: #c0c0c0;

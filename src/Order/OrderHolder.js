@@ -163,13 +163,11 @@ function OrderHolder(props) {
             cartDetail={cart && cart.cartDetail}
           />
         ) : (
-          <></>
+          ProductInfo ?(
+            <ProductInfoHolder ProductInfo={ProductInfo} token={token}/>
+          ):<></>
         )}
-        {ProductInfo ?(
-          <ProductInfoHolder ProductInfo={ProductInfo} token={token}/>
-        ):<></>
-
-        }
+        
         {/* <PreQuickHolder token={token} user={user} cart={cart} />
         
         {(cart&&cart.isSale)?

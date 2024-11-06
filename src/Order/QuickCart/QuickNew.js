@@ -8,8 +8,8 @@ import DataModal from "../../components/Modal/dataModal"
 function QuickNew(props){
     const [selectedItem,setSelectedItem] = useState()
     const [count,setCount] = useState(1)
-    const [Weight,setWeight] = useState(1)
-    const [Ayar,setAyar] = useState(1)
+    const [Weight,setWeight] = useState("")
+    const [Ayar,setAyar] = useState("")
     const [discount,setDiscount] = useState(0)
     const [showDesc,setShowDesc] = useState(0)
     const [description,setDescription] = useState()
