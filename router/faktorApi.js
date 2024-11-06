@@ -49,6 +49,7 @@ const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const CreateCartPurchase = require('../middleware/CreateCartPurchase');
 const CalcPurchase = require('../middleware/CalcPurchase');
 const ClientStatus = require('../middleware/ClientStatus');
+const banks = require('../models/param/banks');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -345,9 +346,9 @@ router.post('/recalc-cart',auth, async (req,res)=>{
         )
         const clientStatus = ClientStatus(clientRemain)
         const cartDetails = await CalcCart(userId,clientStatus.remain)
-
+        const bankList = await banks.find()
         res.json({message:"سبد بروز شد",...cartDetails,
-            clientStatus})
+            clientStatus,bankList})
     }
     catch(error){ 
         res.status(500).json({message: error.message})
@@ -596,6 +597,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
 })
 router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const bankData = req.body.bankData
     try{
         const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
