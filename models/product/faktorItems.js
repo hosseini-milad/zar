@@ -32,6 +32,9 @@ const FaktorItems = new Schema({
     newWeight:{ type: String },
     title:{ type: String },
     purchaseType:{type:String},
+    lab:{type:String},
+    riang:{type:String},
+    description:{type:String},
 
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
