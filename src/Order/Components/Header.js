@@ -114,6 +114,30 @@ function OrderHeader(props) {
             onClick={() => setShowUsers(1)}
           ></i>
         </div>
+        
+        </>
+      )}
+      {props.user ?(<></>):
+        ProductInfo?
+        <div className="f-customer">
+          <div className="user-item">
+            <b>
+              {ProductInfo.title}
+              
+
+              <small>
+                ({ProductInfo.sku})
+              </small>
+            </b>
+            
+          </div>
+          <i
+            className="fa-solid fa-remove"
+            style={{ margin: "0", color: "#000" }}
+            onClick={() => props.setProductInfo("")}
+          ></i>
+        </div>:
+        
         <div className="f-customer">
           <input
             type="search"
@@ -128,11 +152,7 @@ function OrderHeader(props) {
             className="fa-solid fa-search"
             style={{ margin: "0", color: "#000" }}
           ></i>
-        </div></>
-      )}
-      {/*<button onClick={() => gotToOpenOrders()} className="view-open-order">
-        سفارشهای باز
-      </button>*/}
+        </div>}
       {showDrop ? (
         <div className="f-customer-dropdpwn">
           {customers &&

@@ -8,6 +8,7 @@ function QuickTotal(props){
   
   const [First ,setFirst]=useState(1) 
   const [NeedToRe,setNeedToRe]=useState(false)
+  
   //console.log(qCart)
   
   const [sec,setSec] = useState(0);
@@ -15,7 +16,7 @@ function QuickTotal(props){
       
         if(sec<0){
           setSec(5*60*1000)
-          console.log("finish")
+          
           setNeedToRe(true)
         }
         const interval = setInterval(() => {
@@ -40,7 +41,6 @@ function QuickTotal(props){
     function padTo2Digits(num) {
         return num.toString().padStart(2, '0');
       }
-  console.log(msToTime(sec))
   
   const SetOrder=()=>{
     
@@ -134,8 +134,8 @@ function QuickTotal(props){
       NeedToRe?<button onClick={()=>{Recalc();setSec(5*60*1000);setNeedToRe(false)}} type="button" className="product-table-btn temp-btn">
       <p>محاسبه صورتحساب</p>
       </button>:<button type="button" className="product-table-btn temp-btn"
-      onClick={SetOrder}>
-        <p>ثبت سفارش {msToTime(sec)}</p>
+      >
+        <p>{msToTime(sec)}</p>
       </button>}
     </div>
     )

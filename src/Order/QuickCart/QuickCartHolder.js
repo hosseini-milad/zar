@@ -5,11 +5,12 @@ import QuickTable from "./QuickTable"
 import QuickTotal from "./QuickTotal"
 import Cookies from 'universal-cookie';
 import CartTab from "./CartTab";
-
+import BankSelect from "./BankSelect";
 function QuickCartHolder(props){
   const token = props.token
   const [search,setSearch] = useState()
   const [content,setContent] = useState()
+  const [ShowBank,setShowBank]=useState(false)
   const tab=props.tab
   const setTab=props.setTab
   useEffect(() => {
@@ -64,7 +65,7 @@ function QuickCartHolder(props){
             access={props.access}/>
 
         </div>
-
+        {/* <BankSelect bankList={props.bankList}/> */}
       </section>
     )
 }
