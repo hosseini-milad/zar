@@ -462,7 +462,7 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
     }
     try{
         const cartDetail = await cart.findOne({_id:ObjectID(id)})
-        console.log(cartDetail.priceDetail)
+        //console.log(cartDetail.priceDetail)
         const cartItems = await CalcPurchase(data.ayar?data.ayar:cartDetail.priceDetail.Ayar,
             cartDetail.unitPrice,data.weight?data.weight:cartDetail.priceDetail.weight.toString())
         if(data.price)
@@ -471,7 +471,6 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
             {$set:{...data,priceDetail:cartItems.priceDetail,
                 price:data.price?data.price:cartItems.price
             }}) 
-        console.log(cartItems)
         if(cartItems.error){
             res.status(400).json({error:cartItems.error})
             return
@@ -615,12 +614,15 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             res.status(400).json({error:"سبد خرید خالی است"})
             return
         }
+        var result = []
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             if(cartItem.purchase){
                 var priceDetail = cartItem.priceDetail
                 const cartItems = CalcPurchase(priceDetail.Ayar,
                     priceRaw,priceDetail.weight&&priceDetail.weight.toString())
+
+                console.log(cartItems)
                 const price = cartItems.price
                 totalFull-=price
                 totalPrice-=price
@@ -630,7 +632,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 0&&await faktorItems.create(faktorItem)
-                await SetTahHesabItem(faktorItem,i)
+                result.push(await SetTahHesabItem(faktorItem,i+1))
                 0&&await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
@@ -653,7 +655,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             }
         }
-        res.json({data:"done"})
+        res.json({result:result})
         return
         const faktorData = {
             faktorNo:faktorNo,
