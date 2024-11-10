@@ -9,7 +9,8 @@ const FindPrice = require("./FindPrice");
 const CreateCartPurchase=async(data,userId)=>{
     
     const priceRaw = await FindPrice()
-    const priceDetail = CalcPurchase(data.ayar,priceRaw,data.weight)
+    var count = data.count?data.count:1
+    const priceDetail = CalcPurchase(data.ayar,priceRaw,data.weight,count)
     const price = data.price?data.price:priceDetail.price
     await cart.create({
         title:data.title,
@@ -18,6 +19,7 @@ const CreateCartPurchase=async(data,userId)=>{
         lab:data.lab,
         ayar:data.ayar,
         riang:data.riang,
+        count:data.count,
         priceDetail:priceDetail.priceDetail,
         price:price,
         fullPrice:price,

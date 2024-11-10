@@ -17,9 +17,10 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         unitPrice = cartDetails[c].unitPrice
         var cartPrice = parseFloat(cartDetails[c].price)
         if(cartDetails[c].purchase){
-            totalPrice -= cartPrice
+            var count = cartDetails[c].count?cartDetails[c].count:1
+            totalPrice -= cartPrice*count
             totalWeight -= parseFloat(cartDetails[c].weight&&
-                cartDetails[c].weight.replace(/\//g,'.'))
+                cartDetails[c].weight.replace(/\//g,'.'))*count
         } 
         else {
             var weight = parseFloat(cartDetails[c].weight&&
@@ -63,7 +64,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
                 ayar:"740",weight:"4.06",
                 parameters:[
-                    {title:"تعداد",value:"description",icon:"fa-comment",
+                    {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10]
                     }
                 ]
@@ -71,7 +72,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
                 ayar:"740",weight:"2.03",
                 parameters:[
-                    {title:"تعداد",value:"description",icon:"fa-comment",
+                    {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10]
                     }
                 ]
@@ -85,8 +86,9 @@ const calcUnit=(goldArray)=>{
     var total = 0;
     var weight = 0
     for(var i=0; i<goldArray.length;i++){
-        total += goldArray[i].price
-        weight += goldArray[i].weight
+        var count = goldArray[i].count?goldArray[i].count:1
+        total += goldArray[i].price*count
+        weight += goldArray[i].weight*count
     }
     return(NormalNumber(total/weight))
 }

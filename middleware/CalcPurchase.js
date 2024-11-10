@@ -1,5 +1,5 @@
-const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
-const CalcPurchase=(Ayar,price,weight)=>{
+
+const CalcPurchase=(Ayar,price,weight,count)=>{
     if(!weight||!Ayar) return(0)
     var floatWeight = parseFloat(weight.replace(/\//g,'.'))
     var ayarPercent = parseFloat(Ayar)/750
@@ -7,9 +7,9 @@ const CalcPurchase=(Ayar,price,weight)=>{
     var finalPrice = ayarRound*price
     
     var priceDetail = {
-        Ayar:Ayar, ayarPercent:ayarRound,
-        unitPrice:price, weight:floatWeight,
-        roundPrice:finalPrice
+        Ayar:Ayar, ayarPercent:ayarRound, singlePrice:finalPrice,
+        unitPrice:price, weight:floatWeight*count,
+        roundPrice:finalPrice*count
     }
     return({price:finalPrice,priceDetail:priceDetail})
 }

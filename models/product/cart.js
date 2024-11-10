@@ -20,6 +20,7 @@ const CartSchema = new Schema({
     purchaseType:{type:String},
     lab:{type:String},
     riang:{type:String},
+    count:{type:Number},
     price:{type:String},
     unitPrice:{type:String}
 })
