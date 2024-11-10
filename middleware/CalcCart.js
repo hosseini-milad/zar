@@ -69,7 +69,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             },
             {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06",
+                ayar:"740",weight:"2.03",
                 parameters:[
                     {title:"تعداد",value:"description",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10]
