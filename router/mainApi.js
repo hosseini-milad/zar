@@ -76,9 +76,10 @@ router.use('/panel/crm',CRMPanelApi)
     }
  })
  schedule.scheduleJob('*/10 * * * *', async() => { 
-    var response = await fetch(ONLINE_URL + "/get-product",
+    try{
+        var response = await fetch(ONLINE_URL + "/get-product",
         { method: 'POST' });
-    
+    }catch{}
  })
  router.post('/get-customers', async (req,res)=>{
     const from = req.body.from

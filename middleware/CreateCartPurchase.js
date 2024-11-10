@@ -15,11 +15,15 @@ const CreateCartPurchase=async(data,userId)=>{
         title:data.title,
         purchaseType:data.purchaseType,
         weight:data.weight,
+        lab:data.lab,
+        ayar:data.ayar,
+        riang:data.riang,
         priceDetail:priceDetail.priceDetail,
         price:price,
         fullPrice:price,
         unitPrice:priceRaw,
         purchase:true,
+        description:data.description,
         userId:userId
     })
     

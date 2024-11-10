@@ -465,6 +465,9 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         title:req.body.title,
         purchaseType:req.body.purchaseType,
         price:req.body.price,
+        lab:req.body.lab,
+        riang:req.body.riang,
+        description:req.body.description,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
     }
