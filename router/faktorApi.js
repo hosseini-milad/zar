@@ -388,7 +388,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
             {"getmandehesabbycode":[userData.cCode]}
         )
         const clientStatus = ClientStatus(clientRemain)
-        const cartDetails = await CalcCart(userId,clientStatus.remain)
+        const cartDetails = await CalcCart(userId,clientStatus.remain,req.headers['userid'])
         const bankList = await banks.find()
         res.json({message:"سبد بروز شد",...cartDetails,
             clientStatus,bankList})
@@ -646,7 +646,11 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        
+        const clientRemain = userData&&await GetTahHesab(
+            {"getmandehesabbycode":[userData.cCode]}
+        )
+        const clientStatus = ClientStatus(clientRemain)
+
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
@@ -664,7 +668,6 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 const cartItems = CalcPurchase(priceDetail.Ayar,
                     priceRaw,priceDetail.weight&&priceDetail.weight.toString())
 
-                console.log(cartItems)
                 const price = cartItems.price
                 totalFull-=price
                 totalPrice-=price
@@ -705,6 +708,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             userId:userId, 
             manageId:req.headers['userid'],
             initDate:Date.now(),
+            clientStatus:clientStatus,
             progressDate:Date.now(),
             status:"inprogress",
             isActive:true, isEdit:false,
@@ -829,11 +833,16 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
     const faktorNo =req.body.faktorNo;
     try{
         const faktorData = await FaktorSchema.findOne({faktorNo:faktorNo}).lean()
+        if(!faktorData){
+            res.status(400).json({error:"سفارش پیدا نشد"})
+            return
+        }
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
-        res.json({data:faktorData,userDetail:userDetail,goldInfo})
+        const transactions = await banks.find({orderNo:faktorNo})
+        res.json({data:faktorData,userDetail:userDetail,goldInfo,transactions})
     }
     catch(error){
         res.status(500).json({error: error.message})

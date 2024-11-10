@@ -7,6 +7,7 @@ const FaktorSchema = new Schema({
     initDate: { type: Date, default: Date.now },
     progressDate: { type: Date },
     userId:{ type: String },
+    clientStatus:{ type: Object },
     manageId:{ type: String },
     customerID:{ type: String },
     status:{ type: String },
