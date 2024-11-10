@@ -116,12 +116,12 @@ function QuickTotal(props){
         <p>{(qCart.cartWeight)}</p>
       </div>
       <div className="t-wrapper">
-        <p>مجموع فاکتور</p>
-        <p>{normalPriceCount(qCart.totalFee,1)}</p>
+        <p>مبلغ واحد</p>
+        <p>{normalPriceCount(qCart.unitPrice)}</p>
       </div>
       <div className="t-wrapper">
-        <p>تخفیف</p>
-        <p>{normalPriceRound(qCart.cartDiscount)||"-"}</p>
+        <p>به ازای گرم</p>
+        <p>{normalPriceCount(qCart.finalGoldUnit)||"-"}</p>
       </div>
       <div className="t-wrapper">
         <p>مالیات</p>

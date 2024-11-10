@@ -1387,6 +1387,12 @@ input[type="number"] {
   .sharif-order-main .admin-table-sec .pay-tr .long-td{
     grid-column: span 2 !important;
   }
+  .sharif-order-main .admin-table-sec .product-tr td{
+    grid-area: auto !important;
+  }
+  .sharif-order-main .admin-table-sec tr .long-td{
+    grid-column: span 2 !important;
+  }
   .sharif-order-main .admin-table-sec .product-info td {
     display: unset !important;
     grid-area: unset !important;

@@ -102,13 +102,14 @@ function QuickRow(props){
             <p>{props.index}</p>
             </td>
 
+            
+            <td  className="long-td">
+            
+                <p className="name">{data.title}</p>
+            
+            </td>
             <td data-cell="کد کالا">
                 {data.purchase?<p>خرید</p>:<p>{data.sku}</p>}
-            </td>
-            <td data-cell="شرح کالا">
-            <div className="product-title">
-                <p className="name">{data.title}</p>
-            </div>
             </td>
             <td data-cell="عیار">
             {editMode?<div className="code-input-wrapper new-input">
@@ -133,8 +134,11 @@ function QuickRow(props){
             <td data-cell="مبلغ واحد">
             <p>{normalPriceCount(data.unitPrice)}</p>
             </td>
+            {data.purchase?<></>:<td data-cell="مبلغ به ازای هر گرم">
+            <p>{normalPriceCount(data.priceDetail&&data.priceDetail.unitGold)}</p>
+            </td>}
             
-            <td data-cell="مبلغ کل">
+            <td data-cell="مبلغ کل" className={data.purchase?"long-td":""}>
                 {editMode?<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
@@ -144,7 +148,7 @@ function QuickRow(props){
                     /></div>:
                     <p>{normalPriceRound(data.fullPrice)}</p>}
             </td>
-            <td>
+            <td className="long-td">
             {editMode?<div className="more-btn">
                 <i className="fa-solid fa-save"
                 onClick={updateField}></i>
