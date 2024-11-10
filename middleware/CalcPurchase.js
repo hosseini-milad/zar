@@ -8,6 +8,7 @@ const CalcPurchase=(Ayar,price,weight,count)=>{
     
     var priceDetail = {
         Ayar:Ayar, ayarPercent:ayarRound, singlePrice:finalPrice,
+        singleWeight:floatWeight,
         unitPrice:price, weight:floatWeight*count,
         roundPrice:finalPrice*count
     }

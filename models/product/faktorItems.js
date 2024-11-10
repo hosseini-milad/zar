@@ -35,6 +35,7 @@ const FaktorItems = new Schema({
     purchaseType:{type:String},
     lab:{type:String},
     riang:{type:String},
+    count:{type:Number},
     description:{type:String},
     result:{ type: Object },
 
