@@ -10,14 +10,15 @@ function QuickNew(props){
     const [count,setCount] = useState(1)
     const [Weight,setWeight] = useState("")
     const [Ayar,setAyar] = useState("")
-    const [discount,setDiscount] = useState(0)
+    const [PayInfo,setPayInfo] = useState("")
     const [showDesc,setShowDesc] = useState(0)
     const [showParam,setShowParam] = useState(0)
     const [description,setDescription] = useState()
-    console.log(description)
+    
     const token = props.token
     const tab = props.tab
     const user=props.user
+
     //const [error,setError] = useState({message:'',color:"brown"})
     const addPayItem=()=>{
         if(!selectedItem)return
@@ -29,10 +30,8 @@ function QuickNew(props){
             "userId":token&&token.userId},
             body:JSON.stringify({
                 userId:user&&user._id,
-                weight:Weight,
-                ayar:Ayar,
                 title:selectedItem.title,
-                
+                ...PayInfo,
                 
                 
             })}
@@ -114,9 +113,10 @@ function QuickNew(props){
                 price:selectedItem.priceData,
                 description:"ویرایش شده"})
     }
-    console.log(showParam)
+    const ParamType= (selectedItem&&selectedItem.parameters.length)%2
+    console.log(PayInfo)
     return(
-        <tr className="input-tr">
+        <tr className={`input-tr ${props.tab?"pay-tr":""}`}>
             <td data-cell="ردیف"></td>
             
             <td className="search-td" data-cell="کد کالا">
@@ -124,17 +124,35 @@ function QuickNew(props){
                 search={props.search} setSearch={props.setSearch}
                 setSelectedItem={setSelectedItem}/>
             </td>
-            <td data-cell="شرح کالا">
+            {props.tab?
+            <>
+                {(selectedItem&&selectedItem.parameters&&selectedItem.parameters.map((param,i)=>(
+                    <td data-cell={param.title}> <div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder={param.title}
+                        onChange={(e)=>setPayInfo(prevState => ({
+                            ...prevState,
+                            [param.title]:e.target.value
+                          }))}
+                    /></div></td>
+                )))}
+            </>
+            :<td data-cell="شرح کالا">
                 {selectedItem?selectedItem.title:''}<br/>
                 <small>{selectedItem?selectedItem.sku:''}</small>
-            </td>
+            </td>}
             <td data-cell="عیار">
             {props.tab?<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
                         type="number" 
                         placeholder="عیار"
-                        onChange={(e)=>setWeight(e.target.value)}
+                        onChange={(e)=>setPayInfo(prevState => ({
+                            ...prevState,
+                            ayar:e.target.value
+                          }))}
                     /></div>:<></>}
                     
                 
@@ -145,7 +163,10 @@ function QuickNew(props){
                         className="dp-input" 
                         type="number" 
                         placeholder="وزن"
-                        onChange={(e)=>setAyar(e.target.value)}
+                        onChange={(e)=>setPayInfo(prevState => ({
+                            ...prevState,
+                            weight:e.target.value
+                          }))}
                     /></div>:<>{selectedItem&&selectedItem.weight}</>}
                     
                 
@@ -155,17 +176,15 @@ function QuickNew(props){
                 normalPriceCount(selectedItem.unitPrice):''}
             </td>
            
-            <td data-cell="مبلغ کل">
+            <td data-cell="مبلغ کل" className={ParamType?"long-td":""}>
                 {selectedItem? 
                 normalPriceCount(selectedItem.price):''}
             </td>
             <td>
             <div className="more-btn">
-                {props.tab?
-                (selectedItem&&selectedItem.parameters&&selectedItem.parameters.map((param,i)=>(<i key={i} className={`fa-solid ${param.icon?param.icon:"fa-comment"} ${description&&description[param.value]?"have-des":""}`}
-                onClick={()=>setShowParam(param)}></i>)))
-                :<i className="fa-solid fa-comment"
-                onClick={()=>setShowDesc(1)}></i>}
+                
+                <i className="fa-solid fa-comment"
+                onClick={()=>setShowDesc(1)}></i>
                 {props.tab?<i className="fa-solid fa-plus"
                 onClick={addPayItem}></i>:
                 <i className="fa-solid fa-plus"
@@ -177,20 +196,7 @@ function QuickNew(props){
             close={()=>setShowDesc(0)} color="darkblue"
             buttonText="ثبت توضیحات" def={description} title={"افزودن توضیحات"}/>:
             <></>}
-            {showParam?
             
-                <DataModal 
-                action={(e) =>
-                    setDescription((prevState) => ({
-                      ...prevState,
-                      [showParam.value]: e,
-                    }))
-                  }
-                close={()=>setShowParam(0)} color="darkblue"
-                buttonText="ثبت" def={description&&description[showParam.value]} title={showParam.title}/>
-            
-            :
-            <></>}
             </td>
         </tr>
     )

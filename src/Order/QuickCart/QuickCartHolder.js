@@ -21,7 +21,7 @@ function QuickCartHolder(props){
         "x-access-token":token&&token.token,"userId":token&&token.userId},
         body:JSON.stringify({search:search})
       }
-  fetch(env.siteApi + "/panel/faktor/list-product",postOptions)
+  fetch(env.siteApi + "/panel/faktor/list-product-sale",postOptions)
   .then(res => res.json())
   .then(
     (result) => {
@@ -59,13 +59,13 @@ function QuickCartHolder(props){
           token={token} setError={props.setError} user={props.user}
           setPayValue={props.setPayValue} payValue={props.payValue}
           />
-          <QuickTotal tab={tab} data={props.cartDetail} token={token}
+          <QuickTotal setShowBank={setShowBank} tab={tab} data={props.cartDetail} token={token}
           setCart={props.setCart} action={props.regCart}
             user={props.user} setError={props.setError}
             access={props.access}/>
 
         </div>
-        {/* <BankSelect bankList={props.bankList}/> */}
+        {ShowBank?<BankSelect bankList={ShowBank}/>:<></>}
       </section>
     )
 }

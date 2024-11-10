@@ -1632,7 +1632,7 @@ dialog {
   display: none;
 }
 .new-input.new-input{
-  width: 100px !important;
+  width: 100%!important;
 
   input{
     width: unset;

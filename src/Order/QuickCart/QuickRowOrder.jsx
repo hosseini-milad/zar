@@ -118,7 +118,7 @@ function QuickRow(props){
                         placeholder="عیار"
                         onChange={(e)=>setAyar(e.target.value)}
                     /></div>:
-                        <p>{data.priceDetail.Ayar}</p>}
+                        <p>{data.priceDetail&&data.priceDetail.Ayar}</p>}
             </td>
             <td data-cell="وزن">
                 {editMode?<div className="code-input-wrapper new-input">

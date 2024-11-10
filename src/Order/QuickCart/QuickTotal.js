@@ -5,7 +5,7 @@ function QuickTotal(props){
   const token = props.token
   const qCart = props.data
   const user = props.user
-  
+  const setShowBank=props.setShowBank
   const [First ,setFirst]=useState(1) 
   const [NeedToRe,setNeedToRe]=useState(false)
   
@@ -92,6 +92,7 @@ function QuickTotal(props){
                   setTimeout(()=>props.setError({message:"",color:"brown"}),2000)
                   props.setCart(result)
                   setNeedToRe(false)
+                  setShowBank(result.bankList)
               }
               else{
                 props.setError({message:result.error,color:"brown"})
