@@ -108,6 +108,46 @@ router.post('/list-product', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/list-product-sale', async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    const search = req.body.search
+    const weight=req.body.weight
+    const categoryFilter=req.body.category
+    const isMaster = req.body.isMaster?req.body.isMaster:true
+    const isMojood = req.body.isMojood?req.body.isMojood:false
+    try{
+   
+        const products = await productSchema.aggregate([
+            {$match:search?{$or:[
+                {sku:{$regex: search, $options : 'i'}},
+                {title:{$regex: search, $options : 'i'}}
+            ]}:{}},
+            { $match:categoryFilter?{categories:{$elemMatch:
+                {catCode:categoryFilter.toString()}}}:{}},
+            {$match:isMojood?{isMojood:true}:{}}
+        ])
+        const priceRaw = await FindPrice()
+        const productList = products.slice(offset,
+            (parseInt(offset)+parseInt(pageSize)))  
+            
+        var TAX = await tax.findOne().sort({date:-1})
+        for(var i=0;i<productList.length;i++){
+            const fullPrice =  CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
+            productList[i].price = fullPrice.price?fullPrice.price:"12300000"
+        }
+        const categoryList = await category.find({imageUrl:{$exists:true}})
+        res.json({data:productList,type:[],hasChild:1,
+            size:products.length,success:true,
+            categoryList, unitPrice:priceRaw,
+            subCategoryList	:[]
+        })
+
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.post('/fetch-product', async (req,res)=>{
     const sku = req.body.sku
     try{
