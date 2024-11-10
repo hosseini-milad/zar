@@ -47,19 +47,31 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         purchaseType:[
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
                 parameters:[
-                    {title:"توضیحات",value:"description",icon:"fa-comment"}
+                    
                 ]
             },
             {title:"خرید آبشده",id:2,unitPrice:unitPrice,
                 parameters:[
-                    {title:"نام آزمایشگاه",value:"lab",icon:"fa-cog"},
-                    {title:"شماره ری.انگ",value:"riang",icon:"fa-headphones"},
-                    {title:"توضیحات",value:"description",icon:"fa-comment"}
+                    {title:"نام آزمایشگاه",value:"lab",icon:"fa-cog",
+                        options:["سعدی","حافظ","مولوی"]
+                    },
+                    {title:"شماره ری.انگ",value:"riang",icon:"fa-headphones",
+                        options:[41,51,61,71,81,91]
+                    }
                 ]
             },
-            {title:"خرید سکه",id:3,unitPrice:unitPrice,
+            {title:"خرید سکه تمام بهار",id:10,unitPrice:unitPrice,
                 parameters:[
-                    {title:"توضیحات",value:"description",icon:"fa-comment"}
+                    {title:"تعداد",value:"description",icon:"fa-comment",
+                        options:[1,2,3,4,5,6,7,8,9,10]
+                    }
+                ]
+            },
+            {title:"خرید سکه نیم بهار",id:11,unitPrice:unitPrice,
+                parameters:[
+                    {title:"تعداد",value:"description",icon:"fa-comment",
+                        options:[1,2,3,4,5,6,7,8,9,10]
+                    }
                 ]
             }
         ],

@@ -36,6 +36,7 @@ const FaktorItems = new Schema({
     lab:{type:String},
     riang:{type:String},
     description:{type:String},
+    result:{ type: Object },
 
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },

@@ -36,14 +36,10 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
         Mazaneh, MazanehIsMesghalOrGeram_0_1, 
         IsMotefaregheOrAbshode_0_1, MablaghKol
     ]
-    return {query,data:faktorRow}
+    
         var customerList = 0&&await GetTahHesab(
             {"DoNewSanadBuySaleGOLD":query}
         )
-        if(customerList&&customerList["OK"]){
-            await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
-            {$set:{invoiceId:customerList["OK"]}})
-        }
     return({query,customerList,message:"outPut"})
 }
 

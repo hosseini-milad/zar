@@ -50,13 +50,9 @@ const RegisterFaktorItem=async(faktorNoId,indexRaw,purchaseRaw)=>{
         Darsad_Maliat, MeghdarMaliat, Darsad_Sood, Darsad_Talayee, 
         IsMarjoo_1_0, PoolSang, PictureFileName, Ojrat, Shenase
     ]
-        var customerList = await GetTahHesab(
+        var customerList = 0&&await GetTahHesab(
             {"DoNewSanadBuySaleEtiket":query}
         )
-        if(customerList&&customerList["OK"]){
-            await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
-            {$set:{invoiceId:customerList["OK"]}})
-        }
     return({query,customerList,message:"outPut"})
 }
 

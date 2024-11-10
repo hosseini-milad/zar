@@ -679,8 +679,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 const faktorItem ={...newObj,faktorNo:faktorNo,
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
-                await faktorItems.create(faktorItem)
-                result.push(await SetTahHesabItem(faktorItem,i+1))
+                //await faktorItems.create(faktorItem)
+                var hesabResult = await SetTahHesabItem(faktorItem,i+1)
+                await faktorItems.create({...faktorItem,result:hesabResult})
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
@@ -697,9 +698,15 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
-            await faktorItems.create(faktorItem)
+            
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            await SetTahHesabItem(faktorItem,i)
+            const hesabResult = await SetTahHesabItem(faktorItem,i)
+            
+            /*if(customerList&&customerList["OK"]){
+                await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
+                {$set:{query:query,invoiceId:customerList["OK"]}})
+            }*/
+            await faktorItems.create({...faktorItem,result:hesabResult})
             0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
@@ -729,7 +736,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
-    }
+         }
     catch(error){
         res.status(500).json({message: error.message})
     }

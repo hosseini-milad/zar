@@ -6,8 +6,11 @@ const SetTahHesabItem=async(cartItems,index)=>{
         return await RegisterBuyItem(cartItems,index,0)
     }
     else if(cartItems.isMojood&&!cartItems.isReserve){
-        console.log(cartItems._id)
-        //await RegisterFaktorItem(cartItems._id)
+        //console.log(cartItems._id)
+        return await RegisterFaktorItem(cartItems._id)
+    }
+    else if(cartItems){
+        return await RegisterFaktorItem(cartItems._id)
     }
 }
 
