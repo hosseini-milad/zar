@@ -51,6 +51,8 @@ const CalcPurchase = require('../middleware/CalcPurchase');
 const ClientStatus = require('../middleware/ClientStatus');
 const banks = require('../models/param/banks');
 const SetTahHesabItem = require('../middleware/SetTahHesabItem');
+const SetTransaction = require('../middleware/SetTransaction');
+const CheckAccess = require('../middleware/CheckAccess');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -284,7 +286,7 @@ router.post('/update-product',jsonParser,auth, async (req,res)=>{
         if(!searchProduct){
             await productSchema.create(data)
             status = "new product"
-        }
+        } 
         else{
             await productSchema.updateOne(
                 {sku:data.sku},{$set:data})
@@ -359,7 +361,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
 router.get('/get-cart',auth, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{ 
-        const cartDetails = await CalcCart(userId)
+        const cartDetails = await CalcCart(userId,0,req.headers['userid'])
         res.json({...cartDetails})
     }
     catch(error){ 
@@ -370,7 +372,7 @@ router.get('/get-cart',auth, async (req,res)=>{
 router.post('/cart',auth, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     try{ 
-        const cartDetails = await CalcCart(userId)
+        const cartDetails = await CalcCart(userId,0,req.headers['userid'])
         res.json({...cartDetails})
     }
     catch(error){ 
@@ -401,7 +403,7 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
             return
         }
         else{
-            const cart = await CalcCart(userId)
+            const cart = await CalcCart(userId,0,req.headers['userid'])
             res.json({...cart,message:"آیتم اضافه شد"})
             return
         } 
@@ -433,7 +435,7 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
             return
         }
         else{
-            const cart = await CalcCart(userId)
+            const cart = await CalcCart(userId,0,req.headers['userid'])
             res.json({...cart,message:"آیتم اضافه شد"})
             return
         } 
@@ -476,7 +478,7 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
             return
         }
         else{
-            const cart = await CalcCart(userId)
+            const cart = await CalcCart(userId,0,req.headers['userid'])
             res.json({...cart,message:"سبد بروز شد"})
             return
         } 
@@ -508,7 +510,7 @@ router.post('/remove-cart-item',auth,jsonParser, async (req,res)=>{
     try{
         if(id)await cart.deleteOne({userId:userId,_id:ObjectID(id)})
         if(sku)await cart.deleteOne({userId:userId,sku:sku})
-        const cartDetail = await CalcCart(userId)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         res.json({cart:cartDetail,message:"آیتم حذف شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -523,7 +525,7 @@ router.get('/delete-cart',auth,jsonParser, async (req,res)=>{    const id=req.bo
     try{
         await cart.deleteMany({userId:userId})
         
-        const cartDetail = await CalcCart(userId)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         res.json({cart:cartDetail,message:"سبد خالی شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -541,7 +543,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
-        const cartDetail = await CalcCart(userId)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
@@ -603,7 +605,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
-        const cartDetail = await CalcCart(userId)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
@@ -631,9 +633,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 const faktorItem ={...newObj,faktorNo:faktorNo,
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
-                0&&await faktorItems.create(faktorItem)
+                await faktorItems.create(faktorItem)
                 result.push(await SetTahHesabItem(faktorItem,i+1))
-                0&&await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
+                await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
             const productDetail = await products.findOne({sku:cartItem.sku})
@@ -649,17 +651,19 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
-            0&&await faktorItems.create(faktorItem)
-            0&&await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
+            await faktorItems.create(faktorItem)
+            await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             await SetTahHesabItem(faktorItem,i)
             0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
-            }
+            } 
         }
-        res.json({result:result})
-        return
+        await SetTransaction(bankData,userId,faktorNo)
+        //res.json({result:result})
+        //return
         const faktorData = {
             faktorNo:faktorNo,
             userId:userId, 
+            manageId:req.headers['userid'],
             initDate:Date.now(),
             progressDate:Date.now(),
             status:"inprogress",
@@ -672,8 +676,8 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         //await SetTahHesab()
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
-        await setTransaction(bankData,userId,faktorNo)
-        const cartDetails = await CalcCart(userId)
+        //await setTransaction(bankData,userId,faktorNo)
+        const cartDetails = await CalcCart(userId,0,req.headers['userid'])
         res.json({...cartDetails,faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
@@ -691,7 +695,7 @@ router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
-        const cartDetail = await CalcCart(userId)
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
@@ -736,7 +740,7 @@ router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         }
         await faktor.create(faktorData)
         await cart.deleteMany({userId:userId})
-        const cartData = await CalcCart(userId)
+        const cartData = await CalcCart(userId,0,req.headers['userid'])
         res.json({...cartData,faktorNo:faktorNo,
             message:`سفارش با کد ${faktorNo} ثبت شد`})
         return
@@ -837,8 +841,87 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
 router.post('/list-faktor',auth, async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    var managerId = req.headers['userid']
+    var userId = req.body.userId
     try{
-        const faktorData = await FaktorSchema.find({}).sort({initDate:-1}).lean()
+        const userData = managerId&&await users.findOne({_id:ObjectID(managerId)})
+        if(!userData){
+            res.status(400).json({error:"اطلاعات کاربری مجاز نیست"})
+            return 
+        }
+        var access = await CheckAccess(userData)
+        if(access<2){
+            res.status(400).json({error:"دسترسی ندارید"})
+            return 
+        }
+        const faktorData = access>6?
+            await FaktorSchema.find({}).sort({initDate:-1}).lean():
+            await FaktorSchema.find({manageId:managerId}).sort({initDate:-1}).lean()
+        const faktorList = faktorData.slice(offset,
+            (parseInt(offset)+parseInt(pageSize))) 
+        for(var i=0;i<faktorList.length;i++){
+            var faktorNo = faktorData[i].faktorNo
+            var userDetail = await customers.findOne({_id:ObjectID(faktorData[i].userId)})
+            const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
+            faktorData[i].items = faktorItemData
+            faktorData[i].rahId	=faktorNo
+            faktorData[i].userDetail=userDetail
+            //itemRefs.push(faktorItem)
+        }
+        res.json({data:faktorData,size:faktorData.length})
+    }
+    catch(error){
+        res.status(500).json({error: error.message})
+    }
+})
+router.post('/list-faktor-sale',auth, async (req,res)=>{
+    var pageSize = req.body.pageSize?req.body.pageSize:"10";
+    var offset = req.body.offset?(parseInt(req.body.offset)):0;
+    var manageId = req.headers['userid']
+    var nowDate = new Date();
+    const nowIso = nowDate.toISOString();
+    const nowParse = Date.parse(nowIso);
+    const now = new Date(nowParse);
+    var now2 = new Date();
+    var now3 = new Date();
+
+    var userId = req.body.userId
+    const data = {
+        orderNo: req.body.orderNo,
+        status: req.body.status,
+        customer: req.body.customer,
+        dateFrom:
+            req.body.dateFrom ? req.body.dateFrom[0] + "/" +
+                req.body.dateFrom[1] + "/" + req.body.dateFrom[2] + " " + "00:00" :
+                new Date().toISOString().slice(0, 10) + " 00:00",
+        dateTo:
+            req.body.dateTo ? req.body.dateTo[0] + "/" +
+                req.body.dateTo[1] + "/" + req.body.dateTo[2] + " 23:59" :
+                new Date().toISOString().slice(0, 10) + " 23:59",
+        pageSize: pageSize
+    }
+    const dateFromEn = new Date(now2.setDate(now.getDate() - (data.dateFrom ? data.dateFrom : 1)));
+        dateFromEn.setHours(0, 0, 0, 0);
+    const dateToEn = new Date(now3.setDate(now.getDate() - (data.dateTo ? data.dateTo : 0)));
+        dateToEn.setHours(23, 59, 0, 0);
+    try{
+        const userData = manageId&&await users.findOne({_id:ObjectID(manageId)})
+        if(!userData){
+            res.status(400).json({error:"اطلاعات کاربری مجاز نیست"})
+            return 
+        }
+        var access = await CheckAccess(userData)
+        if(access<2){
+            res.status(400).json({error:"دسترسی ندارید"})
+            return 
+        }
+        const faktorData = await FaktorSchema.aggregate([
+            { $match: data.orderNo ? { cartNo: new RegExp('.*' + data.orderNo + '.*') } : {} },
+            { $match: access<6?{manageId:manageId}:{}},
+            { $match: !data.orderNo ? { initDate: { $gte: new Date(data.dateFrom) } } : {} },
+            { $match: !data.orderNo ? { initDate: { $lte: new Date(data.dateTo) } } : {} },
+            { $sort: { "initDate": -1 } }
+        ])
         const faktorList = faktorData.slice(offset,
             (parseInt(offset)+parseInt(pageSize))) 
         for(var i=0;i<faktorList.length;i++){

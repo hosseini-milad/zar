@@ -1,11 +1,12 @@
 const customers = require("../models/auth/customers");
 const cart = require("../models/product/cart");
+const faktor = require("../models/product/faktor");
 const products = require("../models/product/products");
 const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
 var ObjectID = require('mongodb').ObjectID;
 
-const CalcCart=async(userId,remainRaw)=>{
+const CalcCart=async(userId,remainRaw,manageId)=>{
     var totalWeight = 0
     var remain = remainRaw?remainRaw:0
     var totalPrice = 0
@@ -28,7 +29,11 @@ const CalcCart=async(userId,remainRaw)=>{
             totalWeight += weight
         }
     }
-    
+    var faktorData = await faktor.aggregate([
+        { $match: { manageId: manageId } },
+        { $match: userId ? { userId: userId } : {} },
+        { $sort: { "initDate": -1 } }
+    ])
     return({cart:cartDetails,
         cartDetail: {
             "unitPrice": unitPrice,
@@ -57,7 +62,8 @@ const CalcCart=async(userId,remainRaw)=>{
                     {title:"توضیحات",value:"description",icon:"fa-comment"}
                 ]
             }
-        ]
+        ],
+        faktorData
     })
 }
 const calcUnit=(goldArray)=>{

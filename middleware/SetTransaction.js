@@ -9,6 +9,7 @@ const SetTransaction=async(bankData,userId,faktorNo)=>{
             userId:userId,
             orderNo:faktorNo,
             payValue:bankData[i].payValue,
+            description:bankData[i].description,
             date:Date.now()
         })
     }
