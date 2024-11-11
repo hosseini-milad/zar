@@ -1,5 +1,5 @@
 const customers = require("../models/auth/customers");
-const transactions = require("../models/param/transactions");
+const transactions = require("../models/param/transaction");
 const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
 const products = require("../models/product/products");
