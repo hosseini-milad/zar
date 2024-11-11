@@ -1308,7 +1308,9 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     try{ 
         await transaction.create(data)
         var bankDetail = await transaction.find({userId:data.userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail,remain:134500})
+        res.json({transData:bankDetail,remain:134500
+            ,totalPay:4350000
+        })
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -1320,7 +1322,9 @@ router.post('/remove-bank-from-cart', async (req,res)=>{
     try{ 
         await transaction.deleteOne({_id:ObjectID(id),userId:userId})
         var bankDetail = await transaction.find({userId:userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail,remain:134500})
+        res.json({transData:bankDetail,remain:134500
+            ,totalPay:4350000
+        })
     }
     catch(error){
         res.status(500).json({message: error.message})
