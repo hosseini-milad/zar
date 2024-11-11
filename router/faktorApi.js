@@ -1318,9 +1318,9 @@ router.post('/remove-bank-from-cart', async (req,res)=>{
     const userId = req.body.userId
     const id = req.body.id
     try{ 
-        await transactions.deleteOne({_id:ObjectID(id)})
-        var bankDetail = await transactions.find({userId:userId,orderNo:{$exists:false}})
-        res.json({bankData:bankDetail})
+        await transaction.deleteOne({_id:ObjectID(id),userId:userId})
+        var bankDetail = await transaction.find({userId:userId,orderNo:{$exists:false}})
+        res.json({transData:bankDetail})
     }
     catch(error){
         res.status(500).json({message: error.message})
