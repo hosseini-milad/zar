@@ -53,6 +53,7 @@ const banks = require('../models/param/banks');
 const SetTahHesabItem = require('../middleware/SetTahHesabItem');
 const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
+const transaction = require('../models/param/transaction');
 const {TaxRate} = process.env
 
 router.post('/products', async (req,res)=>{
@@ -1305,7 +1306,7 @@ router.post('/add-bank-to-cart', async (req,res)=>{
         description: req.body.description
     }
     try{ 
-        await transactions.create(data)
+        await transaction.create(data)
         var bankDetail = await transactions.find({userId:data.userId,orderNo:{$exists:false}})
         res.json({bankData:bankDetail})
     }
