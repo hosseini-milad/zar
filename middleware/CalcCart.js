@@ -97,7 +97,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             }
         ],
-        faktorData,transData
+        faktorData,transData,remain:134500
     })
 }
 const calcUnit=(goldArray)=>{
