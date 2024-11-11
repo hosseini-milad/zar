@@ -1631,3 +1631,14 @@ dialog {
 .single-product-table .product-tr td:first-child{
   display: none;
 }
+.new-input.new-input{
+  width: 100%!important;
+
+  input{
+    width: unset;
+    text-align: center;
+  }
+}
+.have-des{
+  color: lightgreen !important;
+}

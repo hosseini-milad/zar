@@ -71,7 +71,7 @@ export function normalPriceRound(priceText,count,tax){
     if(!priceText||priceText === null||priceText === undefined) return("")
 
     try{priceText =priceText.split(' ')[0];}catch{}
-    if(priceText === "0"||priceText === 0)return("رایگان");
+    if(priceText === "0"||priceText === 0)return("-");
     priceText = priceText.toString().split('.')[0]
     var rawPrice = parseInt(priceText.toString().replace(/\D/g,''))*
       (count?count:1)*(tax?tax:1)

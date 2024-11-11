@@ -18,6 +18,9 @@ function QuickTable(props){
               <th data-cell="شرح کالا">
                 <p>شرح کالا</p>
               </th>
+              <th data-cell="عیار">
+                <p>عیار</p>
+              </th>
               <th data-cell="وزن">
                 <p>وزن</p>
               </th>
@@ -31,7 +34,7 @@ function QuickTable(props){
             </tr>
           </thead>
           <tbody>
-            {reload?<QuickNew tab={props.tab} data={props.data} token={props.token}
+            {reload?<QuickNew pType={props.pType} cart={qCart} setTab={props.setTab} tab={props.tab} data={props.data} token={props.token}
               payValue={props.payValue?props.payValue:"4"} setCart={props.setCart}
               user={props.user} action={props.action} setError={props.setError}
               search={props.search} setSearch={props.setSearch}

@@ -5788,7 +5788,7 @@ table {
 .sliderMenuSelect .sliderMenu {
   background-color: #fff;
   border-radius: 10px;
-  height: 32px;
+  height:calc(100% - 10px);
   margin: 5px auto !important;
   opacity: 1 !important;
   position: absolute;

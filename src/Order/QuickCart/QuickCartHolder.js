@@ -5,11 +5,12 @@ import QuickTable from "./QuickTable"
 import QuickTotal from "./QuickTotal"
 import Cookies from 'universal-cookie';
 import CartTab from "./CartTab";
-
+import BankSelect from "./BankSelect";
 function QuickCartHolder(props){
   const token = props.token
   const [search,setSearch] = useState()
   const [content,setContent] = useState()
+  const [ShowBank,setShowBank]=useState(false)
   const tab=props.tab
   const setTab=props.setTab
   useEffect(() => {
@@ -20,7 +21,7 @@ function QuickCartHolder(props){
         "x-access-token":token&&token.token,"userId":token&&token.userId},
         body:JSON.stringify({search:search})
       }
-  fetch(env.siteApi + "/panel/faktor/list-product",postOptions)
+  fetch(env.siteApi + "/panel/faktor/list-product-sale",postOptions)
   .then(res => res.json())
   .then(
     (result) => {
@@ -45,8 +46,8 @@ function QuickCartHolder(props){
 
     return(
     <section className="admin-table-sec ">
-        <CartTab setTab={setTab} tab={tab}/>
-        <QuickTable tab={tab} data={content} token={token} canEdit={props.canEdit}
+        
+        <QuickTable pType={props.pType} setTab={setTab} tab={tab} data={content} token={token} canEdit={props.canEdit}
           cart={props.cart} setCart={props.setCart}
           user={props.user} action={props.addToCart}
           delete={props.deleteFromCart} setError={props.setError}
@@ -58,13 +59,13 @@ function QuickCartHolder(props){
           token={token} setError={props.setError} user={props.user}
           setPayValue={props.setPayValue} payValue={props.payValue}
           />
-          <QuickTotal tab={tab} data={props.cartDetail} token={token}
+          <QuickTotal setShowBank={setShowBank} tab={tab} data={props.cartDetail} token={token}
           setCart={props.setCart} action={props.regCart}
             user={props.user} setError={props.setError}
             access={props.access}/>
 
         </div>
-
+        {ShowBank?<BankSelect bankList={ShowBank}/>:<></>}
       </section>
     )
 }
