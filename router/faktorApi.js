@@ -1305,8 +1305,20 @@ router.post('/add-bank-to-cart', async (req,res)=>{
         description: req.body.description
     }
     try{ 
-        await banks.create(data)
-        var bankDetail = await banks.find({userId:data.userId,orderNo:{$exists:false}})
+        await transactions.create(data)
+        var bankDetail = await transactions.find({userId:data.userId,orderNo:{$exists:false}})
+        res.json({bankData:bankDetail})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/remove-bank-from-cart', async (req,res)=>{
+    const userId = req.body.userId
+    const id = req.body.id
+    try{ 
+        await transactions.deleteOne({_id:ObjectID(id)})
+        var bankDetail = await transactions.find({userId:userId,orderNo:{$exists:false}})
         res.json({bankData:bankDetail})
     }
     catch(error){
