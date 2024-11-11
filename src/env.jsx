@@ -1,8 +1,8 @@
 
 const env={
     siteApi:'http://localhost:6060/api',
-    // siteApi:'https://testadmin.sharifoilco.com/api',
-    // siteApi:'https://zaradmin.dkmehr.com/api',
+    //siteApi:'https://testadmin.sharifoilco.com/api',
+    //siteApi:'https://zaradmin.dkmehr.com/api',
     
     siteApiUrl:'http://localhost:6060',
     // siteApiUrl:'https://testadmin.sharifoilco.com',
