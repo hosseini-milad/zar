@@ -1307,7 +1307,7 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     try{ 
         await banks.create(data)
         var bankDetail = await banks.find({userId:data.userId,orderNo:{$exists:false}})
-        res.json({bankList:bankDetail})
+        res.json({bankData:bankDetail})
     }
     catch(error){
         res.status(500).json({message: error.message})
