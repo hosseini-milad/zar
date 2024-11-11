@@ -68,7 +68,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
                     },
                     {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:true
+                        isOptional:false
                     }
                 ]
             },
@@ -79,7 +79,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
                     },
                     {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:true
+                        isOptional:false
                     }
                 ]
             },
@@ -90,7 +90,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
                     },
                     {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:true
+                        isOptional:false
                     }
                 ]
             }
