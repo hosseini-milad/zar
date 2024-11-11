@@ -54,35 +54,46 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             {title:"خرید آبشده",id:2,unitPrice:unitPrice,
                 parameters:[
                     {title:"نام آزمایشگاه",value:"lab",icon:"fa-cog",
-                        options:["سعدی","حافظ","مولوی"]
+                        options:["سعدی","حافظ","مولوی"],isOptional:true
                     },
                     {title:"شماره ری.انگ",value:"riang",icon:"fa-headphones",
-                        options:[41,51,61,71,81,91]
+                        options:[41,51,61,71,81,91],isOptional:true
                     }
                 ]
             },
             {title:"خرید سکه",id:10,unitPrice:unitPrice,
-                isCoin:1,
-                options:[
-                    {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
-                        ayar:"740",weight:"4.06",
-                        parameters:[
-                            {title:"تعداد",value:"count",icon:"fa-comment",
-                                options:[1,2,3,4,5,6,7,8,9,10]
-                            }
-                        ]
+                ayar:"740",weight:"4.06",
+                parameters:[
+                    {title:"تعداد",value:"count",icon:"fa-comment",
+                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
                     },
-                    {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
-                        ayar:"740",weight:"2.03",
-                        parameters:[
-                            {title:"تعداد",value:"count",icon:"fa-comment",
-                                options:[1,2,3,4,5,6,7,8,9,10]
-                            }
-                        ]
+                    {title:"قیمت",value:"price",icon:"fa-headphones",
+                        isOptional:true
                     }
                 ]
             },
-            
+            {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
+                ayar:"740",weight:"4.06",
+                parameters:[
+                    {title:"تعداد",value:"count",icon:"fa-comment",
+                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
+                    },
+                    {title:"قیمت",value:"price",icon:"fa-headphones",
+                        isOptional:true
+                    }
+                ]
+            },
+            {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
+                ayar:"740",weight:"2.03",
+                parameters:[
+                    {title:"تعداد",value:"count",icon:"fa-comment",
+                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
+                    },
+                    {title:"قیمت",value:"price",icon:"fa-headphones",
+                        isOptional:true
+                    }
+                ]
+            }
         ],
         faktorData
     })
