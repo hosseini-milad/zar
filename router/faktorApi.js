@@ -385,7 +385,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
     const userData = await customers.findOne({_id:ObjectID(userId)})
     try{ 
         await CalcCartRecalc(userId)
-        const clientRemain = userData&&await GetTahHesab(
+        const clientRemain = 0&&userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         )
         const clientStatus = ClientStatus(clientRemain)
@@ -1308,7 +1308,7 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     try{ 
         await transaction.create(data)
         var bankDetail = await transaction.find({userId:data.userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail})
+        res.json({transData:bankDetail,remain:134500})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -1320,7 +1320,7 @@ router.post('/remove-bank-from-cart', async (req,res)=>{
     try{ 
         await transaction.deleteOne({_id:ObjectID(id),userId:userId})
         var bankDetail = await transaction.find({userId:userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail})
+        res.json({transData:bankDetail,remain:134500})
     }
     catch(error){
         res.status(500).json({message: error.message})
