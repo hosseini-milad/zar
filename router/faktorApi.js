@@ -711,7 +711,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
-        await SetTransaction(bankData,userId,faktorNo)
+        await SetTransaction(userId,faktorNo)
         //res.json({result:result})
         //return
         const faktorData = {
@@ -1295,7 +1295,24 @@ router.post('/bankCustomer', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-
+router.post('/add-bank-to-cart', async (req,res)=>{
+    
+    const data = {
+        userId: req.body.userId,
+        title: req.body.title,
+        bankCode: req.body.bankCode,
+        payValue: req.body.payValue,
+        description: req.body.description
+    }
+    try{ 
+        await banks.create(data)
+        var bankDetail = await banks.find({userId:data.userId,orderNo:{$exists:false}})
+        res.json({bankList:bankDetail})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.post('/edit-addCart', async (req,res)=>{
     const cartNo=req.body.cartNo
     const data=req.body.data

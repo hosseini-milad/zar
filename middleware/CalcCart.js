@@ -1,4 +1,5 @@
 const customers = require("../models/auth/customers");
+const banks = require("../models/param/banks");
 const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
 const products = require("../models/product/products");
@@ -35,6 +36,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         { $match: userId ? { userId: userId } : {} },
         { $sort: { "initDate": -1 } }
     ])
+    var bankData = userId?await banks.find({userId:userId,orderNo:{$exists:false}}):''
     return({cart:cartDetails,
         cartDetail: {
             "unitPrice": unitPrice,
@@ -95,7 +97,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             }
         ],
-        faktorData
+        faktorData,bankData
     })
 }
 const calcUnit=(goldArray)=>{

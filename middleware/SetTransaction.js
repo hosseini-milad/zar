@@ -1,18 +1,10 @@
 const banks = require("../models/param/banks")
 
-const SetTransaction=async(bankData,userId,faktorNo)=>{
-    if(!bankData)return
-    for(var i=0;i<bankData.length;i++){
-        await banks.create({
-            title:bankData[i].title,
-            bankCode:bankData[i].bankCode,
-            userId:userId,
-            orderNo:faktorNo,
-            payValue:bankData[i].payValue,
-            description:bankData[i].description,
-            date:Date.now()
+const SetTransaction=async(userId,faktorNo)=>{
+    if(!userId||!faktorNo)return
+    await banks.updateMany({userId:userId,orderNo:{$exists:false}},{
+            $set:{orderNo:faktorNo}
         })
-    }
     
 }
 module.exports =SetTransaction
