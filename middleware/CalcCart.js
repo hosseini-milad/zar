@@ -15,7 +15,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     var totalTax = 0
     var unitPrice = 0
     var goldUnit = []
-    const cartDetails = await cart.find({userId:userId}).lean()
+    const cartDetails = await cart.find({userId:userId})
+    .sort({purchase:-1}).lean()
     for(var c=0;c<cartDetails.length;c++){
         unitPrice = cartDetails[c].unitPrice
         var cartPrice = parseFloat(cartDetails[c].price)
