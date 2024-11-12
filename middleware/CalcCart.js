@@ -61,7 +61,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
                 parameters:[
                     
-                ]
+                ],isOptional:false
             },
             {title:"خرید آبشده",id:2,unitPrice:unitPrice,
                 parameters:[
@@ -73,19 +73,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                     }
                 ]
             },
-            {title:"خرید سکه",id:10,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06",
-                parameters:[
-                    {title:"تعداد",value:"count",icon:"fa-comment",
-                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
-                    },
-                    {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:false
-                    }
-                ]
-            },
             {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06",
+                ayar:"740",weight:"4.06", isCoin:true,
                 parameters:[
                     {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
@@ -96,7 +85,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             },
             {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
-                ayar:"740",weight:"2.03",
+                ayar:"740",weight:"2.03", isCoin:true,
                 parameters:[
                     {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
