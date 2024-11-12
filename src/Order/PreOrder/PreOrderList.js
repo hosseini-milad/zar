@@ -34,7 +34,7 @@ function PreOrderHolder(props){
         <div className="title">
           <p>سفارشات اخیر</p>
           <div className="orders-total">
-            <p>تعداد سفارشات : {cart.size}</p>
+            <p>تعداد سفارشات : {cart.faktorSize}</p>
           </div>
         </div>
         {cart.faktorData&&cart.faktorData.map((cart,i)=>(
