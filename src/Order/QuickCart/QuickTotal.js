@@ -105,7 +105,7 @@ function QuickTotal(props){
       </div>
       <div className="t-wrapper">
         <p>مبلغ کل </p>
-        <p>{normalPriceRound(qCart.cartPrice)}</p>
+        <p>{normalPriceCount(qCart.cartPrice)}</p>
       </div>
       {
       NeedToRe?<button onClick={()=>{Recalc();setNeedToRe(false)}} type="button" className="product-table-btn temp-btn">

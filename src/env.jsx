@@ -1,12 +1,12 @@
 
 const env={
-    siteApi:'http://localhost:6060/api',
+    // siteApi:'http://localhost:6060/api',
     //siteApi:'https://testadmin.sharifoilco.com/api',
-    //siteApi:'https://zaradmin.dkmehr.com/api',
+    siteApi:'https://zaradmin.dkmehr.com/api',
     
-    siteApiUrl:'http://localhost:6060',
+    // siteApiUrl:'http://localhost:6060',
     // siteApiUrl:'https://testadmin.sharifoilco.com',
-    // siteApiUrl:'https://zaradmin.dkmehr.com',
+    siteApiUrl:'https://zaradmin.dkmehr.com',
     cookieName:'zar-login',
     //cookieName:'panel-login',
     //cookieName:'mehr-login',
@@ -53,9 +53,13 @@ export function normalPriceCount(priceText,count){
     try{priceText =priceText.split(' ')[0];}catch{}
     if(priceText === "0"||priceText === 0)return("-");
     var rawPrice = parseInt(priceText.toString().replace(/\D/g,''))*(count?count:1)
+    var align= 1
+    if(priceText.toString().includes("-")){
+      align="-"
+    }
     //console.log(rawPrice,priceText)
     return(
-        (rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace( /^\D+/g, ''))
+        (align+rawPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace( /^\D+/g, ''))
     )
 }
 export function normalPriceCalc(priceAdd,price,priceMinus){
