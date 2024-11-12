@@ -2,6 +2,7 @@ const customers = require("../models/auth/customers");
 const transactions = require("../models/param/transaction");
 const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
+const faktorItems = require("../models/product/faktorItems");
 const products = require("../models/product/products");
 const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
@@ -36,6 +37,12 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         { $match: userId ? { userId: userId } : {} },
         { $sort: { "initDate": -1 } }
     ])
+    for(var i=0;i<faktorData.length;i++){
+        const userDetail = await customers.findOne({_id:ObjectID(faktorData[i].userId)})
+        const items = await faktorItems.find({faktorNo:faktorData[i].faktorNo})
+        faktorData[i].userDetail = userDetail
+        faktorData[i].items = items
+    }
     var transData = userId?await transactions.find({userId:userId,orderNo:{$exists:false}}):''
     return({cart:cartDetails,
         cartDetail: {
