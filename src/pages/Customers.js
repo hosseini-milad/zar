@@ -135,13 +135,7 @@ function Customers(props) {
             <i className="fa-solid fa-percent"></i>
             {tabletrans.discount[lang]}
           </label>
-          <label
-            className="edit-btn"
-            onClick={() => (window.location.href = "#")}
-          >
-            <i className="fa-solid fa-user"></i>
-            {tabletrans.newCu[lang]}
-          </label>
+          
           <label
             className="edit-btn"
             onClick={() => (window.location.href = "#")}

@@ -113,8 +113,7 @@ function QuickNew(props){
                 price:selectedItem.priceData,
                 description:"ویرایش شده"})
     }
-    const ParamType= (selectedItem&&selectedItem.parameters.length)%2
-    console.log(PayInfo)
+    const ParamType= (selectedItem&&selectedItem.parameters&&selectedItem.parameters.length)%2
     return(
         <tr className={`input-tr ${props.tab?"pay-tr":""}`}>
             <td data-cell="ردیف"></td>
@@ -130,11 +129,11 @@ function QuickNew(props){
                     <td data-cell={param.title}> <div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
-                        type="number" 
+                        type="text" 
                         placeholder={param.title}
                         onChange={(e)=>setPayInfo(prevState => ({
                             ...prevState,
-                            [param.title]:e.target.value
+                            [param.value]:e.target.value
                           }))}
                     /></div></td>
                 )))}
@@ -143,20 +142,7 @@ function QuickNew(props){
                 {selectedItem?selectedItem.title:''}<br/>
                 <small>{selectedItem?selectedItem.sku:''}</small>
             </td>}
-            <td data-cell="عیار">
-            {props.tab?<div className="code-input-wrapper new-input">
-                    <input 
-                        className="dp-input" 
-                        type="number" 
-                        placeholder="عیار"
-                        onChange={(e)=>setPayInfo(prevState => ({
-                            ...prevState,
-                            ayar:e.target.value
-                          }))}
-                    /></div>:<></>}
-                    
-                
-            </td>
+            
             <td data-cell="وزن">
                 {props.tab?<div className="code-input-wrapper new-input">
                     <input 
@@ -168,6 +154,20 @@ function QuickNew(props){
                             weight:e.target.value
                           }))}
                     /></div>:<>{selectedItem&&selectedItem.weight}</>}
+                    
+                
+            </td>
+            <td data-cell="عیار">
+            {props.tab?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="عیار"
+                        onChange={(e)=>setPayInfo(prevState => ({
+                            ...prevState,
+                            ayar:e.target.value
+                          }))}
+                    /></div>:<></>}
                     
                 
             </td>

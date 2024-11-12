@@ -6,11 +6,14 @@ import QuickTotal from "./QuickTotal"
 import Cookies from 'universal-cookie';
 import CartTab from "./CartTab";
 import BankSelect from "./BankSelect";
+import QuickSubmit from "./QuickSubmit";
 function QuickCartHolder(props){
   const token = props.token
   const [search,setSearch] = useState()
   const [content,setContent] = useState()
   const [ShowBank,setShowBank]=useState(false)
+  const [TransData,setTransData]=useState("")
+  const [NeedToRe,setNeedToRe]=useState(false)
   const tab=props.tab
   const setTab=props.setTab
   useEffect(() => {
@@ -59,13 +62,24 @@ function QuickCartHolder(props){
           token={token} setError={props.setError} user={props.user}
           setPayValue={props.setPayValue} payValue={props.payValue}
           />
-          <QuickTotal setShowBank={setShowBank} tab={tab} data={props.cartDetail} token={token}
+          <QuickTotal setNeedToRe={setNeedToRe} NeedToRe={NeedToRe} ShowBank={ShowBank} setShowBank={setShowBank} tab={tab} data={props.cartDetail} token={token}
           setCart={props.setCart} action={props.regCart}
             user={props.user} setError={props.setError}
-            access={props.access}/>
+            access={props.access} setTransData={setTransData}/>
 
         </div>
-        {ShowBank?<BankSelect bankList={ShowBank}/>:<></>}
+        {ShowBank?
+        <BankSelect 
+        token={token} 
+        user={props.user} 
+        bankList={ShowBank} 
+        TransData={TransData}
+        setTransData={setTransData}
+        totalPay={props.totalPay}
+        remain={props.remain}
+        />:<></>}
+
+        <QuickSubmit setShowBank={setShowBank} setNeedToRe={setNeedToRe} NeedToRe={NeedToRe} token={token} setCart={props.setCart} user={props.user} setError={props.setError}/>
       </section>
     )
 }

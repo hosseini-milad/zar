@@ -61,6 +61,9 @@ const ProductInfoHolder = (props) => {
             <td data-cell="کد کالا">
               <p>{Content.sku}</p>
             </td>
+            <td data-cell="سایز">
+              <p>{Content.size}</p>
+            </td>
             <td data-cell="هر گرم طلا خام"><p>{normalPriceCount(Price.unitPrice)}</p></td>
             <td data-cell={"اجرت هر گرم"+"("+(Price&&Price.ojratValue)+"%)"}><p>{normalPriceRound(Price.ojratPrice)}</p></td>
             <td data-cell="وزن"><p>{Content.weight}</p></td>
@@ -68,7 +71,7 @@ const ProductInfoHolder = (props) => {
             <td data-cell="سود"><p>{normalPriceRound(Price.senfiPrice)}</p></td>
             <td data-cell="متعلقات"><p>{normalPriceRound(Price.poolSang)}</p></td>
             <td data-cell="مالیات"><p>{normalPriceRound(Price.taxPrice)}</p></td>
-            <td data-cell="قیمت نهایی"><p>{normalPriceRound(Price.roundPrice)}</p></td>
+            <td className="long-td" data-cell="قیمت نهایی"><p>{normalPriceRound(Price.roundPrice)}</p></td>
           </tr>
         </tbody>
       </table>

@@ -111,16 +111,7 @@ function QuickRow(props){
             <td data-cell="کد کالا">
                 {data.purchase?<p>خرید</p>:<p>{data.sku}</p>}
             </td>
-            <td data-cell="عیار">
-            {editMode?<div className="code-input-wrapper new-input">
-                    <input 
-                        className="dp-input" 
-                        type="number" 
-                        placeholder="عیار"
-                        onChange={(e)=>setAyar(e.target.value)}
-                    /></div>:
-                        <p>{data.priceDetail&&data.priceDetail.Ayar}</p>}
-            </td>
+            
             <td data-cell="وزن">
                 {editMode?<div className="code-input-wrapper new-input">
                     <input 
@@ -130,6 +121,16 @@ function QuickRow(props){
                         onChange={(e)=>setWeight(e.target.value)}
                     /></div>:
                 <p>{data.weight+"g"}</p>}
+            </td>
+            <td data-cell="عیار">
+            {editMode?<div className="code-input-wrapper new-input">
+                    <input 
+                        className="dp-input" 
+                        type="number" 
+                        placeholder="عیار"
+                        onChange={(e)=>setAyar(e.target.value)}
+                    /></div>:
+                        <p>{data.priceDetail&&data.priceDetail.Ayar}</p>}
             </td>
             <td data-cell="مبلغ واحد">
             <p>{normalPriceCount(data.unitPrice)}</p>

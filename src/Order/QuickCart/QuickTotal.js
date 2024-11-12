@@ -6,8 +6,11 @@ function QuickTotal(props){
   const qCart = props.data
   const user = props.user
   const setShowBank=props.setShowBank
+  const setTransData=props.setTransData
+  const NeedToRe=props.NeedToRe
+  const setNeedToRe=props.setNeedToRe
   const [First ,setFirst]=useState(1) 
-  const [NeedToRe,setNeedToRe]=useState(false)
+  
   
   //console.log(qCart)
   
@@ -18,6 +21,7 @@ function QuickTotal(props){
           setSec(5*60*1000)
           
           setNeedToRe(true)
+          setShowBank(false)
         }
         const interval = setInterval(() => {
             setSec(sec - 1000);
@@ -42,37 +46,6 @@ function QuickTotal(props){
         return num.toString().padStart(2, '0');
       }
   
-  const SetOrder=()=>{
-    
-      const postOptions={
-          method:'post',
-          headers: { 'Content-Type': 'application/json' ,
-          "x-access-token": token&&token.token,
-          "userId":token&&token.userId},
-          body:JSON.stringify({userId:user&&user._id})
-        }
-        //console.log(postOptions)
-      fetch(env.siteApi + "/panel/faktor/cart-to-faktor-sale",postOptions)
-      .then(res => res.json())
-      .then(
-          (result) => {
-              if(!result.error){
-                  props.setError({message:result.message,color:"green"})
-                  setTimeout(()=>props.setError({message:"",color:"brown"}),2000)
-                  props.setCart(result)
-                  setNeedToRe(true)
-                  
-              }
-              else{
-                props.setError({message:result.error,color:"brown"})
-                  setTimeout(()=>props.setError({message:"",color:"brown"}),5000)
-              }
-                  
-          },
-          (error) => {
-              console.log(error)
-          })
-  }
   const Recalc=()=>{
     
       const postOptions={
@@ -93,6 +66,9 @@ function QuickTotal(props){
                   props.setCart(result)
                   setNeedToRe(false)
                   setShowBank(result.bankList)
+                  
+                  setSec(5*60*1000)
+                  setTransData(result.transData)
               }
               else{
                 props.setError({message:result.error,color:"brown"})
@@ -132,11 +108,14 @@ function QuickTotal(props){
         <p>{normalPriceRound(qCart.cartPrice)}</p>
       </div>
       {
-      NeedToRe?<button onClick={()=>{Recalc();setSec(5*60*1000);setNeedToRe(false)}} type="button" className="product-table-btn temp-btn">
+      NeedToRe?<button onClick={()=>{Recalc();setNeedToRe(false)}} type="button" className="product-table-btn temp-btn">
       <p>محاسبه صورتحساب</p>
-      </button>:<button type="button" className="product-table-btn temp-btn"
+      </button>:props.ShowBank?<button type="button" className="product-table-btn temp-btn"
       >
         <p>{msToTime(sec)}</p>
+      </button>:<button type="button" className="product-table-btn temp-btn"
+      >
+        <p>درحال پردازش</p>
       </button>}
     </div>
     )

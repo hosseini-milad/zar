@@ -11,36 +11,23 @@ function PreOrderItem(props){
           <div className="border-title" 
             onClick={()=>showDetail?setDetail(0):setDetail(1)}>
             <div className="bu-name">
-              {data.userData?<div className="col">
-                <p>{data.userData?data.userData.username:'-'}{data.userData.agent?<></>:<i className="fa-solid fa-check-circle blue-check" aria-hidden="true"></i>}</p>
-                <span>{data.userData.meliCode?data.userData.meliCode:"----------"}
-                  <i className="fa-solid fa-credit-card no-font" aria-hidden="true"></i>
-                </span>
-                <span>{data.userData.phone?data.userData.phone:"----------"}
+              {data.userDetail?<div className="col">
+                <p>{data.userDetail?data.userDetail.username:'-'}</p>
+                <span>{data.userDetail.phone?data.userDetail.phone:"----------"}
                   <i className="fa-solid fa-phone no-font" aria-hidden="true"></i>
                 </span>
-                <span>{data.userData.roleId?data.userData.roleId:"----------"}
-                  <i className="fa-solid fa-certificate no-font" aria-hidden="true"></i>
-                </span>
               </div>:<></>}
-              {data.userData?<div className="col">
-                <small >{data.userData?data.userData.Address:'-'}</small>
-                
-                
-                <span>{data.userData.PostalCode?data.userData.PostalCode:"----------"}
-                  <i className="fa-solid fa-location-arrow no-font" aria-hidden="true"></i>
-                </span>
+              {data.userDetail?<div className="col">
+                <small >{data.userDetail?data.userDetail.Address:'-'}</small>
               </div>:<></>}
             </div>
             <div className="newCol">
-              <p>شماره سفارش: {data.cartNo}</p>
-              <a className="orderNoCol" href={"/orders/print/"+data.cartNo}>
+              <p>شماره سفارش: {data.faktorNo}</p>
+              <a className="orderNoCol" href={"/print/official/"+data.faktorNo}>
                 چاپ سفارش</a>
-              {/*<p>{normalPriceCount(total.totalPrice,1)}</p>*/}
             </div>
             <div className="newCol">
-              <small>مبلغ کل:  <strong>{total?
-                normalPriceRound(total.totalPrice):'-'}</strong></small>
+              <small>مبلغ کل:  <strong>{normalPriceRound(data.fullPrice)}</strong></small>
               <div className="col"><p>تعداد: {total?total.totalCount:1}</p></div>
             </div>
             <div className="newCol">
@@ -57,7 +44,7 @@ function PreOrderItem(props){
                 "fa-solid fa-angle-down"}></i>
           </div>
           {showDetail?
-          <div className="product-table-sec display-on height-on">
+          <div className=" admin-table-sec display-on height-on">
             <table>
               <thead>
                 <tr>
@@ -67,12 +54,7 @@ function PreOrderItem(props){
                   <th data-cell="شرح کالا">
                     <p>شرح کالا</p>
                   </th>
-                  {/*<th data-cell="کد کالا">
-                    <p>کد کالا</p>
-          </th>*/}
-                  {/*<th data-cell="کارتن">
-                    <p>کارتن</p>
-        </th>*/}
+                  
                   <th data-cell="واحد اصلی">
                     <p>واحد اصلی</p>
                   </th>
@@ -92,48 +74,32 @@ function PreOrderItem(props){
                 </tr>
               </thead>
               <tbody>
-                {data.cartItems&&data.cartItems.map((item,i)=>(
-                <tr key={i}>
-                  <td data-cell="ردیف">
-                    <p>{i+1}</p>
-                  </td>
-                  <td data-cell="شرح کالا">
-                    <div className="product-title">
-                      <img src="/img/business/oil1.png" alt="avatar"/>
-                      <div className="product-name">
-                        <p className="name">{item.title}</p>
-                        <p className="email">{item.sku}</p>
-                      </div>
-                    </div>
-                  </td>
-                  {/*<td data-cell="کد کالا">
-                    <p>{item.sku}</p>
-                </td>
-                  <td data-cell="کارتن">
-                    <p>0</p>
-                  </td>*/}
-                  <td data-cell="واحد اصلی">
-                    <p>{item.count}</p>
-                  </td>
-                  <td data-cell="مبلغ واحد">
-                    <p>{normalPriceRound(item.total&&item.total.price)}</p>
-                  </td>
-                  <td data-cell="تخفیف">
-                    <p>{normalPriceRound(item.total&&item.total.discount)}
-                    <sub>{item.discount<100?"("+item.discount+"%)":''}</sub></p>
-                  </td>
-                  <td data-cell="مالیات">
-                    <p>{normalPriceRound(item.total&&item.total.tax)}</p>
-                  </td>
-                  <td data-cell="مبلغ کل">
-                    <p>{normalPriceRound(item.total&&item.total.total)}</p>
-                  </td>
-                  {/*<td>
-                    <div className="more-btn">
-                      <i className="fa-solid fa-trash" style={{color: "red"}}></i>
-                    </div>
-                    </td>*/}
-                </tr>))}
+                {data.items&&data.items.map((item,i)=>(
+                        <tr className="product-tr product-info" key={i}>
+                          <td  className="long-td">
+                            <p className="name">{item.title}</p>
+                          </td>
+                          <td data-cell="کد کالا">
+                              {item.purchase?<p>خرید</p>:<p>{item.sku}</p>}
+                          </td>
+                          <td data-cell="وزن">
+                            <p>{item.weight+"g"}</p>
+                          </td>
+                          <td data-cell="عیار">
+                            <p>{item.priceDetail&&item.priceDetail.Ayar}</p>
+                          </td>
+                          <td data-cell="مبلغ واحد">
+                          <p>{normalPriceCount(item.unitPrice)}</p>
+                          </td>
+                          {item.purchase?<></>:<td data-cell="مبلغ به ازای هر گرم">
+                          <p>{normalPriceCount(item.priceDetail&&item.priceDetail.unitGold)}</p>
+                          </td>}
+                          
+                          <td data-cell="مبلغ کل" className={item.purchase?"long-td":""}>
+                              <p>{normalPriceRound(item.fullPrice)}</p>
+                          </td>
+                    </tr>
+            ))}
               </tbody>
             </table>
 

@@ -26,9 +26,8 @@ function OrderHolder(props) {
   const [tab,setTab] = useState(0)
   const [ProductInfo,setProductInfo]=useState("")
   const access = CheckAccess(token,"orders")
-  console.log(access)
+  
   useEffect(() => {
-    console.log(Math.random());
     const postOptions = {
       method: "post",
       headers: {
@@ -108,7 +107,7 @@ function OrderHolder(props) {
         }
       );
   }, [appFilter]);
-  console.log(ProductInfo)
+  
   return (
     <div className="sharif new-sharif" style={{ direction: "rtl" }}>
       <header className="sharif-order-header">
@@ -162,6 +161,8 @@ function OrderHolder(props) {
             setError={setError}
             cartDetail={cart && cart.cartDetail}
             bankList={cart && cart.bankList}
+            totalPay={cart&&cart.totalPay}
+            remain={cart&&cart.remain}
           />
         ) : (
           ProductInfo ?(
@@ -169,9 +170,10 @@ function OrderHolder(props) {
           ):<></>
         )}
         
-        {/* <PreQuickHolder token={token} user={user} cart={cart} />
-        
-        {(cart&&cart.isSale)?
+        {/* <PreQuickHolder token={token} user={user} cart={cart} /> */}
+        {user?<PreOrderHolder token={token} user={user}
+          />:<></>}
+        {/* {(cart&&cart.isSale)?
         <PreOrderSale token={token} user={user}
         cart={cart} access={access}/>:
         <PreOrderHolder token={token} user={user}
