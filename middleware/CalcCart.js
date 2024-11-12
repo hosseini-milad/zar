@@ -104,7 +104,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             }
         ],
-        faktorData,transData,remain:134500,totalPay:4350000
+        faktorData,faktorSize:faktorData&&faktorData.length,transData,
+        remain:134500,totalPay:4350000
     })
 }
 const calcUnit=(goldArray)=>{
