@@ -53,7 +53,7 @@ export function normalPriceCount(priceText,count){
     try{priceText =priceText.split(' ')[0];}catch{}
     if(priceText === "0"||priceText === 0)return("-");
     var rawPrice = parseInt(priceText.toString().replace(/\D/g,''))*(count?count:1)
-    var align= 1
+    var align=""
     if(priceText.toString().includes("-")){
       align="-"
     }

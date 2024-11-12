@@ -13,8 +13,8 @@ function PreOrderItem(props){
             <div className="bu-name">
               {data.userDetail?<div className="col">
                 <p>{data.userDetail?data.userDetail.username:'-'}</p>
-                <span>{data.userDetail.phone?data.userDetail.phone:"----------"}
-                  <i className="fa-solid fa-phone no-font" aria-hidden="true"></i>
+                <span>{data.userDetail.cCode?data.userDetail.cCode:"----------"}
+                  <i className="fa-solid fa-tags no-font" aria-hidden="true"></i>
                 </span>
               </div>:<></>}
               {data.userDetail?<div className="col">
@@ -27,7 +27,7 @@ function PreOrderItem(props){
                 چاپ سفارش</a>
             </div>
             <div className="newCol">
-              <small>مبلغ کل:  <strong>{normalPriceRound(data.fullPrice)}</strong></small>
+              <small>مبلغ کل:  <strong>{normalPriceCount(data.fullPrice)}</strong></small>
               <div className="col"><p>تعداد: {total?total.totalCount:1}</p></div>
             </div>
             <div className="newCol">
