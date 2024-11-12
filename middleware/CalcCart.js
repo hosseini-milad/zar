@@ -52,7 +52,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartWeight": FloatDec(totalWeight,2),
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
-            "finalPrice":totalPrice-remain
+            "finalPrice":NormalNumber(totalPrice-remain)
         },
         purchaseType:[
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
