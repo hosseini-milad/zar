@@ -1271,9 +1271,12 @@ dialog {
 @media screen and (max-width: 650px) {
   .order-wrapper .col {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
   }
   .order-wrapper .col p {
+    width: 100%;
+  }
+  .bu-name{
     width: 100%;
   }
   .bu-name span {
@@ -1287,15 +1290,27 @@ dialog {
   .border-title i {
     font-size: inherit !important;
   }
-  .orderNoCol {
+  /* .orderNoCol {
     position: absolute;
     bottom: 10px;
     left: 70px;
-  }
+  } */
   .newCol {
+    width: 100%;
     flex-direction: initial;
     gap: 10px;
     margin: 5px 0;
+    align-items: center;
+  
+
+    p{
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    strong{
+      direction: ltr;
+      font-size: 0.85rem;
+    }
   }
 }
 

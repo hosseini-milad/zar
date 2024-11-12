@@ -46,7 +46,7 @@ function OfficialPrint(props){
                   <th className="xsmall-td">عیار</th>
                   <th className="meduim-td">وزن 750</th>
                   <th className="small-td">وزن</th>
-                  <th className="small-td">فی</th>
+                  
                   <th className="larg-td">مبلغ(ریال)</th>
                 </tr>
               </thead>
@@ -58,7 +58,7 @@ function OfficialPrint(props){
                   <td className="xsmall-td">750</td>
                   <td className="meduim-td"></td>
                   <td className="small-td">{Item.weight}</td>
-                  <td className="small-td">{normalPriceCount(Item.unitPrice)}</td>
+                  
                   <td className="larg-td">{normalPriceCount(Item.price)}</td>
                 </tr>)}
               </tbody>
@@ -94,10 +94,7 @@ function OfficialPrint(props){
                   <p>یک مثقال طلای 17 عیار:</p>
                   <p></p>
                 </div>
-                <div className="zar-box-item">
-                  <p>انس طلا:</p>
-                  <p></p>
-                </div>
+                
               </div>
               <div className="zar-box history">
                 <div className="zar-box-item">

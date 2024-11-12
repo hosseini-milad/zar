@@ -111,7 +111,12 @@ function QuickRow(props){
             <td data-cell="کد کالا">
                 {data.purchase?<p>خرید</p>:<p>{data.sku}</p>}
             </td>
-            
+            {data.count?
+              <td data-cell="تعداد">
+              <p>{data.count}</p>
+              </td>:<></>  
+
+            }
             <td data-cell="وزن">
                 {editMode?<div className="code-input-wrapper new-input">
                     <input 
@@ -132,6 +137,18 @@ function QuickRow(props){
                     /></div>:
                         <p>{data.priceDetail&&data.priceDetail.Ayar}</p>}
             </td>
+            {data.lab?
+              <td data-cell="آزمایشگاه">
+              <p>{data.lab}</p>
+              </td>:<></>  
+
+            }
+            {data.riang	?
+              <td data-cell="ری انگ">
+              <p>{data.riang}</p>
+              </td>:<></>  
+
+            }
             <td data-cell="مبلغ واحد">
             <p>{normalPriceCount(data.unitPrice)}</p>
             </td>
@@ -139,7 +156,7 @@ function QuickRow(props){
             <p>{normalPriceCount(data.priceDetail&&data.priceDetail.unitGold)}</p>
             </td>}
             
-            <td data-cell="مبلغ کل" className={data.purchase?"long-td":""}>
+            <td data-cell="مبلغ کل" className={!data.count&&data.purchase?"long-td":""}>
                 {editMode?<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
@@ -147,7 +164,7 @@ function QuickRow(props){
                         placeholder="مبلغ کل"
                         onChange={(e)=>setTotal(e.target.value)}
                     /></div>:
-                    <p>{normalPriceRound(data.fullPrice)}</p>}
+                    <p>{normalPriceCount(data.fullPrice)}</p>}
             </td>
             <td className="long-td">
             {editMode?<div className="more-btn">

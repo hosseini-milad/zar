@@ -17,7 +17,7 @@ function QuickCartHolder(props){
   const tab=props.tab
   const setTab=props.setTab
   useEffect(() => {
-    if(!search||search.length<3) {setContent(''); return}
+    if(!search||search.length<1) {setContent(''); return}
     const postOptions={
         method:'post',
         headers: {'Content-Type': 'application/json',

@@ -22,26 +22,31 @@ function PreOrderItem(props){
               </div>:<></>}
             </div>
             <div className="newCol">
-              <p>شماره سفارش: {data.faktorNo}</p>
-              <a className="orderNoCol" href={"/print/official/"+data.faktorNo}>
-                چاپ سفارش</a>
+              <p>شماره سفارش:</p>
+              <strong>{data.faktorNo}</strong>
+              <p>مبلغ کل: </p>
+              <strong>{normalPriceCount(data.fullPrice)}</strong>
+              
             </div>
             <div className="newCol">
-              <small>مبلغ کل:  <strong>{normalPriceCount(data.fullPrice)}</strong></small>
-              <div className="col"><p>تعداد: {total?total.totalCount:1}</p></div>
+              
+              {/* <div className="col"><p>تعداد: {total?total.totalCount:1}</p></div> */}
             </div>
             <div className="newCol">
             <small>تاریخ: {new Date(data.progressDate)
                   .toLocaleDateString('fa')}</small>
             <small>ساعت: {new Date(data.progressDate)
                   .toLocaleTimeString('fa')}</small>
+            <a className="orderNoCol" href={"/print/official/"+data.faktorNo}>
+            چاپ سفارش</a>
+            
             </div>
             <div className="newCol">
               {data.description?<small>توضیحات: </small>:<></>}
               <small>{data.description}</small>
             </div>
-            <i className={showDetail?"fa-solid fa-angle-up":
-                "fa-solid fa-angle-down"}></i>
+            <i className={showDetail?"fa-solid extend-btn fa-angle-up":
+                "fa-solid extend-btn fa-angle-down"}></i>
           </div>
           {showDetail?
           <div className=" admin-table-sec display-on height-on">
@@ -82,12 +87,30 @@ function PreOrderItem(props){
                           <td data-cell="کد کالا">
                               {item.purchase?<p>خرید</p>:<p>{item.sku}</p>}
                           </td>
+                          {item.count?
+                            <td data-cell="تعداد">
+                              <p>{item.count}</p>
+                            </td>:<></>  
+
+                          }
                           <td data-cell="وزن">
                             <p>{item.weight+"g"}</p>
                           </td>
                           <td data-cell="عیار">
                             <p>{item.priceDetail&&item.priceDetail.Ayar}</p>
                           </td>
+                          {item.lab?
+                            <td data-cell="آزمایشگاه">
+                            <p>{item.lab}</p>
+                            </td>:<></>  
+
+                          }
+                          {item.riang	?
+                            <td data-cell="ری انگ">
+                            <p>{item.riang}</p>
+                            </td>:<></>  
+
+                          }
                           <td data-cell="مبلغ واحد">
                           <p>{normalPriceCount(item.unitPrice)}</p>
                           </td>
@@ -95,8 +118,8 @@ function PreOrderItem(props){
                           <p>{normalPriceCount(item.priceDetail&&item.priceDetail.unitGold)}</p>
                           </td>}
                           
-                          <td data-cell="مبلغ کل" className={item.purchase?"long-td":""}>
-                              <p>{normalPriceRound(item.fullPrice)}</p>
+                          <td data-cell="مبلغ کل" className={!item.count&&item.purchase?"long-td":""}>
+                              <p>{normalPriceCount(item.fullPrice)}</p>
                           </td>
                     </tr>
             ))}
