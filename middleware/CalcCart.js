@@ -12,6 +12,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     var totalWeight = 0
     var remain = remainRaw?remainRaw:0
     var totalPrice = 0
+    var totalTax = 0
     var unitPrice = 0
     var goldUnit = []
     const cartDetails = await cart.find({userId:userId}).lean()
@@ -28,6 +29,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             var weight = parseFloat(cartDetails[c].weight&&
                 cartDetails[c].weight.replace(/\//g,'.'))
             goldUnit.push({weight:weight,price:cartPrice})
+            totalTax += cartDetails[c].priceDetail&&cartDetails[c].priceDetail.taxPrice
             totalPrice += cartPrice 
             totalWeight += weight
         }
@@ -49,6 +51,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "unitPrice": unitPrice,
             "cartDiscount": 0,
             "cartPrice": totalPrice,
+            "totalTax": totalTax,
             "cartWeight": FloatDec(totalWeight,2),
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
