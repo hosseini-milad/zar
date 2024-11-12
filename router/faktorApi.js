@@ -116,7 +116,7 @@ router.post('/list-product-sale', async (req,res)=>{
     const weight=req.body.weight
     const categoryFilter=req.body.category
     const isMaster = req.body.isMaster?req.body.isMaster:true
-    const isMojood = req.body.isMojood?req.body.isMojood:false
+    const isMojood = req.body.isMojood?req.body.isMojood:true
     try{
    
         const products = await productSchema.aggregate([
