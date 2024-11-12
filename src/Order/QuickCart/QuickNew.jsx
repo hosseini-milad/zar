@@ -8,18 +8,39 @@ import DataModal from "../../components/Modal/dataModal"
 function QuickNew(props){
     const [selectedItem,setSelectedItem] = useState()
     const [count,setCount] = useState(1)
-    const [Weight,setWeight] = useState("")
-    const [Ayar,setAyar] = useState("")
     const [PayInfo,setPayInfo] = useState("")
     const [showDesc,setShowDesc] = useState(0)
-    const [showParam,setShowParam] = useState(0)
     const [description,setDescription] = useState()
-    
+    const [TotalPrice,setTotalPrice]=useState("")
     const token = props.token
     const tab = props.tab
     const user=props.user
-
-    //const [error,setError] = useState({message:'',color:"brown"})
+    const FindTotal=()=>{
+        
+        const postOptions={
+            method:'post',
+            headers: { 'Content-Type': 'application/json' ,
+            "x-access-token": token&&token.token,
+            "userId":token&&token.userId},
+            body:JSON.stringify({
+                
+                title:selectedItem.title,
+                ayar:PayInfo.ayar,
+                weight:PayInfo.weight,
+                
+                
+            })}
+        fetch(env.siteApi + "/panel/faktor/find-purchase-price",postOptions)
+        .then(res => res.json())
+        .then(
+            (result) => {
+                setTotalPrice(result.price)
+            },
+            (error) => {
+                console.log(error)
+            })
+    
+    }
     const addPayItem=()=>{
         if(!selectedItem)return
         props.setReload(0)
@@ -144,7 +165,7 @@ function QuickNew(props){
             </td>}
             
             <td data-cell="وزن">
-                {props.tab?<div className="code-input-wrapper new-input">
+                {props.tab?selectedItem&&selectedItem.weight?selectedItem.weight:<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
                         type="number" 
@@ -158,7 +179,7 @@ function QuickNew(props){
                 
             </td>
             <td data-cell="عیار">
-            {props.tab?<div className="code-input-wrapper new-input">
+            {props.tab?selectedItem.ayar?selectedItem.ayar:<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
                         type="number" 
@@ -171,15 +192,21 @@ function QuickNew(props){
                     
                 
             </td>
-            <td data-cell="مبلغ واحد">
+            <td data-cell="مبلغ واحد" className={selectedItem&&selectedItem.isCoin?"long-td":""}>
                 {selectedItem? 
                 normalPriceCount(selectedItem.unitPrice):''}
             </td>
            
-            <td data-cell="مبلغ کل" className={ParamType?"long-td":""}>
+            {props.tab?
+            (!selectedItem.isCoin?<td data-cell="مبلغ کل" className={ParamType?"long-td":""}>
+                {selectedItem? 
+                (TotalPrice?(normalPriceCount(TotalPrice)):<button className="total-btn" onClick={FindTotal}>محاسبه قیمت</button>)
+                :''}
+            </td>:<></>):
+            (<td data-cell="مبلغ کل">
                 {selectedItem? 
                 normalPriceCount(selectedItem.price):''}
-            </td>
+            </td>)}
             <td>
             <div className="more-btn">
                 

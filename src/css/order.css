@@ -1863,6 +1863,8 @@ input[type="number"] {
   }
   .orderNoCol {
     border-color: #4b5258;
+    white-space: nowrap;
+    margin-right: auto;
   }
   .product-table-sec th {
     background-color: #4b5258;
@@ -2026,5 +2028,15 @@ input[type="number"] {
   border: none;
   outline: none;
   background-color:rgb(0, 135, 0);
+  color: white;
+}
+.total-btn{
+  padding: 0.2rem 1rem;
+  background-color: #cd8945;
+  margin-inline: auto;
+  border: none;
+  border-radius: 1rem;
+  outline: none;
+  transform: translateY(-8px);
   color: white;
 }
