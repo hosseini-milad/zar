@@ -715,7 +715,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         await SetTransaction(userId,faktorNo)
         //res.json({result:result})
         //return
-        const faktorData = {
+        const faktorResult = {
             faktorNo:faktorNo,
             userId:userId, 
             manageId:req.headers['userid'],
@@ -730,11 +730,11 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             unitPrice:NormalNumber(priceRaw)
         }
         //await SetTahHesab()
-        await faktor.create(faktorData)
+        await faktor.create(faktorResult)
         await cart.deleteMany({userId:userId})
         //await setTransaction(bankData,userId,faktorNo)
         const cartDetails = await CalcCart(userId,0,req.headers['userid'])
-        res.json({...cartDetails,faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
+        res.json({...cartDetails,faktorNo:faktorNo,faktorResult,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
