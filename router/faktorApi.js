@@ -385,7 +385,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
     const userData = await customers.findOne({_id:ObjectID(userId)})
     try{ 
         await CalcCartRecalc(userId)
-        const clientRemain = 0&&userData&&await GetTahHesab(
+        const clientRemain = userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         )
         const clientStatus = ClientStatus(clientRemain)
