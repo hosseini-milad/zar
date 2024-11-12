@@ -5,6 +5,7 @@ var token = JSON.parse(localStorage.getItem('token-lenz'));
 function OfficialPrint(props){
     const content =  props.content
     const user=props.user
+    const date = new Date(content.initDate)
     return(
         <div className="zar-print">
           <div className="header">
@@ -13,21 +14,22 @@ function OfficialPrint(props){
             </div>
             <div className="info-wrapper">
             <div className="user-info">
+              مشتری گرامی: 
                 <p>{user.username}</p>
-                <p><span>کد:</span>{user.otp}</p>
+                <p><span>کد:</span>{user.cCode}</p>
                 <p>{user.phone}</p>
               </div>
             </div>
-            <div className="info-wrapper">
+            <div className="info-wrapper col4">
               
                 <div className="container">
                   <div className="date">
                     <p>تاریخ:</p>
-                    <p></p>
+                    <p>{date.toLocaleDateString('fa')}</p>
                   </div>
                   <div className="number">
                     <p>شماره سند:</p>
-                    <p>{content.faktorNo}</p>
+                    <p>2{/*content.faktorNo*/}</p>
                   </div>
                 
               </div>
@@ -53,7 +55,7 @@ function OfficialPrint(props){
                 <tr key={i}>
                   <td className="xsmall-td">{i+1}</td>
                   <td className="larg-td">{Item.title}</td>
-                  <td className="xsmall-td">18</td>
+                  <td className="xsmall-td">750</td>
                   <td className="meduim-td"></td>
                   <td className="small-td">{Item.weight}</td>
                   <td className="small-td">{normalPriceCount(Item.unitPrice)}</td>
