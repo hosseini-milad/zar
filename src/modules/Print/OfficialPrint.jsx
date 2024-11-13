@@ -12,14 +12,6 @@ function OfficialPrint(props){
             <div className="image-wrapper">
               <img src="\img\zar-logo.PNG" alt="Logo" />
             </div>
-            <div className="info-wrapper">
-            <div className="user-info">
-              مشتری گرامی: 
-                <p>{user.username}</p>
-                <p><span>کد:</span>{user.cCode}</p>
-                <p>{user.phone}</p>
-              </div>
-            </div>
             <div className="info-wrapper col4">
               
                 <div className="container">
@@ -37,6 +29,13 @@ function OfficialPrint(props){
             </div>
             
           </div>
+          <div className="user-info">
+              مشتری گرامی: 
+                <p>{user.username}</p>
+                <p><span>کد:</span>{user.cCode}</p>
+                <p>{user.phone}</p>
+          </div>
+
           <div className="main">
             <table>
               <thead>
@@ -76,7 +75,7 @@ function OfficialPrint(props){
             </table>
             <div className="more-info">
               <div className="zar-box first-box">
-                <p className="date"></p>
+                
                 <p className="title">مانده این سند:</p>
               </div>
               <div className="zar-box"><p></p></div>
@@ -85,7 +84,7 @@ function OfficialPrint(props){
             <div className="gold-info">
               
               <div className="zar-box gold-day">
-                <div className="date"></div>
+                
                 <div className="zar-box-item">
                   <p>یک گرم طلا بدون اجرت:</p>
                   <p>{normalPriceCount(content.unitPrice)}</p>

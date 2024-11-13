@@ -28934,53 +28934,57 @@ pre[class*="language-"] {
   direction: rtl;
   
 }
+.zar-print{
+  .user-info {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    p {
+      font-size:  14px;
+      color: black;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+}
 .zar-print .header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  height: 180px;
+  
   width: 100%;
-  margin-block: 1rem;
+  margin-block:0;
 
   .image-wrapper {
-    width: calc(100% / 4);
+    width: calc(100% / 5);
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
     img {
       /*aspect-ratio: 1.5;*/
-      max-height: 250px;
+      width: 100%;
       display: block;
       object-fit: contain;
     }
   }
   .info-wrapper {
     width: calc(100% / 2);
-    height: 200px;
+    
     margin: 0;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
 
-    .user-info {
-      margin: 0;
-      margin-top: auto;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      flex-direction: row;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-
-      p {
-        font-size:  14px;
-        color: black;
-        font-weight: 600;
-        margin: 0;
-      }
-    }
+    
 
     .container {
       display: flex;
@@ -28994,6 +28998,7 @@ pre[class*="language-"] {
         margin: 0;
         color: black;
         font-weight: 600;
+        font-size: 0.85rem;
       }
 
       .date,
@@ -29008,7 +29013,7 @@ pre[class*="language-"] {
 }
 .col4{
   width: calc(100% / 4) !important;
-  margin-bottom: auto !important;
+  margin-block: auto !important;
 }
 .larg-td{
   min-width: 130px;
@@ -29038,10 +29043,9 @@ pre[class*="language-"] {
   th {
     color: black;
     text-align: center;
-    padding: 0.5rem;
+    padding:0.2rem 0.5rem;
     border: 1px solid grey;
     background-color: #d4c8b6;
-    height: 30px;
     font-size: 0.85rem;
   }
 }
@@ -29073,18 +29077,18 @@ pre[class*="language-"] {
 }
 .zar-print .main .more-info {
   width: 100%;
-  margin: 1rem auto;
+  margin: 0.5rem auto;
   border: 1px solid grey;
   background-color: #d4c8b6;
   border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 45px;
+  height: 30px;
 
   .zar-box {
     border-right: 1px solid grey;
-    width: calc(100% / 3);
+    width: calc(100% / 2);
     height: 100%;
     display: flex;
     align-items: center;
@@ -29094,11 +29098,13 @@ pre[class*="language-"] {
       margin: 0;
       color: black;
       font-weight: 600;
+      font-size: 0.85rem;
     }
   }
   .first-box {
     border: unset;
-    justify-content: space-between;
+    justify-content:center;
+    width:20%;
   }
 }
 .zar-print .main .gold-info{
@@ -29111,7 +29117,7 @@ pre[class*="language-"] {
     border: 1px solid grey;
     width: calc(100% / 2.02);
     border-radius: 1rem;
-    height: 100px;
+    height: 60px;
   }
 }
 .zar-print .main .gold-info .gold-day{
@@ -29121,7 +29127,7 @@ pre[class*="language-"] {
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  padding-top: 1rem;
+  
   .date{
     position: absolute;
     top: 0.5rem;
@@ -29137,6 +29143,7 @@ pre[class*="language-"] {
 
     p{
       margin: 0;
+      font-size: 0.85rem;
     }
   }
 }
@@ -29166,6 +29173,7 @@ pre[class*="language-"] {
 
     p{
       margin: 0;
+      font-size: 0.85rem;
     }
   }
   .title{
@@ -29184,10 +29192,11 @@ pre[class*="language-"] {
   width: 100%;
   display: flex;
   flex-direction:column;
-  margin-top: 0.5rem;
+  margin-top:auto;
   .title{
     width: 100%;
     text-align: right;
+    font-size: 0.85rem;
   }
   .container{
     width: 100%;
@@ -29195,7 +29204,7 @@ pre[class*="language-"] {
     align-items: flex-start;
     justify-content: space-between;
     flex-direction: row;
-    height: 150px;
+    height: 100px;
     padding:0;
     .item{
       width: 100%;

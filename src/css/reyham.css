@@ -1017,7 +1017,7 @@ dialog {
 /* official  print */
 .print-container {
   width: 100%;
-  padding-inline: 1rem;
+  padding-inline: 0.2rem;
 }
 .officialprint > * {
   font-size: 0.9rem;
