@@ -866,6 +866,7 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
         const FaktorItems = await faktorItems.findOne({_id:ObjectID(faktorItemNo)}).lean()
         //faktorData.items = FaktorItems
         var newPrice;
+        const priceRaw = await FindPrice()
         if(FaktorItems.newSku){
             var priceDetail = FaktorItems.priceDetail
             const newItem = await products.findOne({sku:FaktorItems.newSku})
@@ -893,7 +894,7 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
         
         const userDetail = await customers.findOne({phone:FaktorItems.phone})
         
-        res.json({data:FaktorItems,userDetail:userDetail})
+        res.json({data:FaktorItems,userDetail:userDetail,nowPrice:priceRaw})
     }
     catch(error){
         res.status(500).json({error: error.message})
