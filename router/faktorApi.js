@@ -53,6 +53,7 @@ const banks = require('../models/param/banks');
 const SetTahHesabItem = require('../middleware/SetTahHesabItem');
 const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
+const transaction = require('../models/param/transaction');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -114,7 +115,7 @@ router.post('/list-product-sale', async (req,res)=>{
     const weight=req.body.weight
     const categoryFilter=req.body.category
     const isMaster = req.body.isMaster?req.body.isMaster:true
-    const isMojood = req.body.isMojood?req.body.isMojood:false
+    const isMojood = req.body.isMojood?req.body.isMojood:true
     try{
    
         const products = await productSchema.aggregate([
@@ -713,7 +714,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         await SetTransaction(userId,faktorNo)
         //res.json({result:result})
         //return
-        const faktorData = {
+        const faktorResult = {
             faktorNo:faktorNo,
             userId:userId, 
             manageId:req.headers['userid'],
@@ -728,11 +729,11 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             unitPrice:NormalNumber(priceRaw)
         }
         //await SetTahHesab()
-        await faktor.create(faktorData)
+        await faktor.create(faktorResult)
         await cart.deleteMany({userId:userId})
         //await setTransaction(bankData,userId,faktorNo)
         const cartDetails = await CalcCart(userId,0,req.headers['userid'])
-        res.json({...cartDetails,faktorNo:faktorNo,faktorData,message:"سفارش ثبت شد"})
+        res.json({...cartDetails,faktorNo:faktorNo,faktorResult,message:"سفارش ثبت شد"})
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
@@ -847,7 +848,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
             res.status(400).json({error:"سفارش پیدا نشد"})
             return
         }
-        const FaktorItems = await faktorItems.find({faktorNo:faktorNo})
+        const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
@@ -864,6 +865,7 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
         const FaktorItems = await faktorItems.findOne({_id:ObjectID(faktorItemNo)}).lean()
         //faktorData.items = FaktorItems
         var newPrice;
+        const priceRaw = await FindPrice()
         if(FaktorItems.newSku){
             var priceDetail = FaktorItems.priceDetail
             const newItem = await products.findOne({sku:FaktorItems.newSku})
@@ -891,7 +893,7 @@ router.post('/fetch-faktor-item',auth, async (req,res)=>{
         
         const userDetail = await customers.findOne({phone:FaktorItems.phone})
         
-        res.json({data:FaktorItems,userDetail:userDetail})
+        res.json({data:FaktorItems,userDetail:userDetail,nowPrice:priceRaw})
     }
     catch(error){
         res.status(500).json({error: error.message})
@@ -1304,9 +1306,25 @@ router.post('/add-bank-to-cart', async (req,res)=>{
         description: req.body.description
     }
     try{ 
-        await banks.create(data)
-        var bankDetail = await banks.find({userId:data.userId,orderNo:{$exists:false}})
-        res.json({bankList:bankDetail})
+        await transaction.create(data)
+        var bankDetail = await transaction.find({userId:data.userId,orderNo:{$exists:false}})
+        res.json({transData:bankDetail,remain:134500
+            ,totalPay:4350000
+        })
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/remove-bank-from-cart', async (req,res)=>{
+    const userId = req.body.userId
+    const id = req.body.id
+    try{ 
+        await transaction.deleteOne({_id:ObjectID(id),userId:userId})
+        var bankDetail = await transaction.find({userId:userId,orderNo:{$exists:false}})
+        res.json({transData:bankDetail,remain:134500
+            ,totalPay:4350000
+        })
     }
     catch(error){
         res.status(500).json({message: error.message})

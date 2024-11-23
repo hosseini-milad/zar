@@ -1,7 +1,8 @@
 const customers = require("../models/auth/customers");
-const banks = require("../models/param/banks");
+const transactions = require("../models/param/transaction");
 const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
+const faktorItems = require("../models/product/faktorItems");
 const products = require("../models/product/products");
 const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
@@ -11,6 +12,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     var totalWeight = 0
     var remain = remainRaw?remainRaw:0
     var totalPrice = 0
+    var totalTax = 0
     var unitPrice = 0
     var goldUnit = []
     const cartDetails = await cart.find({userId:userId}).lean()
@@ -27,6 +29,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             var weight = parseFloat(cartDetails[c].weight&&
                 cartDetails[c].weight.replace(/\//g,'.'))
             goldUnit.push({weight:weight,price:cartPrice})
+            totalTax += cartDetails[c].priceDetail&&cartDetails[c].priceDetail.taxPrice
             totalPrice += cartPrice 
             totalWeight += weight
         }
@@ -36,22 +39,29 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         { $match: userId ? { userId: userId } : {} },
         { $sort: { "initDate": -1 } }
     ])
-    var bankData = userId?await banks.find({userId:userId,orderNo:{$exists:false}}):''
+    for(var i=0;i<faktorData.length;i++){
+        const userDetail = await customers.findOne({_id:ObjectID(faktorData[i].userId)})
+        const items = await faktorItems.find({faktorNo:faktorData[i].faktorNo})
+        faktorData[i].userDetail = userDetail
+        faktorData[i].items = items
+    }
+    var transData = userId?await transactions.find({userId:userId,orderNo:{$exists:false}}):''
     return({cart:cartDetails,
         cartDetail: {
             "unitPrice": unitPrice,
             "cartDiscount": 0,
             "cartPrice": totalPrice,
+            "totalTax": totalTax,
             "cartWeight": FloatDec(totalWeight,2),
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
-            "finalPrice":totalPrice-remain
+            "finalPrice":NormalNumber(totalPrice-remain)
         },
         purchaseType:[
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
                 parameters:[
                     
-                ]
+                ],isOptional:false
             },
             {title:"خرید آبشده",id:2,unitPrice:unitPrice,
                 parameters:[
@@ -63,19 +73,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                     }
                 ]
             },
-            {title:"خرید سکه",id:10,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06",
-                parameters:[
-                    {title:"تعداد",value:"count",icon:"fa-comment",
-                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
-                    },
-                    {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:false
-                    }
-                ]
-            },
             {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06",
+                ayar:"740",weight:"4.06", isCoin:true,
                 parameters:[
                     {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
@@ -86,7 +85,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             },
             {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
-                ayar:"740",weight:"2.03",
+                ayar:"740",weight:"2.03", isCoin:true,
                 parameters:[
                     {title:"تعداد",value:"count",icon:"fa-comment",
                         options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
@@ -97,7 +96,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
                 ]
             }
         ],
-        faktorData,bankData
+        faktorData,faktorSize:faktorData&&faktorData.length,transData,
+        remain:134500,totalPay:4350000
     })
 }
 const calcUnit=(goldArray)=>{
