@@ -7,6 +7,8 @@ var app = module.exports = express();
 const path = require('path');
 const cors = require("cors");
 app.use(cors());
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
  
 const mainApi = require('./router/mainApi')
 
@@ -41,6 +43,41 @@ app.use(router);
 
 app.use('/uploads', express.static('uploads'));
 // Optionally you can include your custom error handler after the logging.
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+      description: 'API documentation for the Gold endpoints',
+    },
+    servers: [
+      {
+        url: 'http://localhost:6060/api/panel/faktor'
+      },
+    ],
+    components: {
+      securitySchemes: {
+        ApiKeyAuth: {
+          type: 'apiKey',       // Define the type of security scheme
+          in: 'header',         // Specify that the API key is in the header
+          name: 'x-access-token', // Name of the header to be used
+          description: 'Enter your API key here',
+        },
+      },
+    },
+    security: [
+      {
+        ApiKeyAuth: [], // Apply the security scheme globally
+      },
+    ],
+  },
+  apis: ['./document/*Doc.js'],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 
 app.listen(port, function(){
   console.log("logger listening on port %d in %s mode", this.address().port, app.settings.env);
