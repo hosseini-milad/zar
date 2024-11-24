@@ -14,7 +14,28 @@ function ProductPopUp(props){
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
     
-    
+    // useEffect(()=>{
+    //     const body={
+    //         faktorNo:data.faktorNo
+    //     }
+    //     const postOptions={
+    //         method:'post',
+    //         headers: {'Content-Type': 'application/json',
+    //         "x-access-token":token&&token.token,"userId":token&&token.userId},
+    //         body:JSON.stringify(body)
+    //       }
+    //   fetch(env.siteApi + "/panel/faktor/fetch-faktor",postOptions)
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //         console.log(result)
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   )
+    // },[])
+
     
     return(
     <section className="delete-modal">

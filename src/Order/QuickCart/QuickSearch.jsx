@@ -30,7 +30,7 @@ function SalesQuickSearch(props){
             // direction={props.lang.dir}
             options={props.pType}
             label="title"
-            action={(e) => props.setSelectedItem(e)}
+            action={(e) => props.setSelectedItem(e?e:"")}
             />
         }
         
