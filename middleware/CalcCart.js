@@ -53,6 +53,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartPrice": totalPrice,
             "totalTax": totalTax,
             "cartWeight": FloatDec(totalWeight,2),
+            "cartWeightRaw": totalWeight,
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
             "finalPrice":NormalNumber(totalPrice-remain)
