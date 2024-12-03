@@ -2040,3 +2040,6 @@ input[type="number"] {
   transform: translateY(-8px);
   color: white;
 }
+.purchase-tr{
+  background-color: #e09d5a4b !important;
+}

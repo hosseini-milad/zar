@@ -7,7 +7,7 @@ import QuickCounter from "./QuickCounter"
 
 function QuickRow(props){
     const data = props.data
-    
+    console.log(data)
     return(<>
         <tr className="product-tr">
             <td data-cell="ردیف">
@@ -27,6 +27,9 @@ function QuickRow(props){
             </td>
             <td data-cell="وزن">
             <p>{data.weight+"g"}</p>
+            </td>
+            <td data-cell="قیمت لحظه ای">
+            <p>{normalPriceCount(data.livePrice)}</p>
             </td>
             <td data-cell="اجرت">
             <p>{normalPriceCount(data.priceDetail.ojratPrice)}</p>

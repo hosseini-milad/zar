@@ -68,6 +68,7 @@ function ProductPopUp(props){
                                         <th data-cell="نام کالا"><p>نام کالا</p></th>
                                         <th data-cell="عیار"><p>عیار</p></th>
                                         <th data-cell="وزن"><p>وزن</p></th>
+                                        <th data-cell="قیمت لحظه ای"><p>قیمت لحظه ای</p></th>
                                         <th data-cell="اجرت"><p>اجرت</p></th>
                                         <th data-cell="قیمت نهایی(ریال)"><p>قیمت نهایی(ریال)</p></th>
                                         </tr>

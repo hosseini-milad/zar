@@ -135,6 +135,7 @@ function QuickNew(props){
                 description:"ویرایش شده"})
     }
     const ParamType= (selectedItem&&selectedItem.parameters&&selectedItem.parameters.length)%2
+    
     return(
         <tr className={`input-tr ${props.tab?"pay-tr":""}`}>
             <td data-cell="ردیف"></td>
@@ -179,7 +180,8 @@ function QuickNew(props){
                 
             </td>
             <td data-cell="عیار">
-            {props.tab?selectedItem.ayar?selectedItem.ayar:<div className="code-input-wrapper new-input">
+            {props.tab?
+            (selectedItem&&selectedItem.ayar)?selectedItem.ayar:<div className="code-input-wrapper new-input">
                     <input 
                         className="dp-input" 
                         type="number" 
@@ -194,11 +196,11 @@ function QuickNew(props){
             </td>
             <td data-cell="مبلغ واحد" className={selectedItem&&selectedItem.isCoin?"long-td":""}>
                 {selectedItem? 
-                normalPriceCount(selectedItem.unitPrice):''}
+                normalPriceCount(selectedItem.priceDetail&&selectedItem.priceDetail.unitPrice):''}
             </td>
            
             {props.tab?
-            (!selectedItem.isCoin?<td data-cell="مبلغ کل" className={ParamType?"long-td":""}>
+            (selectedItem&&!selectedItem.isCoin?<td data-cell="مبلغ کل" className={ParamType?"long-td":""}>
                 {selectedItem? 
                 (TotalPrice?(normalPriceCount(TotalPrice)):<button className="total-btn" onClick={FindTotal}>محاسبه قیمت</button>)
                 :''}
