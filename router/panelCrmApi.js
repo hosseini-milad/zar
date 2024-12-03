@@ -135,7 +135,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
     var taskId = url.split('/')[2]
     var buttons=[]
     try{
-        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)})
+        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)}).lean()
         if(!faktorItem){
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
