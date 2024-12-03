@@ -21,6 +21,7 @@ const faktorItems = require('../models/product/faktorItems');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const FindNextStatus = require('../middleware/FindNextStatus');
 const FindSideEffect = require('../middleware/FindSideEffect');
+const FindPrice = require('../middleware/FindPrice');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -190,8 +191,9 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"ثبت ته حساب",type:"button",color:"lightgreen",value:1}
             ]
         }
-        
-       res.json({taskData:faktorItem,buttons,message:"Task Detail"})
+        const priceRaw = await FindPrice()
+       res.json({taskData:faktorItem,livePrice:priceRaw,
+            buttons,message:"Task Detail"})
     }
     catch(error){
         res.status(500).json({message: error.message})
