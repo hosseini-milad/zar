@@ -192,7 +192,8 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             ]
         }
         const priceRaw = await FindPrice()
-       res.json({taskData:faktorItem,livePrice:priceRaw,
+        faktorItem.livePrice = priceRaw
+       res.json({taskData:faktorItem,
             buttons,message:"Task Detail"})
     }
     catch(error){
