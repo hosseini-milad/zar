@@ -79,12 +79,14 @@ const calcTasks=async(userId)=>{
         
     }
     //console.log(columns)
+    const priceRaw = await FindPrice()
     const tasksToShow=[]
     for(var c=0;c<taskList.length;c++){
         var taskStep = taskList[c].status
         var yesterday = new Date(Date.now() - 86400000); // that is: 24 * 60 * 60 * 1000
         var taskDate = taskList[c].progressDate?taskList[c].progressDate:
             taskList[c].date
+            taskList[c].livePrice=priceRaw
         if(!taskList[c].progressDate){
             yesterday = new Date(Date.now() - 166400000)
         }
