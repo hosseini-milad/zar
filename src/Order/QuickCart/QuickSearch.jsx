@@ -18,7 +18,7 @@ function SalesQuickSearch(props){
             <input 
             className="dp-input" 
             type="text" 
-            placeholder="شرح کالا"
+            placeholder="جستجوی اتیکت "
             onChange={(e)=>setQuery(e.target.value)}
             />
             <i className="fa-solid fa-angle-down"></i>

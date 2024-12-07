@@ -1703,9 +1703,9 @@ input[type="number"] {
     background-color: #ffffff;
     border-bottom: 3px solid black;
   }
-  .admin-table-sec .product-tr:hover {
+  /* .admin-table-sec .product-tr:hover {
     background-color: rgba(235, 190, 145, 0.542) !important;
-  }
+  } */
   .admin-table-sec .input-tr {
     background-color: rgba(255, 248, 229, 0.484);
     overflow: hidden;

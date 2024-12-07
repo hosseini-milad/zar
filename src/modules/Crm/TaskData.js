@@ -34,8 +34,8 @@ function TaskData(props){
                         </li>:<>_</>}
 
                     {taskData.peykPhone?
-                        <li><i className="fa fa-footer fa-calendar"></i>
-                        {taskData.peykName}</li>:<>_</>}
+                        <li><i className="fa fa-footer fa-motorcycle"></i> 
+                        <p>{taskData.peykName}</p></li>:<>_</>}
                     
                 </ul>
             </div>

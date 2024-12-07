@@ -1,6 +1,6 @@
 import { useState } from "react"
 import ErrorAction from "../../components/Modal/ErrorAction"
-import env, { normalPriceCount, payValue } from "../../env"
+import env, { normalPriceCount, payValue,normalPriceRound } from "../../env"
 import DataModal from "../../components/Modal/dataModal"
 import QuickOff from "./QuickOff"
 import QuickCounter from "./QuickCounter"
@@ -29,10 +29,10 @@ function QuickRow(props){
             <p>{data.weight+"g"}</p>
             </td>
             <td data-cell="قیمت لحظه ای">
-            <p>{normalPriceCount(data.livePrice)}</p>
+            <p>{normalPriceCount(data.unitPrice)}</p>
             </td>
             <td data-cell="اجرت">
-            <p>{normalPriceCount(data.priceDetail.ojratPrice)}</p>
+            <p>{normalPriceRound(data.priceDetail.ojratPrice)}</p>
             </td>
             <td data-cell="قیمت نهایی(ریال)">
             <p>{normalPriceCount(data.price)}</p>
