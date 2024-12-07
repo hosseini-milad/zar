@@ -24,7 +24,7 @@ const CalcPrice=(product,price,TAX)=>{
         ojratValue:OJRAT, ojratPrice:ojratPrice,
         senfiValue:SENFI , senfiPrice:senfiPrice,
         poolSang:poolSang, unitPrice:price,
-        unitGold:parseInt(Math.round(totalPrice/floatWeight*1000))/100,//FloatDec(totalPrice/floatWeight,0),
+        unitGold:parseInt(Math.round((totalPrice/floatWeight)*1000))/1000,//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
