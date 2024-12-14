@@ -37,7 +37,7 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
         IsMotefaregheOrAbshode_0_1, MablaghKol
     ]
     
-        var customerList = 0&&await GetTahHesab(
+        var customerList = await GetTahHesab(
             {"DoNewSanadBuySaleGOLD":query}
         )
     return({query,customerList,message:"outPut"})

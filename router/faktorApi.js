@@ -710,7 +710,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 {$set:{query:query,invoiceId:customerList["OK"]}})
             }*/
             await faktorItems.create({...faktorItem,result:hesabResult})
-            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
+            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
         await SetTransaction(userId,faktorNo)
