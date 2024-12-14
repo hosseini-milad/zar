@@ -653,7 +653,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         const clientRemain = userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
-        )
+        ) 
         const clientStatus = ClientStatus(clientRemain)
 
         var TAX = await tax.findOne().sort({date:-1})
@@ -666,6 +666,10 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             return
         }
         var result = []
+        
+        await SetTransaction(userId,faktorNo)
+        res.json({})
+        return
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             if(cartItem.purchase){
