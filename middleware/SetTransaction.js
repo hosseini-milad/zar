@@ -19,7 +19,7 @@ const SetTransaction=async(userId,faktorNo)=>{
     for(var i=0;i<transactionList.length;i++){
         var transItem = transactionList[i]
         var Sabte_Kol_Or_Movaghat_1_0=1
-        var Moshtari_Code=userData.CustomerID 
+        var Moshtari_Code=userData.cCode, 
         var Factor_Number=faktorNo
         var Radif_Number="1"
         var Shamsi_Year=Shamsi_Year
