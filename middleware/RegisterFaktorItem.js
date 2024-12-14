@@ -6,10 +6,10 @@ const GetTahHesab = require("./GetTahHesab");
 const PureNumber = require("./PureNumber");
 var ObjectID = require('mongodb').ObjectID;
 
-const RegisterFaktorItem=async(faktorNoId,indexRaw,purchaseRaw)=>{
+const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
     var purchase = purchaseRaw?purchaseRaw:1
     var index = indexRaw?indexRaw:0
-    const faktorRow = await faktorItems.findOne({_id:ObjectID(faktorNoId)})
+    //const faktorRow = await cartItems.findOne({_id:ObjectID(faktorNoId)})
     if(!faktorRow){
         return({error:"شماره ردیف پیدا نشد"})
     }

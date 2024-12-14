@@ -7,10 +7,10 @@ const SetTahHesabItem=async(cartItems,index)=>{
     }
     else if(cartItems.isMojood&&!cartItems.isReserve){
         //console.log(cartItems._id)
-        return await RegisterFaktorItem(cartItems._id)
+        return await RegisterFaktorItem(cartItems)
     }
-    else if(cartItems){
-        return await RegisterFaktorItem(cartItems._id)
+    else{
+        return 0//await RegisterFaktorItem(cartItems._id)
     }
 }
 
