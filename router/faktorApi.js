@@ -668,8 +668,6 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         var result = []
         
         await SetTransaction(userId,faktorNo)
-        res.json({})
-        return
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             if(cartItem.purchase){
