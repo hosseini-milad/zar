@@ -13,7 +13,7 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     const dateSplit = date.split('/')
     var query = ''
     var faktorPrice = faktorRow.priceDetail
-    var Sabte_Kol_Or_Movaghat_1_0 = 0 
+    var Sabte_Kol_Or_Movaghat_1_0 = 1 
     var Moshtari_Code = PureNumber(customerData.cCode)
     var Factor_Number = PureNumber(faktorRow.faktorNo)
     var Radif_Number = index
