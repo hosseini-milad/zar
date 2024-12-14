@@ -21,6 +21,7 @@ const faktorItems = require('../models/product/faktorItems');
 const CreateFaktorLog = require('../middleware/CreateFaktorLog');
 const FindNextStatus = require('../middleware/FindNextStatus');
 const FindSideEffect = require('../middleware/FindSideEffect');
+const FindPrice = require('../middleware/FindPrice');
 
 router.post('/fetch-crm',jsonParser,async (req,res)=>{
     const userId=req.body.userId?req.body.userId:req.headers['userid']
@@ -78,12 +79,14 @@ const calcTasks=async(userId)=>{
         
     }
     //console.log(columns)
+    const priceRaw = await FindPrice()
     const tasksToShow=[]
     for(var c=0;c<taskList.length;c++){
         var taskStep = taskList[c].status
         var yesterday = new Date(Date.now() - 86400000); // that is: 24 * 60 * 60 * 1000
         var taskDate = taskList[c].progressDate?taskList[c].progressDate:
             taskList[c].date
+            taskList[c].livePrice=priceRaw
         if(!taskList[c].progressDate){
             yesterday = new Date(Date.now() - 166400000)
         }
@@ -134,7 +137,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
     var taskId = url.split('/')[2]
     var buttons=[]
     try{
-        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)})
+        const faktorItem = await faktorItems.findOne({_id:ObjectID(taskId)}).lean()
         if(!faktorItem){
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
@@ -190,8 +193,10 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
                 {title:"ثبت ته حساب",type:"button",color:"lightgreen",value:1}
             ]
         }
-        
-       res.json({taskData:faktorItem,buttons,message:"Task Detail"})
+        const priceRaw = await FindPrice()
+        faktorItem.livePrice = priceRaw
+       res.json({taskData:faktorItem,
+            buttons,message:"Task Detail"})
     }
     catch(error){
         res.status(500).json({message: error.message})

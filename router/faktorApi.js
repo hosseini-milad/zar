@@ -55,7 +55,6 @@ const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
 const transaction = require('../models/param/transaction');
 const {TaxRate} = process.env
-
 router.post('/products', async (req,res)=>{
     try{
         const allProducts = await productSchema.find()
@@ -67,6 +66,7 @@ router.post('/products', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+
 router.post('/list-product', async (req,res)=>{
     var pageSize = req.body.pageSize?req.body.pageSize:"10";
     var offset = req.body.offset?(parseInt(req.body.offset)):0;
@@ -98,10 +98,9 @@ router.post('/list-product', async (req,res)=>{
             productList[i].price = fullPrice.price?fullPrice.price:"12300000"
         }
         const categoryList = await category.find({imageUrl:{$exists:true}})
-        res.json({data:productList,type:[],hasChild:1,
+        res.json({data:productList,type:[],
             size:products.length,success:true,
-            categoryList, unitPrice:priceRaw,
-            subCategoryList	:[]
+            categoryList, unitPrice:priceRaw
         })
 
     }
@@ -135,8 +134,8 @@ router.post('/list-product-sale', async (req,res)=>{
         var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<productList.length;i++){
             const fullPrice =  CalcPrice(productList[i],priceRaw,TAX&&TAX.percent)
-            productList[i].price = fullPrice.price?fullPrice.price:"12300000"
-            productList[i].fullPrice = fullPrice
+            productList[i].price = (fullPrice&&fullPrice.price)?fullPrice.price:"12300000"
+            productList[i].priceDetail = fullPrice&&fullPrice.priceDetail
         }
         const categoryList = await category.find({imageUrl:{$exists:true}})
         res.json({data:productList,type:[],hasChild:1,
