@@ -56,11 +56,11 @@ import Printofficial from "./modules/Print/Printofficial";
 import Discount from "./pages/Discount";
 import OffCustomer from "./pages/Offcustomer";
 import PrintStore from "./modules/Crm/PrintStore";
-import News from './pages/News';
-import NewsDetailHolder from './components/News/NewsData/NewsDetailHolder';
-import DocDetailHolder from './modules/Documents/DocPanel/DocData/DocDetailHolder';
-import DocumentList from './pages/DocumentList';
-import Documents from './pages/Document';
+import News from "./pages/News";
+import NewsDetailHolder from "./components/News/NewsData/NewsDetailHolder";
+import DocDetailHolder from "./modules/Documents/DocPanel/DocData/DocDetailHolder";
+import DocumentList from "./pages/DocumentList";
+import Documents from "./pages/Document";
 import SalesSetting from "./pages/SalesSetting";
 
 const cookies = new Cookies();
@@ -89,11 +89,11 @@ root.render(
         <Route
           path="/"
           element={
-            findFPage(cookies) === "market" ? (
-              <OrderHolder lang={lang} />
+            findFPage(cookies) === "sale" ? (
+              <OrderHolder lang={"fa"} />
             ) : (
               <Layout>
-                <Dashboard lang={lang} />
+                <CRM lang={lang} />
               </Layout>
             )
           }
@@ -114,17 +114,29 @@ root.render(
             </Layout>
           }
         />
-        <Route 
-          path="/documents" 
-          element={<Layout><Documents lang={lang}/></Layout>}
+        <Route
+          path="/documents"
+          element={
+            <Layout>
+              <Documents lang={lang} />
+            </Layout>
+          }
         />
-        <Route 
-          path="/documents/list" 
-          element={<Layout><DocumentList lang={lang}/></Layout>}
+        <Route
+          path="/documents/list"
+          element={
+            <Layout>
+              <DocumentList lang={lang} />
+            </Layout>
+          }
         />
-        <Route 
-          path="/documents/detail/:docId" 
-          element={<Layout><DocDetailHolder lang={lang}/></Layout>}
+        <Route
+          path="/documents/detail/:docId"
+          element={
+            <Layout>
+              <DocDetailHolder lang={lang} />
+            </Layout>
+          }
         />
         <Route
           path="/visitor"
@@ -158,14 +170,7 @@ root.render(
             </Layout>
           }
         />
-        <Route
-          path="/PrintStore"
-          element={
-            
-              <PrintStore lang={lang} />
-            
-          }
-        />
+        <Route path="/PrintStore" element={<PrintStore lang={lang} />} />
         <Route
           path="/crmlist"
           element={
@@ -279,13 +284,21 @@ root.render(
             </Layout>
           }
         />
-        <Route 
-          path="/news" 
-          element={<Layout><News lang={lang}/></Layout>}
+        <Route
+          path="/news"
+          element={
+            <Layout>
+              <News lang={lang} />
+            </Layout>
+          }
         />
-        <Route 
-          path="/news/detail/:newsId" 
-          element={<Layout><NewsDetailHolder lang={lang}/></Layout>}
+        <Route
+          path="/news/detail/:newsId"
+          element={
+            <Layout>
+              <NewsDetailHolder lang={lang} />
+            </Layout>
+          }
         />
         <Route
           path="/products"
