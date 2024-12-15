@@ -1657,3 +1657,15 @@ dialog {
 .have-des{
   color: lightgreen !important;
 }
+.LivePrice{
+  padding: 0.2rem 0.5rem;
+  margin-right: 1rem;
+  border: 1px solid goldenrod;
+  border-radius: 1rem;
+  color: orange;
+
+  i{
+    cursor: pointer;
+    margin-right: 10px !important;
+  }
+}

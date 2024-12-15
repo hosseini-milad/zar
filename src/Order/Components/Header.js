@@ -177,31 +177,10 @@ function OrderHeader(props) {
                 <div className="info-holder col">
                   <span>
                     <i
-                      className="fa-solid fa-credit-card no-font id-icon"
-                      aria-hidden="true"
-                    ></i>
-                    {customer.meliCode ? customer.meliCode : "........"}
-                  </span>
-                  <span>
-                    <i
                       className="fa-solid fa-phone no-font id-icon"
                       aria-hidden="true"
                     ></i>
                     {customer.phone ? customer.phone : "........"}
-                  </span>
-                  <span>
-                    <i
-                      className="fa-solid fa-certificate no-font id-icon"
-                      aria-hidden="true"
-                    ></i>
-                    {customer.roleID ? customer.roleID : "........"}
-                  </span>
-                  <span>
-                    <i
-                      className="fa-solid fa-location-arrow no-font id-icon"
-                      aria-hidden="true"
-                    ></i>
-                    {customer.PostalCode ? customer.PostalCode : "........"}
                   </span>
                 </div>
                 <p className="bu-address">
@@ -213,7 +192,7 @@ function OrderHeader(props) {
       ) : (
         <></>
       )}
-      {showProduct ? (
+      {!0 ? (
               <div className="f-customer-dropdpwn">
                 {ProductList &&
                   ProductList.data.map((product, i) => (
@@ -228,16 +207,13 @@ function OrderHeader(props) {
                       <div className="info-holder col">
                         <span>
                           <i
-                            className="fa-solid fa-credit-card no-font id-icon"
+                            className="fa-solid fa-barcode no-font id-icon"
                             aria-hidden="true"
                           ></i>
                           {product.sku}
                         </span>
-                        <span>
-                          <i
-                            className="fa-solid fa-phone no-font id-icon"
-                            aria-hidden="true"
-                          ></i>
+                        <span className="icon-span">
+                          <img src="/img/weight-icon.png" alt="weight"/>
                           {product.weight}
                         </span>
                       </div>

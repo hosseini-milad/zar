@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import Cookies from "universal-cookie";
-import env from "../env";
+import env,{normalPriceCount} from "../env";
 
 import errortrans from "../translate/error";
 import Configuration from "./Configuration";
@@ -10,12 +10,38 @@ const Header = (props) => {
   const cookies = new Cookies();
   const [configure, setConfigure] = useState(0);
   const [setting, setSetting] = useState(0);
+  const [LivePrice, setLivePrice] = useState(0);
+  const [Refresh, setRefresh] = useState(0);
   const token = cookies.get(env.cookieName) || 1;
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const logOff = () => {
     cookies.remove(env.cookieName, { path: "/" });
     setTimeout(() => (document.location.reload(), 500));
   };
+  useEffect(()=>{
+    setLivePrice("")
+    var postOptions={
+      method:'get',
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token && token.token,
+        userId: token && token.userId,
+      },
+    }
+fetch(env.siteApi + "/panel/faktor/price",postOptions)
+.then(res => res.json())
+.then(
+  (result) => {
+    setLivePrice(result.data)
+  },
+    (error) => {
+      console.log(error);
+    }
+)  
+    
+    
+  },[Refresh])
+
   return (
     <nav
       className="navbar topMenu navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
@@ -43,11 +69,15 @@ const Header = (props) => {
           className="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
           id="navbar"
         >
-          <div className="d-flex align-items-center hideMobile">
-            <div className="input-group input-group-outline">
+          <div className="d-flex align-items-center">
+
+            {/* <div className="input-group input-group-outline">
               <label className="form-label">{errortrans.typeHere[lang]}</label>
               <input type="text" className="form-control" />
-            </div>
+            </div> */}
+            <span className="LivePrice">قیمت طلا: <i onClick={()=>setRefresh(Refresh+1)} class="fa fa-refresh" aria-hidden="true"></i>{normalPriceCount(LivePrice)}
+            </span>
+            
           </div>
           <ul
             className={`${
@@ -150,6 +180,7 @@ const Header = (props) => {
             <li className="nav-item d-flex align-items-center">
               <a href="#" className="nav-link text-body font-weight-bold px-0">
                 <i className="fa fa-user me-sm-1"></i>
+                <span>{token.username.split("undefined")[0]}</span>
               </a>
             </li>
           </ul>
