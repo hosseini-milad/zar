@@ -18,7 +18,7 @@ function SalesQuickSearch(props){
             <input 
             className="dp-input" 
             type="text" 
-            placeholder="شرح کالا"
+            placeholder="جستجوی اتیکت "
             onChange={(e)=>setQuery(e.target.value)}
             />
             <i className="fa-solid fa-angle-down"></i>
@@ -30,7 +30,7 @@ function SalesQuickSearch(props){
             // direction={props.lang.dir}
             options={props.pType}
             label="title"
-            action={(e) => props.setSelectedItem(e)}
+            action={(e) => props.setSelectedItem(e?e:"")}
             />
         }
         

@@ -14,6 +14,7 @@ function Task(props){
     const creator = taskData.creatorInfo
     const customer = taskData.customerInfo
     const taskUser = taskData.userInfo
+    console.log(taskData)
     return(<Draggable key={taskData._id}
         draggableId ={taskData._id} index={props.index}>
             {(provided,snapshot)=>(

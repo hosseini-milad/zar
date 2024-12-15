@@ -97,7 +97,7 @@ function QuickRow(props){
         setEditMode(0)
     }
     return(<>
-        <tr className="product-tr">
+        <tr className={`product-tr ${data.purchase?"purchase-tr":""}`}>
             <td data-cell="ردیف">
             <p>{props.index}</p>
             </td>

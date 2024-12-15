@@ -14,7 +14,28 @@ function ProductPopUp(props){
     //console.log(content)
     const [error,setError] = useState({message:'',color:"brown"})
     
-    
+    // useEffect(()=>{
+    //     const body={
+    //         faktorNo:data.faktorNo
+    //     }
+    //     const postOptions={
+    //         method:'post',
+    //         headers: {'Content-Type': 'application/json',
+    //         "x-access-token":token&&token.token,"userId":token&&token.userId},
+    //         body:JSON.stringify(body)
+    //       }
+    //   fetch(env.siteApi + "/panel/faktor/fetch-faktor",postOptions)
+    //   .then(res => res.json())
+    //   .then(
+    //     (result) => {
+    //         console.log(result)
+    //     },
+    //     (error) => {
+    //       console.log(error);
+    //     }
+    //   )
+    // },[])
+
     
     return(
     <section className="delete-modal">
@@ -47,6 +68,7 @@ function ProductPopUp(props){
                                         <th data-cell="نام کالا"><p>نام کالا</p></th>
                                         <th data-cell="عیار"><p>عیار</p></th>
                                         <th data-cell="وزن"><p>وزن</p></th>
+                                        <th data-cell="قیمت لحظه ای"><p>قیمت لحظه ای</p></th>
                                         <th data-cell="اجرت"><p>اجرت</p></th>
                                         <th data-cell="قیمت نهایی(ریال)"><p>قیمت نهایی(ریال)</p></th>
                                         </tr>

@@ -143,7 +143,7 @@ function OrderHeader(props) {
             type="search"
             name=""
             id="p-search"
-            placeholder="کد اتیکت"
+            placeholder="جستجوی اتیکت"
             onChange={(e) => findProduct(e.target.value)}
             onFocus={() => setShowProduct(1)}
             onBlur={() => setTimeout(() => setShowProduct(0), 200)}

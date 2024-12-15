@@ -6,6 +6,7 @@ function TaskData(props){
     const customer= props.customer
     const taskUser=props.taskUser
     const creator=props.creator
+    console.log(taskData)
     return(
         <div className={taskData.result?taskData.result.Number?
             "taskData doneTitle":"taskData suspendTitle":"taskData"}>
@@ -33,8 +34,8 @@ function TaskData(props){
                         </li>:<>_</>}
 
                     {taskData.peykPhone?
-                        <li><i className="fa fa-footer fa-calendar"></i>
-                        {taskData.peykName}</li>:<>_</>}
+                        <li><i className="fa fa-footer fa-motorcycle"></i> 
+                        <p>{taskData.peykName}</p></li>:<>_</>}
                     
                 </ul>
             </div>
