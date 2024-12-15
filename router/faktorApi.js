@@ -116,6 +116,7 @@ router.post('/list-product-sale', async (req,res)=>{
     const categoryFilter=req.body.category
     const isMaster = req.body.isMaster?req.body.isMaster:true
     const isMojood = req.body.isMojood?req.body.isMojood:true
+    const isReserve = req.body.isReserve?req.body.isReserve:true
     try{
    
         const products = await productSchema.aggregate([
@@ -125,7 +126,8 @@ router.post('/list-product-sale', async (req,res)=>{
             ]}:{}},
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
-            {$match:isMojood?{isMojood:true}:{}}
+            {$match:isMojood?{isMojood:true}:{}},
+            {$match:isReserve?{isReserve:true}:{}}
         ])
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,
