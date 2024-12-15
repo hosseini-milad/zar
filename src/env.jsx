@@ -1,12 +1,12 @@
 
 const env={
     // siteApi:'http://localhost:6060/api',
-    //siteApi:'https://testadmin.sharifoilco.com/api',
-    siteApi:'https://zaradmin.dkmehr.com/api',
+    siteApi:'https://admin.barzegargold.com/api',
+    // siteApi:'https://zaradmin.dkmehr.com/api',
     
     // siteApiUrl:'http://localhost:6060',
-    // siteApiUrl:'https://testadmin.sharifoilco.com',
-    siteApiUrl:'https://zaradmin.dkmehr.com',
+    siteApiUrl:'https://admin.barzegargold.com',
+    // siteApiUrl:'https://zaradmin.dkmehr.com',
     cookieName:'zar-login',
     //cookieName:'panel-login',
     //cookieName:'mehr-login',
@@ -298,8 +298,11 @@ export const CheckAccess=(token,pageUrlRaw)=>{
   if(!token) return('')
   var pageUrl = pageUrlRaw&&pageUrlRaw.toLowerCase()
   if(token.access=="manager")return("full")
-  var access= token.profile&&
-    token.profile.find(item=>(item.title).toLowerCase()===pageUrl)
+  var access=""
+  try{
+    token.profile&&
+    token.profile.find(item=>(item.title).toLowerCase()===pageUrl)}
+  catch{}
   return(access?access.state:"")
 }
 
