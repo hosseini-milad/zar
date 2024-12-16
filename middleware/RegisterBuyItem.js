@@ -8,6 +8,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     var index = indexRaw?indexRaw:1
+    const type = (faktorRow.title=="متفرقه")?0:1
     const customerData = await customers.findOne({phone:faktorRow.phone})
     const date = new Date(faktorRow.initDate).toLocaleDateString('fa')
     const dateSplit = date.split('/')
@@ -28,7 +29,7 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     var Name_az = faktorRow.lab?faktorRow.lab:""
     var Vazn = faktorPrice.weight
     var Ayar = faktorPrice.Ayar
-    var IsMotefaregheOrAbshode_0_1 =0
+    var IsMotefaregheOrAbshode_0_1 =type
     var query = [
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day,
