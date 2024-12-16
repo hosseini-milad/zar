@@ -39,7 +39,7 @@ const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
     var Darsad_Talayee =0
     var IsMarjoo_1_0 =0
     var PoolSang=0
-    var PictureFileName
+    var PictureFileName=""
     var Ojrat = faktorPrice.ojratValue
     var Shenase=PureNumber(faktorRow.sku)
     var query = [

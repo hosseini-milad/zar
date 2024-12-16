@@ -24,8 +24,8 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     var Mazaneh = faktorPrice.unitPrice
     var MazanehIsMesghalOrGeram_0_1 = 1
     var MablaghKol = faktorPrice.roundPrice
-    var Ang_Number = faktorRow.riang
-    var Name_az = faktorRow.lab
+    var Ang_Number = faktorRow.riang?faktorRow.riang:""
+    var Name_az = faktorRow.lab?faktorRow.lab:""
     var Vazn = faktorPrice.weight
     var Ayar = faktorPrice.Ayar
     var IsMotefaregheOrAbshode_0_1 =0
