@@ -27,7 +27,8 @@ const SetTransaction=async(userId,faktorNo)=>{
         var Shamsi_Day=Shamsi_Day
         var IsVoroodOrKhorooj_0_1=0
         var Mablagh=PureNumber(transItem.payValue)
-        var Sharh=transItem.title+"_"+transItem.description
+        var Sharh=transItem.title+"_"+
+            (transItem.description?transItem.description:"")
         var query = [Sabte_Kol_Or_Movaghat_1_0,Moshtari_Code, 
             Factor_Number, Radif_Number,
             Shamsi_Year,Shamsi_Month,Shamsi_Day,
