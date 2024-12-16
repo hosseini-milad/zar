@@ -857,7 +857,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
-        const transactions = await banks.find({orderNo:faktorNo})
+        const transactions = await transaction.find({orderNo:faktorNo})
         res.json({data:faktorData,userDetail:userDetail,goldInfo,transactions})
     }
     catch(error){
