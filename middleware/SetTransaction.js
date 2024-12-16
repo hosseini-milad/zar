@@ -20,13 +20,13 @@ const SetTransaction=async(userId,faktorNo)=>{
         var transItem = transactionList[i]
         var Sabte_Kol_Or_Movaghat_1_0=1
         var Moshtari_Code=PureNumber(userData.cCode?userData.cCode:1)
-        var Factor_Number=faktorNo
+        var Factor_Number=PureNumber(faktorNo)
         var Radif_Number=1
         var Shamsi_Year=Shamsi_Year
         var Shamsi_Month=Shamsi_Month
         var Shamsi_Day=Shamsi_Day
-        var IsVoroodOrKhorooj_0_1="1" 
-        var Mablagh=transItem.payValue
+        var IsVoroodOrKhorooj_0_1=0
+        var Mablagh=PureNumber(transItem.payValue)
         var Sharh=transItem.title+"_"+transItem.description
         var query = [Sabte_Kol_Or_Movaghat_1_0,Moshtari_Code, 
             Factor_Number, Radif_Number,
