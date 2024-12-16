@@ -91,7 +91,6 @@ router.use('/panel/crm',CRMPanelApi)
                 [from,to]
             }
         )
-        console.log(customerList)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
@@ -145,6 +144,8 @@ router.post('/get-product', async (req,res)=>{
                 sku:productList[i].Code,
                 weight:productList[i].Vazn,
                 size:productList[i].Size,
+                ayar:productList[i].Ayar,
+                sharh:productList[i].Sharh,
                 sood:productList[i].DarsadSood,
                 poolSang:productList[i].PoolSang,
                 ojrat:newSood,

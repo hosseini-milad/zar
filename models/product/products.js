@@ -18,6 +18,8 @@ const ProductSchema = new Schema({
     productMeta:String,
     fullDesc:String,
     size:String,
+    ayar:String,
+    sharh:String,
 
     isMojood:Boolean,
     isReserve:{type:Boolean,default:false},
