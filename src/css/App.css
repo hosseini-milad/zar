@@ -29225,3 +29225,7 @@ pre[class*="language-"] {
     }
   }
 }
+.zar-print .print-btn{
+  margin-top: 5rem;
+  font-size: 0.85rem;
+}
