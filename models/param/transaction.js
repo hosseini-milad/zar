@@ -7,7 +7,7 @@ const transSchema = new mongoose.Schema({
   orderNo:{type:String},
   payValue:{type:String},
   description:{type:String},
-  result:{type:Array},
+  result:{type:[Object]},
 
   date:{type:Date,default:Date.now()}
 });
