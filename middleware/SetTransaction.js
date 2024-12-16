@@ -15,7 +15,7 @@ const SetTransaction=async(userId,faktorNo)=>{
     var Shamsi_Day = PureNumber(EnNumber(dateSplit[2]))
     if(!userId||!faktorNo)return
     var transactionList = await transaction.find({userId:userId,orderNo:{$exists:false}})
-    var result = []
+    //var result = []
     for(var i=0;i<transactionList.length;i++){
         var transItem = transactionList[i]
         var Sabte_Kol_Or_Movaghat_1_0=1
@@ -35,11 +35,12 @@ const SetTransaction=async(userId,faktorNo)=>{
             IsVoroodOrKhorooj_0_1,Mablagh,Sharh]
         var payResult = await GetTahHesab(
             {"DoNewSanadVKHVaghNaghd":query})
-        result.push({query,payResult})
+        
+        
+    await transaction.updateOne({_id:transItem._id},{
+        $set:{orderNo:faktorNo,result:{query,payResult}}
+    })
     }
-    await transaction.updateMany({userId:userId,orderNo:{$exists:false}},{
-            $set:{orderNo:faktorNo,result}
-        })
     
     
     
