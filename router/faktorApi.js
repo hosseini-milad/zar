@@ -854,10 +854,10 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
             return
         }
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
-        const saleItems = FaktorItems.find(item=>item.purchase!==true)
+        const saleItems = FaktorItems.map(item=>item.purchase!==true)
         const saleDetail={tax:2342345,weight:53,price:2560000}
         const purchaseDetail={tax:0,weight:37.93,price:12260000}
-        const purchaseItems = FaktorItems.find(item=>item.purchase===true)
+        const purchaseItems = FaktorItems.map(item=>item.purchase===true)
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
