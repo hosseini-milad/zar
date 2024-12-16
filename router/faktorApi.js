@@ -854,11 +854,18 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
             return
         }
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
+        const saleItems = FaktorItems.find(item=>item.purchase!==true)
+        const saleDetail={}
+        const purchaseDetail={}
+        const purchaseItems = FaktorItems.find(item=>item.purchase===true)
         faktorData.items = FaktorItems
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
         const transactions = await transaction.find({orderNo:faktorNo})
-        res.json({data:faktorData,userDetail:userDetail,goldInfo,transactions})
+        res.json({data:faktorData,
+            saleItems:{saleDetail,data:saleItems},
+            purchaseItems:{purchaseDetail,data:purchaseItems},
+            userDetail:userDetail,goldInfo,transactions})
     }
     catch(error){
         res.status(500).json({error: error.message})
