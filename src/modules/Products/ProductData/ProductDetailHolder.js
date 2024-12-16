@@ -83,7 +83,7 @@ function ProductDetailHolder(props) {
             setError({ errorText: result.success, errorColor: "green" });
             if (navigateBack) {
               setTimeout(() => {
-                window.history.back();
+                window.location.href="/products";
               }, 2000);
             }
           }

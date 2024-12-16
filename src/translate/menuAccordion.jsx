@@ -3,7 +3,7 @@ const menutrans ={
         english:"Barzegar",
         persian:"برزگر",
         icon:"fa-eercast",
-        href:"https://sharifoilco.com"
+        href:"http://barzegargold.com/"
         
     },
     menu:[

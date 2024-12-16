@@ -28934,24 +28934,23 @@ pre[class*="language-"] {
   direction: rtl;
   
 }
-.zar-print{
-  .user-info {
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: row;
-    gap: 0.5rem;
-    flex-wrap: wrap;
 
-    p {
-      font-size:  14px;
-      color: black;
-      font-weight: 600;
-      margin: 0;
-    }
+.zar-print .user-info {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  p {
+    font-size:  14px;
+    color: black;
+    font-weight: 600;
+    margin: 0;
   }
 }
 .zar-print .header {

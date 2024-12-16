@@ -25,7 +25,7 @@ function SideBar(props){
             <div className="sidenav-header">
             <i className="serviceIcon fas fa-close position-absolute end-0 top-0 "
             onClick={()=>props.setPinMenu(0)}/>
-            <a className="navbar-brand m-0" href=" https://zar.dkmehr.com " target="_blank">
+            <a className="navbar-brand m-0" href="http://barzegargold.com/" target="_blank">
                 <i className="serviceIcon fas fa-eercast"></i>
                 <span className="ms-1 font-weight-bold text-white">{tabletrans.dkmehrDashboard[props.lang.lang]}</span>
             </a>

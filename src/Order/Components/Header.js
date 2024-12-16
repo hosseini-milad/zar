@@ -10,9 +10,9 @@ function OrderHeader(props) {
   const [showProduct, setShowProduct] = useState(0);
   const [showUsers, setShowUsers] = useState(0);
   const [customers, setCustomers] = useState();
-  const [ProductList,setProductList]=useState("")
-  const ProductInfo=props.ProductInfo
-  const setProductInfo=props.setProductInfo
+  const [ProductList, setProductList] = useState("");
+  const ProductInfo = props.ProductInfo;
+  const setProductInfo = props.setProductInfo;
   const findCustomer = (search) => {
     if (search.length < 3) {
       //setShowPop(0)
@@ -45,7 +45,6 @@ function OrderHeader(props) {
       );
   };
   const findProduct = (search) => {
-    
     const postOptions = {
       method: "post",
       headers: {
@@ -59,7 +58,7 @@ function OrderHeader(props) {
       .then((res) => res.json())
       .then(
         (result) => {
-          setProductList(result)
+          setProductList(result);
         },
         (error) => {
           console.log(error);
@@ -97,47 +96,44 @@ function OrderHeader(props) {
             onClick={() => props.setUser("")}
           ></i>
         </div>
-      ) : (<>
-        <div className="f-customer">
-          <input
-            type="search"
-            name=""
-            id="f-search"
-            placeholder="مشتری"
-            onChange={(e) => findCustomer(e.target.value)}
-            onFocus={() => setShowDrop(1)}
-            onBlur={() => setTimeout(() => setShowDrop(0), 200)}
-          />
-          <i
-            className="fa-solid fa-plus"
-            style={{ margin: "0", color: "#000" }}
-            onClick={() => setShowUsers(1)}
-          ></i>
-        </div>
-        
+      ) : (
+        <>
+          <div className="f-customer">
+            <input
+              type="search"
+              name=""
+              id="f-search"
+              placeholder="مشتری"
+              onChange={(e) => findCustomer(e.target.value)}
+              onFocus={() => setShowDrop(1)}
+              onBlur={() => setTimeout(() => setShowDrop(0), 200)}
+            />
+            <i
+              className="fa-solid fa-plus"
+              style={{ margin: "0", color: "#000" }}
+              onClick={() => setShowUsers(1)}
+            ></i>
+          </div>
         </>
       )}
-      {props.user ?(<></>):
-        ProductInfo?
+      {props.user ? (
+        <></>
+      ) : ProductInfo ? (
         <div className="f-customer">
           <div className="user-item">
             <b>
               {ProductInfo.title}
-              
 
-              <small>
-                ({ProductInfo.sku})
-              </small>
+              <small>({ProductInfo.sku})</small>
             </b>
-            
           </div>
           <i
             className="fa-solid fa-remove"
             style={{ margin: "0", color: "#000" }}
             onClick={() => props.setProductInfo("")}
           ></i>
-        </div>:
-        
+        </div>
+      ) : (
         <div className="f-customer">
           <input
             type="search"
@@ -152,7 +148,8 @@ function OrderHeader(props) {
             className="fa-solid fa-search"
             style={{ margin: "0", color: "#000" }}
           ></i>
-        </div>}
+        </div>
+      )}
       {showDrop ? (
         <div className="f-customer-dropdpwn">
           {customers &&
@@ -160,7 +157,10 @@ function OrderHeader(props) {
               <div
                 className="menu-item"
                 key={i}
-                onClick={() => {props.setUser(customer);props.setProductInfo("")}}
+                onClick={() => {
+                  props.setUser(customer);
+                  props.setProductInfo("");
+                }}
               >
                 <p className="bu-name">
                   {customer.username}
@@ -192,35 +192,35 @@ function OrderHeader(props) {
       ) : (
         <></>
       )}
-      {!0 ? (
-              <div className="f-customer-dropdpwn">
-                {ProductList &&
-                  ProductList.data.map((product, i) => (
-                    <div
-                      className="menu-item"
-                      key={i}
-                      onClick={() => setProductInfo(product)}
-                    >
-                      <p className="bu-name">
-                        {product.title}
-                      </p>
-                      <div className="info-holder col">
-                        <span>
-                          <i
-                            className="fa-solid fa-barcode no-font id-icon"
-                            aria-hidden="true"
-                          ></i>
-                          {product.sku}
-                        </span>
-                        <span className="icon-span">
-                          <img src="/img/weight-icon.png" alt="weight"/>
-                          {product.weight}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+      {showProduct ? (
+        <div className="f-customer-dropdpwn">
+          {ProductList &&
+            ProductList.data.map((product, i) => (
+              <div
+                className="menu-item"
+                key={i}
+                onClick={() => setProductInfo(product)}
+              >
+                <p className="bu-name">{product.title}</p>
+                <div className="info-holder col">
+                  <span>
+                    <i
+                      className="fa-solid fa-barcode no-font id-icon"
+                      aria-hidden="true"
+                    ></i>
+                    {product.sku}
+                  </span>
+                  <span className="icon-span">
+                    <img src="/img/weight-icon.png" alt="weight" />
+                    {product.weight}
+                  </span>
+                </div>
               </div>
-      ):<></>}
+            ))}
+        </div>
+      ) : (
+        <></>
+      )}
       <ManageUser show={showUsers} close={() => setShowUsers(0)} />
     </div>
   );

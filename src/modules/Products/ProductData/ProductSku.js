@@ -9,6 +9,7 @@ function ProductSKU(props){
     const brand=content&&content.brandList
     const category = content&&content.categoryList
     const filterList = content&&content.filterList
+    console.log(content)
     return(
         <div className="pd-row">
           <div className="row-title">
@@ -38,7 +39,7 @@ function ProductSKU(props){
                   }))}/>*/}
                 <StyleSelect title="محصول اصلی" direction={props.direction}
                  class={"formInput halfWidth"} 
-                 defaultValue={content&&content.isMaster?{title:"بلی",value:1}:{title:"خیر",value:0}} 
+                 defaultValue={content&&content.filter.isMaster?{title:"بلی",value:1}:{title:"خیر",value:0}} 
                  options={[{title:"بلی",value:1},{title:"خیر",value:0}]} label={"title"}
                  action={(e)=>props.setProductChange(prevState => ({
                     ...prevState,

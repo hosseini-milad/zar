@@ -67,7 +67,7 @@ fetch(env.siteApi + "/panel/user/allow-menu",postOptions)
                   name:user.cName+" "+user.sName,
                   date:user.date,
                   token:user.token,
-                  username:(user.cName+" "+result.sName)
+                  username:user.cName?(user.cName+" "+result.sName):user.username
               }
               //console.log(cookieData)
               cookies.set(env.cookieName,cookieData, { path: '/' });

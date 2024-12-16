@@ -23,7 +23,7 @@ function QuickRow(props){
             </div>
             </td>
             <td data-cell="عیار">
-                <p>{data.count}</p>
+                <p>{data.ayar}</p>
             </td>
             <td data-cell="وزن">
             <p>{data.weight+"g"}</p>
