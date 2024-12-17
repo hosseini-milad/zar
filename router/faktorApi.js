@@ -873,7 +873,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const purchaseDetail={tax:0,weight:37.93,price:12260000}
         
         faktorData.items = FaktorItems
-        faktorData.InvoiceID = "123"
+        faktorData.InvoiceID = faktorData.InvoiceID?faktorData.InvoiceID:"123"
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
         const transactions = await transaction.find({orderNo:faktorNo})
