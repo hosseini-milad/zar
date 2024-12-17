@@ -26,7 +26,7 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     }
     const totalRemain = totalSale-totalPurchase-totalPay+
         totalDebit-totalOff
-    return({totalSale,totalPurchase,totalPay,totalSaleWeight,
+    return({totalSale,totalPurchase,totalPay,totalSaleWeight,totalTax,
         totalOff,totalDebit:totalDebit,totalRemain})
 }
 
