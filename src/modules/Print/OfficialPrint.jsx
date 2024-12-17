@@ -3,15 +3,18 @@ import Num2persian from "num2persian";
 var token = JSON.parse(localStorage.getItem("token-lenz"));
 
 function OfficialPrint(props) {
-  const content = props.content;
+  const content = props.content.data;
+  const sale = props.content.saleItems;
+  const buy = props.content.purchaseItems;
+  const TransData = props.content.transactions;
+  const Total = props.content.calcFaktor;
   const user = props.user;
   const date = new Date(content.initDate);
+  console.log(content);
   return (
     <div className="zar-print">
       <div className="header">
-        <div className="image-wrapper">
-          <img src="\img\zar-logo.PNG" alt="Logo" />
-        </div>
+        <div className="image-wrapper"></div>
         <div className="info-wrapper col4">
           <div className="container">
             <div className="date">
@@ -20,7 +23,7 @@ function OfficialPrint(props) {
             </div>
             <div className="number">
               <p>شماره سند:</p>
-              <p>2{/*content.faktorNo*/}</p>
+              <p>{content.InvoiceID}</p>
             </div>
           </div>
         </div>
@@ -48,44 +51,99 @@ function OfficialPrint(props) {
               <th className="larg-td">مبلغ(ریال)</th>
             </tr>
           </thead>
-          <tbody className="sell-to-customer">
-            {content &&
-              content.items &&
-              content.items.map((Item, i) => (
-                <tr key={i}>
-                  <td className="xsmall-td">{i + 1}</td>
+          {sale && sale.data && (
+            <tbody className="sale-table">
+              {sale.data.map((Item, i) => (
+                <tr key={i} className="sale-tr">
+                  <td className="xsmall-td">{Item.index}</td>
                   <td className="larg-td">{Item.title}</td>
-                  <td className="xsmall-td">750</td>
-                  <td className="meduim-td"></td>
+                  <td className="xsmall-td">{Item.ayar}</td>
+                  <td className="small-td"></td>
                   <td className="small-td">{Item.weight}</td>
 
                   <td className="larg-td">{normalPriceCount(Item.price)}</td>
                 </tr>
               ))}
-          </tbody>
-          {/* <tbody className="buy-from-customer">
-                <tr>
-                  <td className="xsmall-td">ردیف</td>
-                  <td className="larg-td">شرح</td>
-                  <td className="xsmall-td">عیار</td>
-                  <td className="meduim-td">وزن 750</td>
-                  <td className="small-td">وزن</td>
-                  <td className="small-td">فی</td>
-                  <td className="larg-td">مبلغ(ریال)</td>
+              <tr className="sale-tr-total">
+                <td className="xsmall-td"></td>
+                <td className="larg-td">{`مجموع کل اجناس [+9% مالیات بر ارزش افزوده(${normalPriceCount(
+                  sale.saleDetail.tax
+                )})]`}</td>
+                <td className="xsmall-td"></td>
+                <td className="small-td"></td>
+                <td className="small-td">{Total.totalSaleWeight}</td>
+
+                <td className="larg-td">
+                  {normalPriceCount(sale.saleDetail.price)}
+                </td>
+              </tr>
+            </tbody>
+          )}
+          {buy && buy.data && (
+            <tbody className="buy-table">
+              {buy.data.map((Item, i) => (
+                <tr key={i} className="buy-tr">
+                  <td className="xsmall-td">{Item.index}</td>
+                  <td className="larg-td">{Item.title}</td>
+                  <td className="xsmall-td">{Item.ayar}</td>
+                  <td className="small-td"></td>
+                  <td className="small-td">{Item.weight}</td>
+
+                  <td className="larg-td">{normalPriceCount(Item.price)}</td>
                 </tr>
-              </tbody> */}
+              ))}
+            </tbody>
+          )}
+          {TransData && (
+            <tbody className="buy-table">
+              {TransData.map((Item, i) => (
+                <tr key={i} className="buy-tr">
+                  <td className="xsmall-td"></td>
+                  <td className="larg-td">{Item.title}</td>
+                  <td className="xsmall-td"></td>
+                  <td className="small-td"></td>
+                  <td className="small-td"></td>
+
+                  <td className="larg-td">{normalPriceCount(Item.payValue)}</td>
+                </tr>
+              ))}
+            </tbody>
+          )}
+          <tbody className="buy-table">
+            <tr className="add-tr">
+              <td className="xsmall-td"></td>
+              <td className="larg-td">تخفیف</td>
+              <td className="xsmall-td"></td>
+              <td className="small-td"></td>
+              <td className="small-td"></td>
+
+              <td className="larg-td">{normalPriceCount(Total.totalOff)}</td>
+            </tr>
+            <tr className="add-tr">
+              <td className="xsmall-td"></td>
+              <td className="larg-td">بدهی</td>
+              <td className="xsmall-td"></td>
+              <td className="small-td"></td>
+              <td className="small-td"></td>
+
+              <td className="larg-td">{normalPriceCount(Total.totalDebit)}</td>
+            </tr>
+          </tbody>
+        
         </table>
-        <div className="more-info">
-          <div className="zar-box first-box">
-            <p className="title">مانده این سند:</p>
-          </div>
-          <div className="zar-box">
-            <p></p>
-          </div>
-          <div className="zar-box">
-            <p></p>
-          </div>
-        </div>
+        <table className="more-info">
+          <tr>
+            <td className="zar-box first-box">
+              <p className="title">مانده این سند:</p>
+            </td>
+            <td className="zar-box">
+              <p></p>
+            </td>
+            <td className="zar-box">
+              <p>{normalPriceCount(Total.totalRemain)}</p>
+            </td>
+          </tr>
+        </table>
         <div className="gold-info">
           <div className="zar-box gold-day">
             <div className="zar-box-item">
@@ -139,7 +197,9 @@ function OfficialPrint(props) {
           </div>
         </div>
       </div>
-      <button className="print-btn"onClick={()=>window.print()}>چاپ</button>
+      <button className="print-btn" onClick={() => window.print()}>
+        چاپ
+      </button>
     </div>
   );
 }

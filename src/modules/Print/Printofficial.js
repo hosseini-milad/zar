@@ -23,7 +23,7 @@ const Printofficial = (props)=>{
         .then(res => res.json())
         .then(
             (result) => {
-                setContent(result.data)
+                setContent(result)
                 setUserData(result.userDetail)
             },
             (error) => {
@@ -31,14 +31,12 @@ const Printofficial = (props)=>{
             })
     },[])
     
-    return(
-        // <div className="print-container">
-        //     {faktorList?<OfficialPrint orderData={faktorList} userInfo={userData}/>  :
-        //     <main>در حال دریافت اطلاعات</main>}
-        // </div>
-        <div className="print-container">
+    return(<>
+        
+        {Content?<div className="print-container">
             <OfficialPrint content={Content} user={UserData}/>
-        </div>
+        </div>:<></>}
+        </>
     )
 }
 export default Printofficial
