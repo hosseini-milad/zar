@@ -4,8 +4,9 @@ const CalcFaktor=(sale,purchase,payment,debit)=>{
     var totalSale=0
     var totalPurchase=0
     var totalPay=0
-    var totalDebit = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
-    debit.MandeHesab[0].MandeHesab
+    var totalDebitRaw = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
+    debit.MandeHesab[0].MandeyeKolBePool
+    var totalDebit =NormalNumber(totalDebitRaw)
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
