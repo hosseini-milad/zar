@@ -1,6 +1,6 @@
 const NormalNumber = require("../NormalNumber")
 
-const CalcFaktor=(sale,purchase,payment,debit)=>{
+const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     var totalSale=0
     var totalSaleWeight=0
     var totalPurchase=0
@@ -8,6 +8,7 @@ const CalcFaktor=(sale,purchase,payment,debit)=>{
     var totalDebitRaw = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
     debit.MandeHesab[0].MandeyeKolBePool
     var totalDebit =NormalNumber(totalDebitRaw)
+    var totalOff = NormalNumber(off)
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
@@ -20,9 +21,10 @@ const CalcFaktor=(sale,purchase,payment,debit)=>{
     for(var i=0;i<payment.length;i++){
         totalPay += NormalNumber(payment[i].payValue)
     }
-    const totalRemain = totalSale-totalPurchase-totalPay-totalDebit
+    const totalRemain = totalSale-totalPurchase-totalPay+
+        totalDebit-totalOff
     return({totalSale,totalPurchase,totalPay,totalSaleWeight,
-        totalDebit:totalDebit,totalRemain})
+        totalOff,totalDebit:totalDebit,totalRemain})
 }
 
 module.exports =CalcFaktor
