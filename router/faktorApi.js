@@ -671,6 +671,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         var result = []
         
         await SetTransaction(userId,faktorNo)
+        var InvoiceID=''
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             if(cartItem.purchase){
@@ -688,6 +689,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 //await faktorItems.create(faktorItem)
                 var hesabResult = await SetTahHesabItem(faktorItem,i+1)
+                InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
                 await faktorItems.create({...faktorItem,result:hesabResult})
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
@@ -708,7 +710,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             const hesabResult = await SetTahHesabItem(faktorItem,i)
-            
+            InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
             /*if(customerList&&customerList["OK"]){
                 await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
                 {$set:{query:query,invoiceId:customerList["OK"]}})
@@ -723,6 +725,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         const faktorResult = {
             faktorNo:faktorNo,
             userId:userId, 
+            InvoiceID:InvoiceID,
             manageId:req.headers['userid'],
             initDate:Date.now(),
             clientStatus:clientStatus,
@@ -857,9 +860,10 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const FaktorItems = await faktorItems.find({faktorNo:faktorNo}).sort({purchase:-1})
         const saleItems = []
         const purchaseItems = []
+        var index =1
         for(var i=0;i<FaktorItems.length;i++){
             if(FaktorItems[i].purchase!== true)
-                saleItems.push(FaktorItems[i])
+                saleItems.push({...FaktorItems[i],index})
             else
                 purchaseItems.push(FaktorItems[i])
         }
