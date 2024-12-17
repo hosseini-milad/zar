@@ -4,7 +4,8 @@ const CalcFaktor=(sale,purchase,payment,debit)=>{
     var totalSale=0
     var totalPurchase=0
     var totalPay=0
-    var totalDebit = 0
+    var totalDebit = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
+    debit.MandeHesab[0].MandeHesab
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
@@ -13,10 +14,11 @@ const CalcFaktor=(sale,purchase,payment,debit)=>{
         totalPurchase += NormalNumber(purchase[i].price)
     }
     for(var i=0;i<payment.length;i++){
-        totalPay += NormalNumber(payment[i].price)
+        totalPay += NormalNumber(payment[i].payValue)
     }
-
-    return({totalSale,totalPurchase,totalPay,totalDebit})
+    const totalRemain = totalSale-totalPurchase-totalPay-totalDebit
+    return({totalSale,totalPurchase,totalPay,
+        totalDebit:totalDebit,totalRemain})
 }
 
 module.exports =CalcFaktor
