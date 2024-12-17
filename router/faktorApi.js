@@ -54,6 +54,7 @@ const SetTahHesabItem = require('../middleware/SetTahHesabItem');
 const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
 const transaction = require('../models/param/transaction');
+const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -870,7 +871,10 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
         const transactions = await transaction.find({orderNo:faktorNo})
-        res.json({data:faktorData,
+        const userDebit = userDetail&&await GetTahHesab(
+            {"getmandehesabbycode":[userDetail.cCode]})
+        const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit)
+        res.json({data:faktorData,userDebit,calcFaktor,
             saleItems:{saleDetail,data:saleItems},
             purchaseItems:{purchaseDetail,data:purchaseItems},
             userDetail:userDetail,goldInfo,transactions})
