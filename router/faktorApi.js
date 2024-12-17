@@ -865,7 +865,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
             if(FaktorItems[i].purchase!== true)
                 saleItems.push({...FaktorItems[i],index})
             else
-                purchaseItems.push(FaktorItems[i])
+                purchaseItems.push({...FaktorItems[i],index})
         }
             
         const saleDetail={tax:2342345,weight:53,price:2560000}
