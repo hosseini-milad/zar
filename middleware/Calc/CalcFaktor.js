@@ -5,6 +5,7 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     var totalSaleWeight=0
     var totalPurchase=0
     var totalPay=0
+    var totalTax =0
     var totalDebitRaw = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
     debit.MandeHesab[0].MandeyeKolBePool
     var totalDebit =NormalNumber(totalDebitRaw)
@@ -14,6 +15,8 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
         totalSale += NormalNumber(sale[i].price)
         totalSaleWeight += NormalNumber(sale[i].priceDetail&&
             sale[i].priceDetail.weight)
+        totalTax += NormalNumber(sale[i].priceDetail&&
+            sale[i].priceDetail.taxPrice) 
     }
     for(var i=0;i<purchase.length;i++){
         totalPurchase += NormalNumber(purchase[i].price)
