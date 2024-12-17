@@ -26,6 +26,7 @@ const CreateCart=async(cartDetails,sku,userId)=>{
             sku:sku,
             title:productDetail.title,
             weight:productDetail.weight,
+            ayar:productDetail.ayar,
             priceDetail:priceDetail.priceDetail,
             price:mojood?price:parseFloat(PRE&&PRE.percent)*price/100,
             fullPrice:price,
