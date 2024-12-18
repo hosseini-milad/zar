@@ -111,6 +111,7 @@ function ProductDetailHolder(props) {
                 setContent={setContent}
                 setRangeArray={setRangeArray}
                 rangeArray={rangeArray}
+                saveProducts={saveProducts}
               />
               {url === "new" || content ? (
                 <ProductSKU

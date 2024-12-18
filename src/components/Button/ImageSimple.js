@@ -154,6 +154,7 @@ class ImageUploadCard extends React.Component {
             </label>
             </label>
           </Grid>
+          
         </CardContent>
       </React.Fragment>
     );
