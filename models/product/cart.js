@@ -7,7 +7,7 @@ const CartSchema = new Schema({
     progressDate: { type: Date },
     userId:{ type: String },
     description:{type:String},
-    discount:{type:String},
+    discount:{type:Number},
     sku:{type:String},
     isMojood:{type:Boolean},
     isReserve:{type:Boolean},

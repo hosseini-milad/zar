@@ -8,20 +8,16 @@ const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
 var ObjectID = require('mongodb').ObjectID;
 
-const CalcCart=async(userId,remainRaw,manageId)=>{
+const CalcDiscount=async(userId,remainRaw,manageId)=>{
     var totalWeight = 0
     var remain = remainRaw?remainRaw:0
     var totalPrice = 0
     var totalTax = 0
     var unitPrice = 0
     var goldUnit = []
-    var discount = 0
-    var totalDiscount = 0
     const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
         unitPrice = cartDetails[c].unitPrice
-        var itemDiscount = cartDetails[c].discount
-        if(itemDiscount>discount) discount = itemDiscount
         var cartPrice = parseFloat(cartDetails[c].price)
         if(cartDetails[c].purchase){
             var count = cartDetails[c].count?cartDetails[c].count:1
@@ -35,7 +31,6 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             goldUnit.push({weight:weight,price:cartPrice})
             totalTax += cartDetails[c].priceDetail&&cartDetails[c].priceDetail.taxPrice
             totalPrice += cartPrice 
-            totalDiscount += cartPrice*itemDiscount/100
             totalWeight += weight
         }
     }
@@ -57,12 +52,11 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartDiscount": 0,
             "cartPrice": totalPrice,
             "totalTax": totalTax,
-            "totalDiscount":totalDiscount,
             "cartWeight": FloatDec(totalWeight,2),
             "cartWeightRaw": totalWeight,
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
-            "finalPrice":NormalNumber(totalPrice-remain-totalDiscount)
+            "finalPrice":NormalNumber(totalPrice-remain)
         },
         purchaseType:[
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
@@ -118,4 +112,4 @@ const calcUnit=(goldArray)=>{
     }
     return(NormalNumber(total/weight))
 }
-module.exports =CalcCart
+module.exports =CalcDiscount

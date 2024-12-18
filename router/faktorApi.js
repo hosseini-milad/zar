@@ -537,6 +537,21 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.post('/update-discount',auth,jsonParser, async (req,res)=>{
+    const userId =req.body.userId?req.body.userId:req.headers['userid']
+    const discount = req.body.discount
+    try{
+        await cart.updateMany({userId:userId,purchase:{$exists:false}},
+            {$set:{discount:discount}})
+            
+        const cart = await CalcCart(userId,0,req.headers['userid'])
+        
+        res.json(cart)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 router.post('/find-purchase-price',jsonParser, async (req,res)=>{
     const priceRaw = await FindPrice()
     const data={

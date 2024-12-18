@@ -21,7 +21,7 @@ const FaktorItems = new Schema({
     sku:{ type: String },
     newSku:{ type: String },
     
-    discount:{ type: String }, 
+    discount:{ type: Number }, 
     price:{ type: String }, 
     prePaid:{ type: String },
     unitPrice:{ type: String },

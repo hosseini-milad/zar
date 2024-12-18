@@ -21,6 +21,7 @@ const FaktorSchema = new Schema({
     InvoiceNumber:{ type: String },
     totalCount:{ type: String },
     totalWeight:{ type: String },
+    totalDiscount:{ type: Number },
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
     query:{ type: Object },
