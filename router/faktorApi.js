@@ -546,7 +546,7 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
             
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
-        res.json({cart:cartDetail})
+        res.json({...cartDetail})
     }
     catch(error){
         res.status(500).json({message: error.message})
