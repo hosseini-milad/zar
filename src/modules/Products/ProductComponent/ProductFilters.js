@@ -34,7 +34,7 @@ function ProductFilters(props){
         <StyleInput
           title={tabletrans.productTitle[lang.lang]}
           direction={props.lang.dir}
-          action={createConditionalAction("title", 1)}
+          action={createConditionalAction("title", 0)}
 
         />
         <StyleSelect
