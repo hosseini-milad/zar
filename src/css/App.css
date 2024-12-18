@@ -28932,7 +28932,6 @@ pre[class*="language-"] {
   justify-content: center;
   flex-direction: column;
   direction: rtl;
-  
 }
 
 .zar-print .user-info {
@@ -29042,10 +29041,14 @@ pre[class*="language-"] {
   th {
     color: black;
     text-align: center;
-    padding:0.2rem 0.5rem;
-    border: 1px solid grey;
+    padding:0.2rem 0.2rem;
+    border-right: 1px solid grey;
     background-color: #d4c8b6;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  th:first-child{
+    border: none;
   }
 }
 .zar-print .main table tbody {
@@ -29060,6 +29063,11 @@ pre[class*="language-"] {
   }
   td:first-child {
     border: unset;
+    
+  }
+  td:nth-child(2){
+    font-size: 0.7rem;
+    text-align: right;
   }
   .xsmall-td {
     width: 2%;
@@ -29071,7 +29079,7 @@ pre[class*="language-"] {
     width: 15%;
   }
   .larg-td {
-    width: 24%;
+    width: 31.5%;
   }
 }
 .zar-print .main table .sale-table .sale-tr:nth-last-child(1 of .sale-tr) td{
@@ -29229,6 +29237,7 @@ pre[class*="language-"] {
     }
     .sign-item{
       justify-content: flex-end;
+      width: 190px;
     }
   }
 }

@@ -33,7 +33,7 @@ const Printofficial = (props)=>{
     
     return(<>
         
-        {Content?<div className="print-container">
+        {Content?<div className="print-container max-a5">
             <OfficialPrint content={Content} user={UserData}/>
         </div>:<></>}
         </>

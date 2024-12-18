@@ -45,7 +45,7 @@ function OfficialPrint(props) {
               <th className="xsmall-td">ردیف</th>
               <th className="larg-td">شرح</th>
               <th className="xsmall-td">عیار</th>
-              <th className="meduim-td">وزن 750</th>
+              <th className="small-td">وزن 750</th>
               <th className="small-td">وزن</th>
 
               <th className="larg-td">مبلغ(ریال)</th>
@@ -197,7 +197,7 @@ function OfficialPrint(props) {
           </div>
         </div>
       </div>
-      <button className="print-btn" onClick={() => window.print()}>
+      <button className="print-btn noprint" onClick={() => window.print()}>
         چاپ
       </button>
     </div>

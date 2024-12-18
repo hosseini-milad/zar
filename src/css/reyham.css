@@ -1669,3 +1669,12 @@ dialog {
     margin-right: 10px !important;
   }
 }
+.max-a5{
+  max-width: 560px;
+  margin-inline: auto;
+}
+@media print {
+  .noprint {
+     visibility: hidden;
+  }
+}
