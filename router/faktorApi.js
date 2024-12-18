@@ -544,9 +544,9 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
         await cart.updateMany({userId:userId,purchase:{$exists:false}},
             {$set:{discount:discount}})
             
-        const cart = await CalcCart(userId,0,req.headers['userid'])
+        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
         
-        res.json(cart)
+        res.json({cart:cartDetail})
     }
     catch(error){
         res.status(500).json({message: error.message})
