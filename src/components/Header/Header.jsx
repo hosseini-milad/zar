@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 export default function Header() {
   return (
-    <div className="header">
+    <header className="header">
       <div className="container">
         <div className="wrapper logo-wrapper">
           <a href="#">
@@ -43,6 +43,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

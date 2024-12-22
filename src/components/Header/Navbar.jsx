@@ -2,7 +2,7 @@ import React from "react";
 import "./Header.css";
 export default function Navbar() {
   return (
-    <div className="navbar">
+    <nav className="navbar">
       <div className="container">
         <ul className="nav-list">
           <li className="nav-item">
@@ -52,6 +52,6 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
   );
 }
