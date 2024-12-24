@@ -625,12 +625,14 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         var totalPrice = 0
         var totalWeight = 0
         var totalFull = 0
+        var totalDiscount = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
             return
         }
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
+            var discount = cartItem.discount
             const productDetail = await products.findOne({sku:cartItem.sku})
             const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = priceData.price
@@ -638,6 +640,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
+            totalDiscount += NormalNumber(price*discount/10000)
             totalWeight+= NormalNumber(productDetail&&productDetail.weight)
             const { _id: _, ...newObj } = cartItem;
             var status = cartItem.isReserve?"needtobuild":"accept"
@@ -656,6 +659,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             progressDate:Date.now(),
             status:"inprogress",
             isActive:true, isEdit:false,
+            totalDiscount:NormalNumber(totalDiscount),
             totalPrice:NormalNumber(totalPrice),
             fullPrice:NormalNumber(totalFull),
             totalWeight:NormalNumber(totalWeight),
@@ -691,6 +695,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         var totalPrice = 0
         var totalWeight = 0
         var totalFull = 0
+        var totalDiscount = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
             return
@@ -725,6 +730,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = priceData.price
             totalFull+=fullPrice
+            totalDiscount += NormalNumber(price*discount/10000)
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
@@ -738,8 +744,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             const hesabResult = await SetTahHesabItem(faktorItem,i)
-            res.json(hesabResult)
-            return
+            
             InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
             /*if(customerList&&customerList["OK"]){
                 await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
@@ -749,6 +754,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
+        await SetTransaction(userId,faktorNo)
         await SetTransaction(userId,faktorNo)
         //res.json({result:result})
         //return
@@ -764,6 +770,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
             fullPrice:NormalNumber(totalFull),
+            totalDiscount:NormalNumber(totalDiscount),
             totalWeight:totalWeight,
             unitPrice:NormalNumber(priceRaw)
         }
