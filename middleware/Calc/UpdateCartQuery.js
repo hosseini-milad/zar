@@ -1,8 +1,12 @@
-const FloatDec = require("./FloatDec")
 
+const products = require("../../models/product/products");
+const NormalNumber = require("../NormalNumber");
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
-const CalcPrice=(product,price,TAX)=>{
+
+const UpdateCartQuery=async(cartItem,price,TAX)=>{
+    const product = await products.findOne({sku:cartItem.sku})
     if(!product) return(0)
+    var discount = cartItem.discount
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
     totalPrice = floatWeight*price
@@ -11,24 +15,29 @@ const CalcPrice=(product,price,TAX)=>{
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
-    var poolSang = product.poolSang
+    var poolSang = product.poolSang?product.poolSang:0
     var ojratPrice = parseFloat(OJRAT)*roundPrice/100
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
     var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
-    var finalPrice = parseInt(Math.round(totalPrice)/100)*100
+    var totalDiscount = NormalNumber(totalPrice*discount/10000)
+    var disPrice = totalPrice-totalDiscount
+    var finalPrice = parseInt(Math.round(disPrice)/100)*100
     var priceDetail = { 
         taxValue:TAX, taxPrice:taxPrice,
         ojratValue:OJRAT, ojratPrice:ojratPrice,
         senfiValue:SENFI , senfiPrice:senfiPrice,
+        totalDiscount:totalDiscount,
         poolSang:poolSang, unitPrice:price,
-        unitGold:parseInt(Math.round((totalPrice/floatWeight)/1000)*1000),//FloatDec(totalPrice/floatWeight,0),
+        unitGold:parseInt(Math.round((disPrice/floatWeight)/1000)*1000),//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
-    return({price:finalPrice,priceDetail:priceDetail})
+    console.log(priceDetail)
+    return(priceDetail)
+        
 }
 
-module.exports =CalcPrice
+module.exports =UpdateCartQuery

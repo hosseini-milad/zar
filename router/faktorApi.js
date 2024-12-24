@@ -55,6 +55,9 @@ const SetTransaction = require('../middleware/SetTransaction');
 const CheckAccess = require('../middleware/CheckAccess');
 const transaction = require('../models/param/transaction');
 const CalcFaktor = require('../middleware/Calc/CalcFaktor');
+const UpdateCart = require('../middleware/Calc/UpdateCartQuery');
+const UpdateCartQuery = require('../middleware/Calc/UpdateCartQuery');
+const FindRemainBank = require('../middleware/Calc/FindRemainBank');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -273,7 +276,7 @@ router.post('/calc-count',auth, async (req,res)=>{
         }}])
         const cartList = await tasks.find({taskStep:{$nin:['archive']}})
         var currentCart = await FindCurrentCart(cartList.map(item=>item.orderNo))
-        console.log(stockId)
+        
         const qCartList = await qCart.find(stockId?{stockId:stockId}:{})
         for(var i=0;i<searchProducts.length;i++){
             var count = searchProducts[i].countData.find(item=>(item.Stock==stockId))
@@ -541,12 +544,21 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     const discount = req.body.discount
     try{
-        await cart.updateMany({userId:userId,purchase:{$exists:false}},
-            {$set:{discount:discount}})
+        const myCart = await cart.find({userId:userId,purchase:{$exists:false}})
+        const priceRaw = await FindPrice()
             
-        const cartDetail = await CalcCart(userId,0,req.headers['userid'])
+        var TAX = await tax.findOne().sort({date:-1})
+        for(var i=0;i<myCart.length;i++){
+            var cartItem = myCart[i]
+            var priceDetail = await UpdateCartQuery(cartItem,priceRaw,TAX&&TAX.percent)
+            await cart.updateOne({_id:myCart[i]._id},
+                {$set:{discount:discount,priceDetail}})
+
+        }
+        const finalCart = await cart.find({userId:userId,purchase:{$exists:false}})
+        //const cartDetail = await UpdateCart(finalCart)
         
-        res.json({...cartDetail})
+        res.json({...finalCart})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -633,7 +645,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone})
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            0&&await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
+            await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             
         }
 
@@ -722,9 +734,12 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
+            //console.log(faktorItem)
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             const hesabResult = await SetTahHesabItem(faktorItem,i)
+            res.json(hesabResult)
+            return
             InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
             /*if(customerList&&customerList["OK"]){
                 await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
@@ -1352,10 +1367,8 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     }
     try{ 
         await transaction.create(data)
-        var bankDetail = await transaction.find({userId:data.userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail,remain:134500
-            ,totalPay:4350000
-        })
+        var payDetail = await FindRemainBank(date.userId)
+        res.json(payDetail)
     }
     catch(error){
         res.status(500).json({message: error.message})

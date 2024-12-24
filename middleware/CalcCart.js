@@ -38,7 +38,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             totalDiscount += NormalNumber(cartPrice*itemDiscount/10000)
             totalWeight += weight
         }
-    }
+    } 
     var faktorData = await faktor.aggregate([
         { $match: { manageId: manageId } },
         { $match: userId ? { userId: userId } : {} },
@@ -62,11 +62,12 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartWeightRaw": totalWeight,
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
+            "rawPrice":NormalNumber(totalPrice-remain),
             "finalPrice":NormalNumber(totalPrice-remain-totalDiscount)
         },
         purchaseType:[
             {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
-                parameters:[
+                parameters:[ 
                     
                 ],isOptional:false
             },

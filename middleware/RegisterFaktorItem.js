@@ -17,7 +17,7 @@ const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
     const date = new Date(faktorRow.initDate).toLocaleDateString('fa')
     const dateSplit = date.split('/')
     var query = ''
-    var result = ''
+    var discount = faktorRow.discount?faktorRow.discount:0
     var isMojood = faktorRow.isMojood&&!faktorRow.isReserve
     var faktorPrice = faktorRow.priceDetail
     if(!isMojood) return({error:"آیتم موجود نیست"})
@@ -31,7 +31,7 @@ const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
     var BuyOrSale_0_1 = purchase
     var Mazaneh = faktorPrice.unitPrice
     var MazanehIsMesghalOrGeram_0_1 = 1
-    var MablaghKol = faktorPrice.roundPrice
+    var MablaghKol = faktorPrice.roundPrice 
     var OjratTedadiOrGerami_0_1 = 1
     var Darsad_Maliat = faktorPrice.taxValue
     var MeghdarMaliat = faktorPrice.taxPrice
@@ -50,7 +50,8 @@ const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
         Darsad_Maliat, MeghdarMaliat, Darsad_Sood, Darsad_Talayee, 
         IsMarjoo_1_0, PoolSang, PictureFileName, Ojrat, Shenase
     ]
-        var customerList = await GetTahHesab(
+    console.log(faktorPrice)
+        var customerList = 0&&await GetTahHesab(
             {"DoNewSanadBuySaleEtiket":query}
         )
     return({query,customerList,message:"outPut"})
