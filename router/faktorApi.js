@@ -1367,7 +1367,7 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     }
     try{ 
         await transaction.create(data)
-        var payDetail = await FindRemainBank(date.userId)
+        var payDetail = await FindRemainBank(data.userId)
         res.json(payDetail)
     }
     catch(error){
