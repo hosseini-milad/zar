@@ -755,9 +755,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             } 
         }
         await SetTransaction(userId,faktorNo)
-        await SetTransaction(userId,faktorNo)
-        //res.json({result:result})
-        //return
+        totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,NormalNumber(totalDiscount))
+        res.json({result:result})
+        return
         const faktorResult = {
             faktorNo:faktorNo,
             userId:userId, 
