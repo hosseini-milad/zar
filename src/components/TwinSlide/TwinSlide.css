@@ -1,0 +1,33 @@
+.TwinSlide{
+  width: 100%;
+
+
+  .container{
+    width: 100%;
+    max-width: 1140px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+
+
+
+.TwinSlide .embla {
+  overflow: hidden;
+  width: 45%;
+  border-radius: 1rem;
+}
+.TwinSlide .embla__container {
+  display: flex;
+}
+.TwinSlide .embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+.TwinSlide .embla__slide img{
+  max-width: 100%;
+  
+}

@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Hero() {
+export default function Blog() {
   return (
     <div>
-      
+      Blog
     </div>
   )
 }

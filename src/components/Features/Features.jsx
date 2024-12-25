@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./HomeComp.css"
 export default function Features() {
   return (
     <div className="feature">

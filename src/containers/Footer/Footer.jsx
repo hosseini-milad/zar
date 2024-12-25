@@ -1,5 +1,10 @@
 import React from "react";
 import "./footer.css";
+import banner1 from "../../assets/Footer/Banner-1.webp"
+import banner2 from "../../assets/Footer/Banner-2.webp"
+import banner3 from "../../assets/Footer/Banner-3.webp"
+import banner4 from "../../assets/Footer/Banner-4.webp"
+import Gp from "../../assets/Footer/google-play.webp"
 export default function Footer() {
   return (
     <footer className="footer">
@@ -70,22 +75,22 @@ export default function Footer() {
             <ul>
               <li>
                 <a href="#">
-                  <img src="./img/Banner-1.webp" alt="Banner1" />
+                  <img src={banner1} alt="Banner1" />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <img src="./img/Banner-2.webp" alt="Banner2" />
+                  <img src={banner2} alt="Banner2" />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <img src="./img/Banner-3.webp" alt="Banner3" />
+                  <img src={banner3} alt="Banner3" />
                 </a>
               </li>
               <li>
                 <a href="#">
-                  <img src="./img/Banner-4.webp" alt="Banner4" />
+                  <img src={banner4} alt="Banner4" />
                 </a>
               </li>
             </ul>
@@ -93,10 +98,10 @@ export default function Footer() {
         </div>
         <div className="icon-wrapper">
           <a href="#">
-            <img src="./img/flogo.svg" alt="logo" style={{minWidth:"240px"}}/>
+            <img src="./flogo.svg" alt="logo" style={{minWidth:"240px"}}/>
           </a>
           <a href="#">
-            <img src="./img/google-play.webp" alt="google play" style={{minWidth:"140px"}}/>
+            <img src={Gp} alt="google play" style={{minWidth:"140px"}}/>
           </a>
           <ul className="ul-icon">
             <li>

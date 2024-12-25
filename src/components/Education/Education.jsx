@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function CatCol() {
+export default function Education() {
   return (
     <div>
-      
+      Education
     </div>
   )
 }

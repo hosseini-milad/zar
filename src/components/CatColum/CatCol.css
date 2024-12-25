@@ -1,0 +1,5 @@
+.CatCol{
+  width: calc(100%/3);
+  background: red;
+  height: 100%;
+}

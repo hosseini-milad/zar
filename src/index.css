@@ -5,14 +5,14 @@
 
   /* color-scheme: light dark; */
   color: #5d6177;
-  background-color:#ffffff;
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -24,9 +24,14 @@ body {
   justify-content: flex-start;
   min-width: 320px;
   min-height: 100vh;
+  background-color: white;
 }
-#root{
+#root {
   width: 100%;
   min-height: 100vh;
   direction: rtl;
+  background-color: white;
+}
+.main{
+  background-color: white;
 }
