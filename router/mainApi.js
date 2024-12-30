@@ -156,7 +156,7 @@ router.post('/get-product', async (req,res)=>{
                 poolSang:productList[i].PoolSang,
                 ojrat:newSood,
                 isMojood:productList[i].IsMojood=="1"?true:false,
-                price:productList[i].OnlinePrice}
+                }
             var updateResult = await products.updateOne({sku:productList[i].Code},
                 {$set:query}
             )
