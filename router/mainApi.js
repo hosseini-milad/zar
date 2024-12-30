@@ -137,9 +137,11 @@ router.post('/get-product', async (req,res)=>{
         var outPut = []
         var updateProduct = 0
         var newProduct = 0
+        var skuList = []
         for(var i=1;i<10000;i++){
             if(productList[i]){
             var sku = Number(productList[i].Code)
+            skuList.push(sku)
             var newSood = Number(productList[i].DarsadVazn)
             if(sku>400)
                 newSood -=3
@@ -167,7 +169,7 @@ router.post('/get-product', async (req,res)=>{
             }
             }
         }
-        res.json({updateProduct,newProduct})
+        res.json({updateProduct,newProduct,skuList})
     }
     catch(error){
         res.status(500).json({message: error.message})
