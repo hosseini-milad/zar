@@ -1,9 +1,9 @@
-const customers = require("../models/auth/customers")
-const banks = require("../models/param/banks");
-const transaction = require("../models/param/transaction");
-const EnNumber = require("./enNumber");
-const GetTahHesab = require("./GetTahHesab");
-const PureNumber = require("./PureNumber");
+const customers = require("../../models/auth/customers")
+const banks = require("../../models/param/banks");
+const transaction = require("../../models/param/transaction");
+const EnNumber = require("../enNumber");
+const GetTahHesab = require("../GetTahHesab");
+const PureNumber = require("../PureNumber");
 var ObjectID = require('mongodb').ObjectID;
 
 const SetDiscountTahHesab=async(userId,faktorNo,discount)=>{

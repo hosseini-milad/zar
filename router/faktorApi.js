@@ -58,6 +58,7 @@ const CalcFaktor = require('../middleware/Calc/CalcFaktor');
 const UpdateCart = require('../middleware/Calc/UpdateCartQuery');
 const UpdateCartQuery = require('../middleware/Calc/UpdateCartQuery');
 const FindRemainBank = require('../middleware/Calc/FindRemainBank');
+const SetDiscountTahHesab = require('../middleware/Calc/SetDiscountTahHesab');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -679,7 +680,7 @@ router.get('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
 router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
     const bankData = req.body.bankData
-    try{
+    
         const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
@@ -730,9 +731,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = priceData.price
             totalFull+=fullPrice
-            totalDiscount += NormalNumber(price*discount/10000)
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
+            totalDiscount += NormalNumber(cartItem.price*cartItem.discount/10000)
             totalPrice+=price
             totalWeight+= parseFloat(productDetail&&productDetail.weight.replace( /\//g, '.'))
             const { _id: _, ...newObj } = cartItem;
@@ -755,7 +756,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             } 
         }
         await SetTransaction(userId,faktorNo)
-        totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,NormalNumber(totalDiscount))
+        totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
         res.json({result:result})
         return
         const faktorResult = {
@@ -783,7 +784,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
-         }
+        try{     }
     catch(error){
         res.status(500).json({message: error.message})
     }

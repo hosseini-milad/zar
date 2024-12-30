@@ -4,6 +4,7 @@ const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
 const faktorItems = require("../models/product/faktorItems");
 const products = require("../models/product/products");
+const FindRemainBank = require("./Calc/FindRemainBank");
 const FloatDec = require("./FloatDec");
 const NormalNumber = require("./NormalNumber");
 var ObjectID = require('mongodb').ObjectID;
@@ -51,6 +52,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         faktorData[i].items = items
     }
     var transData = userId?await transactions.find({userId:userId,orderNo:{$exists:false}}):''
+    var transRemain = FindRemainBank(cartDetails,transData)
     return({cart:cartDetails,
         cartDetail: {
             "unitPrice": unitPrice,
@@ -105,7 +107,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             }
         ],
         faktorData,faktorSize:faktorData&&faktorData.length,transData,
-        remain:134500,totalPay:4350000
+        ...transRemain
     })
 }
 const calcUnit=(goldArray)=>{

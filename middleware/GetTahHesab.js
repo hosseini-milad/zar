@@ -1,9 +1,12 @@
 const { default: fetch } = require("node-fetch");
 const https = require("https");
-const { TAH_HESAB_URL,TAH_HESAB_TOKEN} = process.env;
+const { TAH_HESAB_URL,TAH_HESAB_TOKEN,TAH_HESAB_DBName} = process.env;
 
 const GetTahHesab=async(body)=>{
-    var header = {"Authorization":TAH_HESAB_TOKEN,"Content-Type":"application/json"}
+    var header = {
+        "Authorization":TAH_HESAB_TOKEN,
+        "DBName":TAH_HESAB_DBName,
+        "Content-Type":"application/json"}
     
     var response = ''; 
     const agent = new https.Agent({
