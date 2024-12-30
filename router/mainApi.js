@@ -169,7 +169,7 @@ router.post('/get-product', async (req,res)=>{
             }
             }
         }
-        res.json({updateProduct,newProduct,skuList})
+        res.json({updateProduct,newProduct,skuList,productList})
     }
     catch(error){
         res.status(500).json({message: error.message})
