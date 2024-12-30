@@ -59,6 +59,7 @@ const UpdateCart = require('../middleware/Calc/UpdateCartQuery');
 const UpdateCartQuery = require('../middleware/Calc/UpdateCartQuery');
 const FindRemainBank = require('../middleware/Calc/FindRemainBank');
 const SetDiscountTahHesab = require('../middleware/Calc/SetDiscountTahHesab');
+const FindRemainUser = require('../middleware/Calc/FindRemainUser');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -1376,7 +1377,7 @@ router.post('/add-bank-to-cart', async (req,res)=>{
     try{ 
         const managerId = req.headers['userid']
         await transaction.create(data)
-        var cartData = await CalcCart(data.userId,0,managerId)
+        var cartData = await FindRemainUser(data.userId)
         //var payDetail = await FindRemainBank(data.userId)
         res.json(cartData)
     }
