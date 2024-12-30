@@ -1375,10 +1375,8 @@ router.post('/add-bank-to-cart', async (req,res)=>{
         description: req.body.description
     }
     try{ 
-        const managerId = req.headers['userid']
         await transaction.create(data)
         var cartData = await FindRemainUser(data.userId)
-        //var payDetail = await FindRemainBank(data.userId)
         res.json(cartData)
     }
     catch(error){
@@ -1390,10 +1388,8 @@ router.post('/remove-bank-from-cart', async (req,res)=>{
     const id = req.body.id
     try{ 
         await transaction.deleteOne({_id:ObjectID(id),userId:userId})
-        var bankDetail = await transaction.find({userId:userId,orderNo:{$exists:false}})
-        res.json({transData:bankDetail,remain:134500
-            ,totalPay:4350000
-        })
+        var cartData = await FindRemainUser(data.userId)
+        res.json(cartData)
     }
     catch(error){
         res.status(500).json({message: error.message})

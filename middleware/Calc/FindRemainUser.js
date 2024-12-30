@@ -5,8 +5,9 @@ const FindRemainBank = require("./FindRemainBank")
 const FindRemainUser=async(userId)=>{
         const cartDetails = await cart.find({userId:userId})
         var transData = userId?await transaction.find({userId:userId,orderNo:{$exists:false}}):''
+        
         var transRemain = FindRemainBank(cartDetails,transData)
-        return(transRemain)
+        return({...transRemain,transData})
 }
 
 module.exports =FindRemainUser
