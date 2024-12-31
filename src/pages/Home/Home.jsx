@@ -1,6 +1,6 @@
 import React from "react";
-import { Features, Category, TwinSlide, Education } from "../../components";
-import { Hero, Blog } from "../../containers";
+import { Features, TwinSlide, Education } from "../../components";
+import { Hero, Category, Blog } from "../../containers";
 export default function Home() {
   return (
     <>

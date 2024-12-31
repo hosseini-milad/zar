@@ -1,5 +1,5 @@
 export {default as CatCol} from "./CatColum/CatCol"
-export {default as Category} from "./Category/Category"
+
 export {default as Education} from "./Education/Education"
 export {default as Features} from "./Features/Features"
 export {default as Navbar} from "./Navbar/Navbar"

@@ -1,0 +1,47 @@
+.CategoryTabs {
+  width: 100%;
+  .CategoryTabs-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+.CategoryTabs .tab-item {
+  width: calc(100% / 7);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 130px;
+  height: 130px;
+  cursor: pointer;
+  border-bottom: 5px solid transparent;
+  padding-bottom: 0.5rem;
+  position: relative;
+  border-radius: 0.25rem 0.25rem 0 0;
+
+  img {
+    width: 50px;
+    height: 50px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+  }
+  p {
+    margin-top: auto;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: rgb(75, 147, 255);
+  }
+}
+.CategoryTabs .active-tab {
+  border-color: red;
+  background: #f2f2f2;
+  P{
+    color: unset;
+  }
+}

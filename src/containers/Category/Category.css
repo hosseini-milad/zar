@@ -1,0 +1,62 @@
+.Category {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: white;
+
+  .Category-container {
+    max-width: 1140px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.Category .Category-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  .line {
+    height: 2px;
+    background-color: lightgrey;
+    width: 100%;
+  }
+  .title {
+    min-width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 30px;
+    z-index: 1;
+    position: relative;
+    background: #fff;
+  }
+
+  .title::before,
+  .title::after {
+    background: #e61d25;
+    width: 30px;
+    position: absolute;
+    content: "";
+    right: -12px;
+    margin-right: -18px;
+    bottom: 12px;
+    height: 3px;
+  }
+  .title::before {
+    left: -30px;
+    right: unset;
+  }
+  .title p {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+  .title p:last-child {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: red;
+  }
+}
