@@ -24,6 +24,7 @@ function BankNew(props){
     .then(
         (result) => {
          setTransData(result.transData);
+         props.setCart(result)
          props.setLoadBank(Math.random())
         },
         (error) => {

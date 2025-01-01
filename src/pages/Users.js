@@ -227,22 +227,7 @@ const Users = (props) => {
               }));
             }}
           />
-          <StyleSelect
-            title={formtrans.store[lang]}
-            direction={direction}
-            class={"formInput"}
-            defaultValue={storeList.find(
-              (store) => store.StockID == userData.StockId
-            )}
-            options={storeList}
-            label={"Title"}
-            action={(e) => {
-              setFormData((prevState) => ({
-                ...prevState,
-                StockId: e ? e.StockID : "",
-              }));
-            }}
-          />
+          
           <StyleInput
             title={formtrans.customercode[lang]}
             direction={direction}

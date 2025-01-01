@@ -54,7 +54,7 @@ function OrderHeader(props) {
       },
       body: JSON.stringify({ search: search }),
     };
-    fetch(env.siteApi + "/esale/list-product", postOptions)
+    fetch(env.siteApi + "/panel/faktor/list-product-sale", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
