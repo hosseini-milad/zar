@@ -1343,6 +1343,7 @@ router.post('/customer-find', async (req,res)=>{
             aggregate([{$match:
                 {$or:[
                     {username:{$regex: search, $options : 'i'}},
+                    {phone:{$regex: search, $options : 'i'}},
                     {Code:{$regex: search, $options : 'i'}}
                 ]}
             }])
