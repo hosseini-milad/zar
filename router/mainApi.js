@@ -126,56 +126,67 @@ router.use('/panel/crm',CRMPanelApi)
 })
 router.post('/get-product', async (req,res)=>{
     const from = req.body.from?req.body.from:0
-    const to = req.body.to?req.body.to:10000
+    const to = req.body.to?req.body.to:500
     try{
-        const productList = await GetTahHesab(
-            {
-                "DoListEtiket":
-                [from,to]
-            }
-        )
-        var outPut = []
-        var updateProduct = 0
-        var newProduct = 0
-        var skuList = []
-        for(var i=1;i<10000;i++){
-            if(productList[i]){
-            var sku = Number(productList[i].Code)
-            skuList.push(sku)
-            var newSood = Number(productList[i].DarsadVazn)
-            if(sku>400)
-                newSood -=3
-            outPut.push(productList[i])
-            var query = {title:productList[i].Name,
-                sku:productList[i].Code,
-                weight:productList[i].Vazn,
-                size:productList[i].Size,
-                ayar:productList[i].Ayar,
-                sharh:productList[i].Sharh,
-                sood:productList[i].DarsadSood,
-                poolSang:productList[i].PoolSang,
-                ojrat:newSood,
-                isMojood:productList[i].IsMojood=="1"?true:false,
-                }
-            var updateResult = await products.updateOne({sku:productList[i].Code},
-                {$set:query}
-            )
-            if(!updateResult.matchedCount){
-                newProduct++
-                await products.create(query)
-            }
-            if(updateResult.modifiedCount){
-                updateProduct++
-            }
-            }
+        const result =[]
+        for(var i=0;i<10;i++){
+            result.push(await updateProduct(i))
         }
-        res.json({updateProduct,newProduct,skuList})
+        
+        res.json({result})
     }
     catch(error){
         res.status(500).json({message: error.message})
     }
 })
 
+const updateProduct=async(from,to)=>{
+    const productList = 0&&await GetTahHesab(
+        {
+            "DoListEtiket":
+            [from,to]
+        }
+    )
+    
+    var result = from
+    setTimeout(()=>{},3000)
+    return(result)
+    var outPut = []
+    var updateProduct = 0
+    var newProduct = 0
+    var skuList = []
+    for(var i=0;i<500;i++){
+        if(productList[i]){
+        var sku = Number(productList[i].Code)
+        skuList.push(sku)
+        var newSood = Number(productList[i].DarsadVazn)
+        if(sku>400)
+            newSood -=3
+        var query = {title:productList[i].Name,
+            sku:productList[i].Code,
+            weight:productList[i].Vazn,
+            size:productList[i].Size,
+            ayar:productList[i].Ayar,
+            sharh:productList[i].Sharh,
+            sood:productList[i].DarsadSood,
+            poolSang:productList[i].PoolSang,
+            ojrat:newSood,
+            isMojood:productList[i].IsMojood=="1"?true:false,
+            }
+        var updateResult = await products.updateOne({sku:productList[i].Code},
+            {$set:query}
+        )
+        if(!updateResult.matchedCount){
+            newProduct++
+            await products.create(query)
+        }
+        if(updateResult.modifiedCount){
+            updateProduct++
+        }
+        }
+    }
+    return({updateProduct, newProduct})
+}
 router.get('/sepidar-update-log', async (req,res)=>{
     try{ 
         const sepidarLog = await updateLog.find({}).sort({"date":-1})
