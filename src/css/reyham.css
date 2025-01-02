@@ -1670,7 +1670,7 @@ dialog {
   }
 }
 .max-a5{
-  max-width: 560px;
+  max-width: 450px;
   margin-inline: auto;
 }
 @media print {

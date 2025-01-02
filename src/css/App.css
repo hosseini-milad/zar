@@ -28944,9 +28944,10 @@ pre[class*="language-"] {
   flex-direction: row;
   gap: 0.5rem;
   flex-wrap: wrap;
+  font-size: 0.75rem;
 
   p {
-    font-size:  14px;
+    font-size:0.75rem;
     color: black;
     font-weight: 600;
     margin: 0;
@@ -28996,7 +28997,7 @@ pre[class*="language-"] {
         margin: 0;
         color: black;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
       }
 
       .date,
@@ -29013,9 +29014,7 @@ pre[class*="language-"] {
   width: calc(100% / 4) !important;
   margin-block: auto !important;
 }
-.larg-td{
-  min-width: 130px;
-}
+
 .zar-print .main {
   width: 100%;
   display: flex;
@@ -29044,7 +29043,7 @@ pre[class*="language-"] {
     padding:0.2rem 0.2rem;
     border-right: 1px solid grey;
     background-color: #d4c8b6;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     white-space: nowrap;
   }
   th:first-child{
@@ -29059,7 +29058,7 @@ pre[class*="language-"] {
     text-align: center;
     padding: 0.2rem;
     border-right: 1px solid black;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
   td:first-child {
     border: unset;
@@ -29113,7 +29112,7 @@ pre[class*="language-"] {
       margin: 0;
       color: black;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
     }
   }
   .first-box {
@@ -29158,7 +29157,7 @@ pre[class*="language-"] {
 
     p{
       margin: 0;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
     }
   }
 }
@@ -29188,7 +29187,7 @@ pre[class*="language-"] {
 
     p{
       margin: 0;
-      font-size: 0.85rem;
+      font-size: 0.7rem;
     }
   }
   .title{
@@ -29197,7 +29196,7 @@ pre[class*="language-"] {
 
     p{
       margin: 0;
-      min-width:40px;
+      min-width:30px;
       text-align: center;
     }
   }
@@ -29211,7 +29210,7 @@ pre[class*="language-"] {
   .title{
     width: 100%;
     text-align: right;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
   }
   .container{
     width: 100%;
@@ -29232,7 +29231,7 @@ pre[class*="language-"] {
         margin: 0;
         color: black;
         text-align: center;
-        font-size: 0.85rem;
+        font-size: 0.7rem;
       }
     }
     .sign-item{
