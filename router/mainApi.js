@@ -124,13 +124,11 @@ router.use('/panel/crm',CRMPanelApi)
         res.status(500).json({message: error.message})
     }
 })
-router.post('/get-product', async (req,res)=>{
-    const from = req.body.from?req.body.from:0
-    const to = req.body.to?req.body.to:500
+router.get('/get-product', async (req,res)=>{
     try{
         const result =[]
-        for(var i=0;i<10;i++){
-            result.push(await updateProduct(i))
+        for(var i=0;i<20;i++){
+            result.push(await updateProduct(i*500,(i+1)*500))
         }
         
         res.json({result})
@@ -141,16 +139,13 @@ router.post('/get-product', async (req,res)=>{
 })
 
 const updateProduct=async(from,to)=>{
-    const productList = 0&&await GetTahHesab(
+    const productList = await GetTahHesab(
         {
             "DoListEtiket":
             [from,to]
         }
     )
     
-    var result = from
-    setTimeout(()=>{},3000)
-    return(result)
     var outPut = []
     var updateProduct = 0
     var newProduct = 0
