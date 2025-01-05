@@ -66,9 +66,20 @@ function OfficialPrint(props) {
               ))}
               <tr className="sale-tr-total">
                 <td className="xsmall-td"></td>
-                <td className="larg-td">{`مجموع کل اجناس [+9% مالیات بر ارزش افزوده(${normalPriceCount(
+                {/* <td className="larg-td">{`مجموع کل اجناس [+9% مالیات بر ارزش افزوده(${normalPriceCount(
                   sale.saleDetail.tax
-                )})]`}</td>
+                )})]`}</td> */}
+                <td className="larg-td">
+                  <p className="tax-p">
+                    <span>مجموع کل اجناس</span>
+                    <span>
+                      {"[+9% مالیات بر ارزش افزوده" +
+                        "(" +
+                        normalPriceCount(sale.saleDetail.tax) +
+                        ")]"}
+                    </span>
+                  </p>
+                </td>
                 <td className="xsmall-td"></td>
                 <td className="small-td"></td>
                 <td className="small-td">{Total.totalSaleWeight}</td>
@@ -129,7 +140,6 @@ function OfficialPrint(props) {
               <td className="larg-td">{normalPriceCount(Total.totalDebit)}</td>
             </tr>
           </tbody>
-        
         </table>
         <table className="more-info">
           <tr>
