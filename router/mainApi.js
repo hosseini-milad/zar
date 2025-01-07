@@ -123,7 +123,7 @@ const updateProduct=async(from,to)=>{
     var updateProduct = 0
     var newProduct = 0
     var skuList = []
-    for(var i=0;i<500;i++){
+    for(var i=from;i<to;i++){
         if(productList[i]){
         var sku = Number(productList[i].Code)
         skuList.push(sku)
@@ -164,10 +164,11 @@ const updateCustomer=async(from,to)=>{
             }
         )
         console.log("updating: ",from," - ", to)
+        console.log("count: " ,customerList.length)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
-        for(var i=0;i<500;i++){
+        for(var i=from;i<to;i++){
             if(customerList[i]){
             outPut.push(customerList[i])
             var query = {username:customerList[i].Name,
