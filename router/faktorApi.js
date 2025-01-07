@@ -691,7 +691,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             {"getmandehesabbycode":[userData.cCode]}
         ) 
         const clientStatus = ClientStatus(clientRemain)
-
+        try{
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
@@ -784,7 +784,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         return
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])
         
-        try{     }
+             }
     catch(error){
         res.status(500).json({message: error.message})
     }
