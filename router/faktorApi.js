@@ -706,6 +706,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         
         await SetTransaction(userId,faktorNo)
         var InvoiceID=''
+        var Sh_Faktor=''
         for(var i=0;i<(cartDetail.cart&&cartDetail.cart.length);i++){
             var cartItem = cartDetail.cart[i]
             if(cartItem.purchase){
@@ -750,8 +751,10 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             const hesabResult = await SetTahHesabItem(faktorItem,i)
-            
-            InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
+
+            var tahResult = hesabResult&&hesabResult.customerList
+            InvoiceID = tahResult&&tahResult.OK
+            Sh_Faktor = tahResult&&tahResult.Sh_factor
             /*if(customerList&&customerList["OK"]){
                 await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
                 {$set:{query:query,invoiceId:customerList["OK"]}})
@@ -767,6 +770,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             faktorNo:faktorNo,
             userId:userId, 
             InvoiceID:InvoiceID,
+            Sh_Faktor:Sh_Faktor,
             manageId:req.headers['userid'],
             initDate:Date.now(),
             clientStatus:clientStatus,

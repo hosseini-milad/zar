@@ -18,6 +18,7 @@ const FaktorSchema = new Schema({
     unitPrice:{ type: String },
     priceDetail:{ type: Object },
     InvoiceID:{ type: String },
+    Sh_Faktor:{ type: String },
     InvoiceNumber:{ type: String },
     totalCount:{ type: String },
     totalWeight:{ type: String },
