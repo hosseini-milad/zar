@@ -163,10 +163,11 @@ const updateCustomer=async(from,to)=>{
                 [from,to]
             }
         )
+        console.log("updating: ",from," - ", to)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
-        for(var i=1;i<500;i++){
+        for(var i=0;i<500;i++){
             if(customerList[i]){
             outPut.push(customerList[i])
             var query = {username:customerList[i].Name,
