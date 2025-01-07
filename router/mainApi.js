@@ -79,46 +79,19 @@ router.use('/panel/crm',CRMPanelApi)
     try{
         var response = await fetch(ONLINE_URL + "/get-product",
         { method: 'POST' });
+        
+        var response = await fetch(ONLINE_URL + "/get-customers",
+            { method: 'POST' });
     }catch{}
  })
  router.post('/get-customers', async (req,res)=>{
-    const from = req.body.from
-    const to = req.body.to
     try{
-        const customerList = await GetTahHesab(
-            {
-                "DoListMoshtari":
-                [from,to]
-            }
-        )
-        var outPut = []
-        var updateCustomer = 0
-        var newCustomer = 0
-        for(var i=1;i<1000;i++){
-            if(customerList[i]){
-            outPut.push(customerList[i])
-            var query = {username:customerList[i].Name,
-                phone:customerList[i].Mobile,
-                groupCode:customerList[i].GID,
-                cCode:i, 
-                birthDay:customerList[i].BDate,
-                city:customerList[i].City,
-                Address:customerList[i].Address,
-                meliCode:customerList[i].CodeMelli,
-                group:customerList[i].GoroupName}
-            var updateResult = await customers.updateOne({phone:customerList[i].Mobile},
-                {$set:query}
-            )
-            if(!updateResult.matchedCount){
-                newCustomer++
-                await customers.create(query)
-            }
-            if(updateResult.modifiedCount){
-                updateCustomer++
-            }
-            }
+        const result =[]
+        for(var i=0;i<20;i++){
+            result.push(await updateCustomer(i*500,(i+1)*500))
         }
-        res.json({updateCustomer,newCustomer})
+        
+        res.json({result})
     }
     catch(error){
         res.status(500).json({message: error.message})
@@ -181,6 +154,45 @@ const updateProduct=async(from,to)=>{
         }
     }
     return({updateProduct, newProduct})
+}
+const updateCustomer=async(from,to)=>{
+    try{
+        const customerList = await GetTahHesab(
+            {
+                "DoListMoshtari":
+                [from,to]
+            }
+        )
+        var outPut = []
+        var updateCustomer = 0
+        var newCustomer = 0
+        for(var i=1;i<500;i++){
+            if(customerList[i]){
+            outPut.push(customerList[i])
+            var query = {username:customerList[i].Name,
+                phone:customerList[i].Mobile,
+                groupCode:customerList[i].GID,
+                cCode:i, 
+                birthDay:customerList[i].BDate,
+                city:customerList[i].City,
+                Address:customerList[i].Address,
+                meliCode:customerList[i].CodeMelli,
+                group:customerList[i].GoroupName}
+            var updateResult = await customers.updateOne({phone:customerList[i].Mobile},
+                {$set:query}
+            )
+            if(!updateResult.matchedCount){
+                newCustomer++
+                await customers.create(query)
+            }
+            if(updateResult.modifiedCount){
+                updateCustomer++
+            }
+        }
+    }
+    return({updateProduct, newCustomer})
+    }
+    catch{}
 }
 router.get('/sepidar-update-log', async (req,res)=>{
     try{ 
