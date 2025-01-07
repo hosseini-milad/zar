@@ -50,8 +50,8 @@ const RegisterFaktorItem=async(faktorRow,indexRaw,purchaseRaw)=>{
         Darsad_Maliat, MeghdarMaliat, Darsad_Sood, Darsad_Talayee, 
         IsMarjoo_1_0, PoolSang, PictureFileName, Ojrat, Shenase
     ]
-    console.log(faktorPrice)
-        var customerList = 0&&await GetTahHesab(
+    //console.log(faktorPrice)
+        var customerList = await GetTahHesab(
             {"DoNewSanadBuySaleEtiket":query}
         )
     return({query,customerList,message:"outPut"})

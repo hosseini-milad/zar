@@ -756,7 +756,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
-        await SetTransaction(userId,faktorNo)
+        //await SetTransaction(userId,faktorNo)
         totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
         
         const faktorResult = {
