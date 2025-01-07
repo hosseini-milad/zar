@@ -728,7 +728,10 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     res.status(400).json({error:hesabResult.error})
                     return
                 }
-                InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
+                //InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
+                var tahResult = hesabResult&&hesabResult.customerList
+                InvoiceID = tahResult&&tahResult.OK
+                Sh_Faktor = tahResult&&tahResult.Sh_factor
                 await faktorItems.create({...faktorItem,result:hesabResult})
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
@@ -759,7 +762,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 await faktorItems.updateOne({_id:ObjectID(faktorNoId)},
                 {$set:{query:query,invoiceId:customerList["OK"]}})
             }*/
-            await faktorItems.create({...faktorItem,result:hesabResult})
+            await faktorItems.create({...faktorItem,result:hesabResult,Sh_Faktor})
             await products.updateOne({sku:cartItem.sku},{$set:{isReserve:true}})
             } 
         }
