@@ -43,6 +43,7 @@ const FaktorItems = new Schema({
     isEdit:{ type: Boolean },
     isMojood:{ type: Boolean },
     isReserve:{type:Boolean},
+    isSale:{ type: Boolean , default:false },
 
     payStatus:{ type: String }, //unpaid, deposit , paid
     waitPay:{type:Boolean},

@@ -62,7 +62,7 @@ const calcTasks=async(userId)=>{
     const crmData = await crmlist.findOne()
     const crmId = crmData&&(crmData._id).toString()
     taskList = await faktorItems.aggregate([
-        {$match:{}}
+        {$match:{isSale:false}}
     ])
     //const taskList = await tasks.find({crmCode:crmData._id})
     const columnOrder =crmData&&crmData.crmSteps

@@ -24,6 +24,7 @@ const FaktorSchema = new Schema({
     totalDiscount:{ type: Number },
     isActive:{ type: Boolean },
     isEdit:{ type: Boolean },
+    isSale:{ type: Boolean , default:false },
     query:{ type: Object },
     waitPay:{type:Boolean},
 })
