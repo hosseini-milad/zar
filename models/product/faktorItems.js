@@ -13,6 +13,7 @@ const FaktorItems = new Schema({
     peykPhone:{ type: String },
     factory:{ type: String },
     invoiceId:{ type: String },
+    Sh_Faktor:{ type: String },
     
     phone:{ type: String },
     status:{ type: String },
