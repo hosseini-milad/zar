@@ -9,6 +9,9 @@ const SetTahHesabItem=async(cartItems,index)=>{
         //console.log(cartItems._id)
         return await RegisterFaktorItem(cartItems)
     }
+    else if(cartItems.isReserve){
+        return({error:"کالا رزرو شده است"})
+        }
     else{
         return 0//await RegisterFaktorItem(cartItems._id)
     }

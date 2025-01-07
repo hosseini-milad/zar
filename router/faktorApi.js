@@ -133,7 +133,7 @@ router.post('/list-product-sale', async (req,res)=>{
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
             {$match:isMojood?{isMojood:true}:{}},
-            {$match:isReserve?{isReserve:true}:{}}
+            {$match:isReserve?{isReserve:false}:{}}
         ])
         const priceRaw = await FindPrice()
         const productList = products.slice(offset,
@@ -723,6 +723,10 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 //await faktorItems.create(faktorItem)
                 var hesabResult = await SetTahHesabItem(faktorItem,i+1)
+                if(hesabResult.error){
+                    res.status(400).json({error:hesabResult.error})
+                    return
+                }
                 InvoiceID = hesabResult&&hesabResult.customerList&&hesabResult.customerList.OK
                 await faktorItems.create({...faktorItem,result:hesabResult})
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
