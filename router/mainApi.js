@@ -90,7 +90,7 @@ router.use('/panel/crm',CRMPanelApi)
         for(var i=0;i<20;i++){
             result.push(await updateCustomer(i*500,(i+1)*500))
         }
-        
+        await updateLog.create({date:Date.now(),updateQuery:"get-customers",userId:req.headers['userid']})
         res.json({result})
     }
     catch(error){
@@ -104,6 +104,7 @@ router.get('/get-product', async (req,res)=>{
             result.push(await updateProduct(i*500,(i+1)*500))
         }
         
+        await updateLog.create({date:Date.now(),updateQuery:"get-product",userId:req.headers['userid']})
         res.json({result})
     }
     catch(error){
@@ -196,9 +197,9 @@ const updateCustomer=async(from,to)=>{
     }
     catch{}
 }
-router.get('/sepidar-update-log', async (req,res)=>{
+router.get('/update-log', async (req,res)=>{
     try{ 
-        const sepidarLog = await updateLog.find({}).sort({"date":-1})
+        const sepidarLog = await updateLog.find({}).sort({"date":-1}).limit(10)
         
         res.json({log:sepidarLog,message:"done"})
     }
