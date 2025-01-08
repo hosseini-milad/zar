@@ -90,7 +90,8 @@ router.use('/panel/crm',CRMPanelApi)
         for(var i=0;i<20;i++){
             result.push(await updateCustomer(i*500,(i+1)*500))
         }
-        await updateLog.create({date:Date.now(),updateQuery:"get-customers",userId:req.headers['userid']})
+
+        await updateLog.create({date:Date.now(),updateQuery:"get-customers"})
         res.json({result})
     }
     catch(error){
@@ -104,7 +105,7 @@ router.get('/get-product', async (req,res)=>{
             result.push(await updateProduct(i*500,(i+1)*500))
         }
         
-        await updateLog.create({date:Date.now(),updateQuery:"get-product",userId:req.headers['userid']})
+        await updateLog.create({date:Date.now(),updateQuery:"get-product"})
         res.json({result})
     }
     catch(error){
