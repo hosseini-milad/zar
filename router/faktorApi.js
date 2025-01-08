@@ -732,7 +732,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 var tahResult = hesabResult&&hesabResult.customerList
                 InvoiceID = tahResult&&tahResult.OK
                 Sh_Faktor = tahResult&&tahResult.Sh_factor
-                await faktorItems.create({...faktorItem,result:hesabResult})
+                await faktorItems.create({...faktorItem,result:hesabResult,isSale:true})
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
