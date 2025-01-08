@@ -84,7 +84,7 @@ router.use('/panel/crm',CRMPanelApi)
             { method: 'POST' });
     }catch{}
  })
- router.post('/get-customers', async (req,res)=>{
+ router.get('/get-customers', async (req,res)=>{
     try{
         const result =[]
         for(var i=0;i<20;i++){
