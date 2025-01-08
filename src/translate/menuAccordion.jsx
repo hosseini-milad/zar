@@ -119,7 +119,15 @@ const menutrans ={
                 icon:"fa-dashboard",
                 href:"/sliders",
                 url:"sliders"
-            }
+            },
+            {
+                english: "Update",
+                persian: "بروزرسانی",
+                index:0,
+                icon:"fa-dashboard",
+                href:"/update",
+                url:"update"
+            },
             ]
         },
 

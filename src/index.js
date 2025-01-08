@@ -417,7 +417,7 @@ root.render(
         />
 
         <Route
-          path="/config/sepidar"
+          path="/update"
           element={
             <Layout>
               <Sepidar lang={lang} />

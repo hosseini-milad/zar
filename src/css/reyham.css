@@ -1686,3 +1686,11 @@ dialog {
     visibility: hidden;
   }
 }
+.format-number-td .MuiFormLabel-root {
+  left: unset;
+  right: 0;
+}
+.format-number-td .css-1eed5fa-MuiInputBase-root-MuiInput-root::after,
+.format-number-td .css-1eed5fa-MuiInputBase-root-MuiInput-root::before {
+  content: unset;
+}
