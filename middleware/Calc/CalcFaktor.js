@@ -13,8 +13,8 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
-        totalSaleWeight += NormalNumber(sale[i].priceDetail&&
-            sale[i].priceDetail.weight)
+        totalSaleWeight += parseFloat(sale[i].priceDetail?
+            sale[i].priceDetail.weight:0)
         totalTax += NormalNumber(sale[i].priceDetail&&
             sale[i].priceDetail.taxPrice) 
     }
