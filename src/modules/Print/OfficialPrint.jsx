@@ -23,7 +23,7 @@ function OfficialPrint(props) {
             </div>
             <div className="number">
               <p>شماره سند:</p>
-              <p>{content.InvoiceID}</p>
+              <p>{content.Sh_Faktor}</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ function OfficialPrint(props) {
                     <span>
                       {"[+9% مالیات بر ارزش افزوده" +
                         "(" +
-                        normalPriceCount(sale.saleDetail.tax) +
+                        normalPriceCount(Total.totalTax) +
                         ")]"}
                     </span>
                   </p>
@@ -84,9 +84,7 @@ function OfficialPrint(props) {
                 <td className="small-td"></td>
                 <td className="small-td">{Total.totalSaleWeight}</td>
 
-                <td className="larg-td">
-                  {normalPriceCount(sale.saleDetail.price)}
-                </td>
+                <td className="larg-td">{normalPriceCount(Total.totalSale)}</td>
               </tr>
             </tbody>
           )}

@@ -1694,3 +1694,11 @@ dialog {
 .format-number-td .css-1eed5fa-MuiInputBase-root-MuiInput-root::before {
   content: unset;
 }
+.loader {
+  width: 60px;
+  height: 60px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}

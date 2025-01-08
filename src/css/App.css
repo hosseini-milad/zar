@@ -29011,7 +29011,7 @@ pre[class*="language-"] {
   }
 }
 .col4{
-  width: calc(100% / 4) !important;
+  width: calc(100% / 3) !important;
   margin-block: auto !important;
 }
 

@@ -10,9 +10,10 @@ function Sepidar(props) {
   const lang = props.lang ? props.lang.lang : errortrans.defaultLang;
   const [error, setError] = useState({ message: "", color: "brown" });
   const [updateTime, setUpdateTime] = useState();
+  const [Update, setUpdate] = useState(0);
   const [Stock, setStock] = useState();
   const token = cookies.get(env.cookieName);
-  console.log(error);
+
   useEffect(() => {
     const postOptions = {
       method: "get",
@@ -22,18 +23,17 @@ function Sepidar(props) {
         userId: token && token.userId,
       },
     };
-    fetch(env.siteApi + "/get-product", postOptions)
+    fetch(env.siteApi + "/update-log", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {
           const logList = result;
           var lastLog = {
-            product: logList.productLog[0],
-            quantity: logList.countLog[0],
-            price: logList.priceLog[0],
-            customer: logList.customerLog[0],
+            product: logList && logList.productLog && logList.productLog[0],
+
+            customer: logList && logList.customerLog && logList.customerLog[0],
           };
-          console.log(lastLog);
+
           setUpdateTime(lastLog);
         },
         (error) => {
@@ -43,8 +43,9 @@ function Sepidar(props) {
   }, []);
 
   const updateSepidar = (db) => {
+    setUpdate(1);
     const postOptions = {
-      method: "post",
+      method: "get",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": token && token.token,
@@ -52,20 +53,23 @@ function Sepidar(props) {
       },
       body: JSON.stringify(),
     };
-    fetch(env.siteApi + "/sepidar-" + db, postOptions, { mode: "cors" })
+    fetch(env.siteApi + "/get-" + db, postOptions, { mode: "cors" })
       .then((res) => res.json())
       .then(
         (result) => {
           if (result.error) {
             setError({ message: result.message, color: "brown" });
             setTimeout(() => setError({ message: "", color: "brown" }), 3000);
+            setUpdate(0);
           } else {
             setError({ message: result.message, color: "green" });
             setTimeout(() => window.location.reload(), 3000);
+            setUpdate(0);
           }
         },
         (error) => {
           console.log(error);
+          setUpdate(0);
         }
       );
   };
@@ -75,30 +79,19 @@ function Sepidar(props) {
       enTitle: "product",
       description: "بروزرسانی محتوای محصولات",
     },
+
     {
-      title: "تعداد محصولات",
-      enTitle: "quantity",
-      description: "بروزرسانی تعداد محصولات",
+      title: "مشتریان",
+      enTitle: "customers",
+      description: "بروزرسانی مشتریان",
     },
-    {
-      title: "قیمت محصولات",
-      enTitle: "price",
-      description: "بروزرسانی قیمت محصولات",
-    },
-    { title: "مشتریان", enTitle: "customer", description: "بروزرسانی مشتریان" },
   ];
+  console.log(Update);
   return (
     <div
       className="profiles"
       style={{ direction: direction, padding: "0px", overflow: "hidden" }}
     >
-      {/* {token.access == "manager" ? (
-        <div class="sepidar-filter">
-          <SepidarTab TabList={stockList} setStock={setStock} Stock={Stock} />
-        </div>
-      ) : (
-        <></>
-      )} */}
       <div
         className={
           direction === "ltr" ? "profile-table" : "profile-table profileRtl"
@@ -125,12 +118,16 @@ function Sepidar(props) {
                     </div>
                   </td>
                   <td>
-                    <input
-                      type="button"
-                      value="بروزرسانی"
-                      className="btn bg-gradient-info my-4 mb-2"
-                      onClick={() => updateSepidar(filter.enTitle)}
-                    />
+                    {Update ? (
+                      <div class="loader">{env.loader}</div>
+                    ) : (
+                      <input
+                        type="button"
+                        value="بروزرسانی"
+                        className="btn bg-gradient-info my-4 mb-2"
+                        onClick={() => updateSepidar(filter.enTitle)}
+                      />
+                    )}
                   </td>
                   <td>
                     {updateTime &&
@@ -139,13 +136,13 @@ function Sepidar(props) {
                         updateTime[filter.enTitle].date
                       ).toLocaleDateString("fa")}
                     <br />
-                    <smal>
+                    <small>
                       {updateTime &&
                         updateTime[filter.enTitle] &&
                         new Date(
                           updateTime[filter.enTitle].date
                         ).toLocaleTimeString("fa")}
-                    </smal>
+                    </small>
                   </td>
                   <td>
                     <small>
