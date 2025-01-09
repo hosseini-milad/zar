@@ -17,7 +17,7 @@ export default function Navbar() {
             </a>
           </li>
           <li className="nav-item">
-            <a href="#">
+            <a href="/products">
               <p>محصولات</p>
             </a>
           </li>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import CategoryTabs from "../../components/CategoryTabs/CategoryTabs";
-import CategoryLists from "../../components/CategoryLists/CategoryLists";
+import { CategoryLists, CategoryTabs } from "../../components";
 import "./Category.css";
 export default function Category() {
   const [SelectedTab, setSelectedTab] = useState("Home");

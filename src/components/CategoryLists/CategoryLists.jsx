@@ -180,8 +180,6 @@ export default function CategoryLists(props) {
       ],
     ],
   };
-  console.log(CatList.SelectedTab)
-  
   return (
     <div className="CategoryLists">
       <div className="CategoryLists-container">

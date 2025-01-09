@@ -17,6 +17,7 @@ export default function CategoryTabs(props) {
       <div className="CategoryTabs-container">
         {TabList.map((Tab, i) => (
           <div
+            key={i}
             onClick={() => setSelectedTab(Tab.enTitle)}
             className={`tab-item ${
               Tab.enTitle === SelectedTab ? "active-tab" : ""

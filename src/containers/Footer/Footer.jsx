@@ -98,7 +98,7 @@ export default function Footer() {
         </div>
         <div className="icon-wrapper">
           <a href="#">
-            <img src="./flogo.svg" alt="logo" style={{minWidth:"240px"}}/>
+            <img src="./Logo.png" alt="logo" style={{maxWidth:"150px"}}/>
           </a>
           <a href="#">
             <img src={Gp} alt="google play" style={{minWidth:"140px"}}/>
@@ -106,22 +106,22 @@ export default function Footer() {
           <ul className="ul-icon">
             <li>
               <a href="#">
-                <i class="fa-brands fa-facebook-f"></i>
+                <i className="fa-brands fa-facebook-f"></i>
               </a>
             </li>
             <li>
               <a href="#">
-                <i class="fa-brands fa-instagram"></i>
+                <i className="fa-brands fa-instagram"></i>
               </a>
             </li>
             <li>
               <a href="#">
-                <i class="fa-brands fa-linkedin-in"></i>
+                <i className="fa-brands fa-linkedin-in"></i>
               </a>
             </li>
             <li>
               <a href="#">
-                <i class="fa-brands fa-youtube"></i>
+                <i className="fa-brands fa-youtube"></i>
               </a>
             </li>
           </ul>

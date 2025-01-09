@@ -1,0 +1,59 @@
+.CatCard {
+  width: calc(100% / 3);
+  padding-inline: 15px;
+  .CatCard-container {
+    width: 100%;
+    background-color: #f7f7f7;
+    padding: 1rem;
+    margin-bottom: 22px;
+    border-right: var(--color-500) 3px solid;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    img {
+      width: 75px;
+      height: 75px;
+      margin-inline: 10px;
+    }
+  }
+}
+.CatCard .list-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-right: 0.5rem;
+
+  .title {
+    color: var(--color-900);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1rem;
+  }
+  ul {
+    margin-right: 0.75rem;
+  }
+  li {
+    transition: all 0.2s ease-in;
+    line-height: 1.2em;
+
+    a {
+      text-decoration: none;
+      color: #454545;
+      font-size: 12px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+  }
+  li:hover {
+    margin-right: 2px;
+
+    a {
+      color: red;
+    }
+  }
+  li:hover::marker {
+    color: red;
+  }
+}

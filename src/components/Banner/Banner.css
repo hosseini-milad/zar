@@ -1,0 +1,27 @@
+.Banner {
+  width: 100%;
+
+  .Banner-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    direction: ltr;
+  }
+}
+.Banner .text-wrapper {
+  width: 80%;
+  margin-inline: auto;
+
+  .title {
+    color: #fff;
+    font-size: 2.375rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .text {
+    color: white;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    font-size: 0.8rem;
+  }
+}

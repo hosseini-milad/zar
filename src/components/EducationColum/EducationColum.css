@@ -1,0 +1,19 @@
+.EducationColum {
+  width: calc(100% / 3);
+  .EducationColum-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    
+  }
+
+  img{
+    width: 100%;
+  }
+  p{
+    color: #656565;
+    font-size: 0.8rem;
+  }
+}
