@@ -61,3 +61,14 @@
     }
   }
 }
+@media (max-width: 750px) {
+  .Education {
+    max-width: 90%;
+    margin-inline: auto;
+  }
+  .Education .Education-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

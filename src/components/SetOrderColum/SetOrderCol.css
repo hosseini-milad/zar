@@ -88,3 +88,9 @@
   margin-top: 4px;
   text-align: right;
 }
+@media (max-width: 750px) {
+  .SetOrderCol {
+    width: 100%;
+    max-width: 540px;
+  }
+}

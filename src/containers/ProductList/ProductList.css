@@ -63,7 +63,7 @@
     }
     .red-line {
       position: absolute;
-      background-color:var(--color-500);
+      background-color: var(--color-500);
       width: 70px;
       height: 3px;
       right: 0;
@@ -78,4 +78,16 @@
 }
 .ProductList .product-filter-wrapper {
   width: 25%;
+}
+
+@media (max-width: 1000px) {
+  .ProductList .ProductList-container {
+    max-width: 100%;
+    margin-inline: 1rem;
+  }
+}
+@media (max-width: 750px) {
+  .ProductList .product-filter-wrapper {
+    display: none;
+  }
 }

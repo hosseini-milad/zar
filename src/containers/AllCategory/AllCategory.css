@@ -27,7 +27,7 @@
   .red-line {
     width: 70px;
     height: 3px;
-    background:var(--color-500);
+    background: var(--color-500);
     position: absolute;
     right: 0;
     bottom: 18px;
@@ -41,4 +41,12 @@
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+}
+@media (max-width: 1000px) {
+  .AllCategory .title {
+    margin-right: 0.5rem;
+  }
+  .AllCategory .cat-wrapper {
+    margin: 0;
+  }
 }

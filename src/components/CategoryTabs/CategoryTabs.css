@@ -5,6 +5,12 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+  }
+  .CategoryTabs-container::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
   }
 }
 .CategoryTabs .tab-item {
@@ -35,13 +41,18 @@
     margin-top: auto;
     font-size: 0.75rem;
     font-weight: 800;
-    color:var(--color-900);
+    color: var(--color-900);
   }
 }
 .CategoryTabs .active-tab {
   border-color: red;
   background: #f2f2f2;
-  P{
+  P {
     color: unset;
+  }
+}
+@media (max-width: 750px) {
+  .CategoryTabs .tab-item {
+    min-width: calc(100% / 3);
   }
 }

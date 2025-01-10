@@ -86,6 +86,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      flex-wrap: wrap;
       gap: 2rem;
       margin-block: 2rem;
 
@@ -128,20 +129,28 @@
         text-align: center;
       }
     }
-    
   }
   .copyright {
     width: 100%;
     background: #1e1d1d;
     padding: 10px 0;
 
-    p{
+    p {
       max-width: 1140px;
       margin-inline: auto;
       text-align: center;
       font-size: 0.8rem;
       padding-inline: 15px;
       color: white;
+    }
+  }
+}
+@media (max-width: 750px) {
+  .footer .icon-wrapper {
+    flex-direction: column;
+    .ul-icon {
+      margin: 0 !important;
+      justify-content: center !important;
     }
   }
 }

@@ -16,3 +16,11 @@
     border: #ececec 1px solid;
   }
 }
+@media (max-width: 750px) {
+  .hero {
+    height: unset;
+  }
+  .hero .container {
+    flex-direction: column;
+  }
+}

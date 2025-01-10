@@ -138,18 +138,99 @@
   .header .container {
     max-width: 720px;
   }
+  .header .logo-wrapper.logo-wrapper {
+    max-width: calc(100% / 4.5);
+  }
   .header .search-wrapper.search-wrapper {
     max-width: 40%;
     flex: 0 0 40%;
 
     input {
       padding: 0.5rem !important;
+      width: 50% !important;
+      font-size: 0.8rem !important;
     }
     select {
+      width: fit-content !important;
       height: 32px !important;
+      font-size: 0.8rem !important;
     }
     button {
-      
+      padding-block: 0.5rem 0.6rem !important;
+    }
+    button i {
+      font-size: 16px;
+    }
+  }
+  .header .ul-item .p-wrapper p {
+    font-size: 0.7rem !important;
+    white-space: nowrap;
+  }
+}
+@media (max-width: 750px) {
+  .header .container {
+    max-width: unset;
+    width: 100%;
+  }
+  .header .logo-wrapper.logo-wrapper {
+    max-width: 20%;
+
+    picture {
+      margin-inline: auto;
+    }
+  }
+  .header .search-wrapper.search-wrapper {
+    max-width: 60%;
+    flex: 0 0 60%;
+  }
+  .header .ul-wrapper.ul-wrapper {
+    display: none;
+  }
+  .header .mobile-wrapper.mobile-wrapper {
+    display: flex;
+    position: relative;
+    max-width: 20%;
+    flex: 0 0 20%;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      border: 1px solid rgba(0, 0, 0, 0.432);
+      padding: 0.35rem 0.48rem;
+      border-radius: 0.25rem;
+      font-size: 1.25rem;
+      color: rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+    }
+  }
+  .header .mobile-wrapper .sub-menu {
+    position: absolute;
+    top: 60px;
+    z-index: 2;
+    left: 0;
+    width: 100vw;
+    background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 1rem;
+    border-bottom: 1px solid grey;
+  }
+  .header .mobile-wrapper .sub-menu ul {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    list-style: none;
+
+    a {
+      text-decoration: none;
+      color: #454545;
+      font-size: 0.75rem;
+      line-height: 18px;
     }
   }
 }
