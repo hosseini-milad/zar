@@ -15,3 +15,4 @@ export { default as CategoryTabs } from "./CategoryTabs/CategoryTabs";
 export { default as Banner } from "./Banner/Banner";
 export { default as CatCard } from "./CatCard/CatCard";
 export { default as NavList } from "./NavList/NavList";
+export { default as PanelHeader } from "./PanelHeader/PanelHeader";

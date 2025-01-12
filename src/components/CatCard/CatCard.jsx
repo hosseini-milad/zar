@@ -7,13 +7,13 @@ export default function CatCard(props) {
       <div className="CatCard-container">
         <img src={item.img} alt={item.title} />
         <div className="list-wrapper">
-          <a href={"/" + item.title} className="title">
+          <a href={"/products/" + item.title} className="title">
             {item.title}
           </a>
           <ul className="list">
             {item.list.map((li, l) => (
               <li key={l}>
-                <a href={"/" + item.title + "/" + li}>{li}</a>
+                <a href={"/products/" + item.title + "/" + li}>{li}</a>
               </li>
             ))}
           </ul>

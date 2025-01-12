@@ -1,0 +1,105 @@
+.SideBar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: white;
+  color: #999;
+
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.267);
+  overflow-y: auto;
+}
+
+.SideBar a {
+  color: #999;
+  text-decoration: none;
+  display: block;
+  padding: 8px 9px;
+  transition: all ease-in-out 0.2s;
+}
+
+.SideBar a:hover {
+  background: linear-gradient(90deg, var(--color-900), #0d5577);
+  color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.34);
+  margin-right: 2px;
+
+  .menu-icon {
+    color: white;
+  }
+}
+.SideBar .a-active {
+  background: linear-gradient(90deg, var(--color-900), #0d5577);
+  color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.34);
+  margin-right: 2px;
+  .menu-icon {
+    color: white;
+  }
+}
+
+.SideBar-header {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+.SideBar-header .logo-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+
+  img {
+    width: 90%;
+  }
+}
+.SideBar-header .profile-wrapper {
+  width: 85%;
+  margin: 0.5rem auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 5px;
+  background: linear-gradient(90deg, var(--color-900), #24a2dc);
+  border-radius: 0.5rem;
+
+  i,
+  p {
+    color: white;
+  }
+}
+.SideBar-menu {
+  list-style-type: none;
+  padding: 1rem;
+}
+
+.SideBar-menu li {
+  margin: 10px 0;
+}
+
+.SideBar-menu li a {
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  font-size: 1rem;
+  .menu-icon {
+    color: black;
+    font-size: 18px;
+  }
+  .arrow-icon {
+    margin-right: auto;
+  }
+}
+
+.SideBar-menu .sub-menu {
+  background-color: #f8f8f8;
+  border-radius: 6px;
+  padding: 0px 6px;
+}
