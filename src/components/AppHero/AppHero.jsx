@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function PanelProfile() {
+export default function AppHero() {
   return (
     <div>
-      PanelProfile
+      
     </div>
   )
 }
