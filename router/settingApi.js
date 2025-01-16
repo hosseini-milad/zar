@@ -145,6 +145,16 @@ router.get('/get-params',jsonParser, async (req,res)=>{
 router.post('/update-params',jsonParser,auth, async (req,res)=>{
     const taxValue = req.body.tax
     const prepaidValue = req.body.prepaid
+    var taxNumber = Number(taxValue)
+    var preNumber = Number(prepaidValue)
+    if(taxNumber >15 || taxNumber<5){
+        res.status(400).json({error:"مقدار مالیات بین 5 تا 15 باشد"})
+        return
+    }
+    if(preNumber >100 || preNumber<0){
+        res.status(400).json({error:"مقدار پیش پرداخت بین 0 تا 100 مورد قبول است"})
+        return
+    }
     try{
         if(taxValue){
             const taxData = await tax.findOne()

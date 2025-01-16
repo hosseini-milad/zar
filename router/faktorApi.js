@@ -179,6 +179,7 @@ router.post('/fetch-product', async (req,res)=>{
             
         var TAX = await tax.findOne().sort({date:-1})
         const fullPrice =  CalcPrice(productData,priceRaw,TAX&&TAX.percent)
+        productData.color="رزگلد"
         productData.price = fullPrice.price
         productData.priceDetail = fullPrice.priceDetail
         res.json({data:productData,similarProduct})
