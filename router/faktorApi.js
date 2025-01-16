@@ -60,6 +60,7 @@ const UpdateCartQuery = require('../middleware/Calc/UpdateCartQuery');
 const FindRemainBank = require('../middleware/Calc/FindRemainBank');
 const SetDiscountTahHesab = require('../middleware/Calc/SetDiscountTahHesab');
 const FindRemainUser = require('../middleware/Calc/FindRemainUser');
+const FindSimilarProduct = require('../middleware/Calc/FindSimilarProduct');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -161,10 +162,16 @@ router.post('/fetch-product', async (req,res)=>{
     const sku = req.body.sku
     try{
         var productData = await productSchema.findOne({sku:sku}).lean()
-        if(!productData.isMojood){
+        if(!productData){
+            res.status(400).json({error:"اتیکت یافت نشد"})
+            return
+        }
+        var similarProduct=[]
+        try{similarProduct=await FindSimilarProduct(productData)} catch{}
+            if(!productData.isMojood){
             const productTemp = await productSchema.findOne(
             {masterSku:sku, isMojood:true,imageUrl:{$exists:true}}).lean()
-            if(productTemp){
+            if(productTemp){ 
                 productData = productTemp
             }
         }
@@ -174,7 +181,7 @@ router.post('/fetch-product', async (req,res)=>{
         const fullPrice =  CalcPrice(productData,priceRaw,TAX&&TAX.percent)
         productData.price = fullPrice.price
         productData.priceDetail = fullPrice.priceDetail
-        res.json({data:productData})
+        res.json({data:productData,similarProduct})
 
     }
     catch(error){

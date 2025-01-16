@@ -1,0 +1,64 @@
+const transaction = require("../../models/param/transaction")
+const cart = require("../../models/product/cart")
+const productSchema = require('../../models/product/products');
+const StandardCompare = require("./StandardCompare");
+const StandardText = require("./StandardText");
+
+const FindSimilarProduct=async(productData)=>{
+        var productTitle = productData.title&&productData.title.split(' ')
+        var key1 = productTitle[0]
+        var key2 = productTitle[1]
+        var key3 = productTitle[2]?productTitle[2]:"گلد"
+        var productData1 = await productSchema.find(
+                {title:new RegExp('.*' + key1 + '.*')},
+                {sku:1,title:1,imageUrl:1,thumbUrl:1,_id:0}).lean()
+        productData1.forEach(obj => obj.index = 1); 
+        var productData2 = await productSchema.find(
+                {title:new RegExp('.*' + key2 + '.*')},
+                {sku:1,title:1,imageUrl:1,thumbUrl:1,_id:0}).lean()
+        productData2.forEach(obj => obj.index = 2);
+        var productData3 = await productSchema.find(
+                {title:new RegExp('.*' + key3 + '.*')},
+                {sku:1,title:1,imageUrl:1,thumbUrl:1,_id:0}).lean()
+        productData3.forEach(obj => obj.index = 3);
+        var totalData = productData1.concat(
+                productData2,productData3)
+        const uniqueElements = [];
+
+var duplicates = [{title:productData.title,
+        sku:productData.sku,index:1,index2:2}];
+
+for(var i=0;i<totalData.length;i++){
+        var item =totalData[i]
+        var found =0
+        for(var j=0;j<uniqueElements.length;j++){
+                if(uniqueElements[j].title == item.title){
+                        found = 1
+                        if(uniqueElements[j].index == item.index) break
+                        else {
+                                var alreadyHas = StandardCompare(duplicates,
+                                                item.title);
+                                if(!alreadyHas){
+                                uniqueElements.push(item);
+                                duplicates.push({...item,index2:uniqueElements[j].index});
+                                break
+                                    }
+                        }
+                }
+                
+        }
+        if(!found){
+                uniqueElements.push(item);
+        }
+}
+var finalDuplicate = []
+if(duplicates&&duplicates.length>3){
+        finalDuplicate.push(duplicates[1])
+        finalDuplicate.push(duplicates[duplicates.length-1])
+}
+else
+        finalDuplicate   = duplicates
+return(finalDuplicate)
+}
+
+module.exports =FindSimilarProduct
