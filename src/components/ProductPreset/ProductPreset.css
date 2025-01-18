@@ -1,0 +1,32 @@
+.ProductPreset {
+  width: 100%;
+  margin-bottom: 4rem;
+
+  .ProductPreset-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    width: 100%;
+  }
+  .wrapper {
+    width: 100%;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+
+    p {
+      position: absolute;
+      bottom: 10%;
+      right: 5%;
+      font-weight: 700;
+      font-size: 40px;
+      line-height: 40px;
+      letter-spacing: -5%;
+      color: var(--color-white);
+      text-shadow: 4px 4px #000000;
+    }
+  }
+}

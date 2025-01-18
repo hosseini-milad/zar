@@ -1,0 +1,50 @@
+.Branches {
+  width: 100%;
+  margin-block: 4rem;
+
+  .Branches-container {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-inline: auto;
+  }
+
+  .branch-item {
+    height: 250px;
+    width: calc(100% / 4 - 1rem);
+    background-color: var(--color-white);
+    box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .branch-item .wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+
+    p,
+    i {
+      font-size: 24px;
+      font-weight: 600;
+    }
+  }
+  .branch-item .address {
+    margin-block: 1rem;
+    text-align: right;
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 29px;
+
+    color: var(--font-color-grey);
+  }
+  .branch-item .phone {
+    margin-top: auto;
+  }
+}

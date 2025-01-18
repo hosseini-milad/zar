@@ -4,17 +4,22 @@
   font-weight: 400;
 
   /* color-scheme: light dark; */
-  color: #5d6177;
-  background-color: white;
+  color: rgba(127, 127, 127, 1);
+  background-color: rgba(248, 252, 255, 1);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
+  text-decoration: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-900: #2f2483;
-  --color-500: #00aadb;
-  --color-400: #4ac9ed;
+  --color-gold: rgba(205, 137, 69, 1);
+  --color-white: white;
+  --color-greyWhite: rgba(248, 252, 255, 1);
+
+  --font-color-gold: rgba(205, 137, 69, 1);
+  --font-color-grey: rgba(127, 127, 127, 1);
+  --font-color-black: rgba(0, 0, 0, 1);
 }
 @font-face {
   font-family: number;
@@ -92,6 +97,16 @@
   padding: 0;
   box-sizing: border-box;
 }
+a {
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+}
+button {
+  outline: none;
+  border: none;
+}
 body {
   margin: 0;
   display: flex;
@@ -99,14 +114,14 @@ body {
   justify-content: flex-start;
   min-width: 320px;
   min-height: 100vh;
-  background-color: white;
+  background-color: var(--color-greyWhite);
 }
 #root {
   width: 100%;
   min-height: 100vh;
   direction: rtl;
-  background-color: white;
+  background-color: var(--color-greyWhite);
 }
 .main {
-  background-color: white;
+  background-color: var(--color-greyWhite);
 }
