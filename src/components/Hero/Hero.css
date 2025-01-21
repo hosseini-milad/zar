@@ -12,17 +12,16 @@
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    padding-top: 10%;
   }
-
-  .fa-title {
-    color: var(--font-color-gold);
-    font-size: 40px;
-    font-weight: 400;
-  }
-  .en-title {
-    color: var(--font-color-gold);
-    font-size: 64px;
-    font-weight: 400;
+}
+.Hero .logo-wrapper img {
+  max-width: 990px;
+  width: 90%;
+  display: block;
+  margin-inline: auto;
+}
+@media (max-width: 750px) {
+  .Hero {
+    min-height: 800px;
   }
 }

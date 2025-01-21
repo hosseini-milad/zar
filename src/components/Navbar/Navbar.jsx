@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 export default function Navbar(props) {
+  const [HamMenu, setHamMenu] = useState(0);
   const { navList } = props;
   return (
     <nav className="navbar">
       <div className="container">
-        <ul className="nav-list">
+        <ul className={HamMenu ? "active-list" : ""}>
           {navList.map((item, i) => (
             <li key={i} className="nav-item">
               <a href={item.link}>
@@ -14,6 +15,14 @@ export default function Navbar(props) {
             </li>
           ))}
         </ul>
+        {HamMenu ? (
+          <i
+            class="fa-solid fa-xmark nav-btn"
+            onClick={() => setHamMenu(0)}
+          ></i>
+        ) : (
+          <i class="fa-solid fa-bars nav-btn" onClick={() => setHamMenu(1)}></i>
+        )}
       </div>
     </nav>
   );

@@ -30,3 +30,14 @@
     }
   }
 }
+@media(max-width:750px){
+  .ProductPreset .ProductPreset-container{
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+
+    .wrapper p{
+      font-size: 30px;
+      text-shadow: 2px 2px #000000;
+    }
+  }
+}

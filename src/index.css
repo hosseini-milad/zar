@@ -1,5 +1,5 @@
 :root {
-  font-family: vazir, sans-serif;
+  font-family: Yekan Bakh, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -21,75 +21,55 @@
   --font-color-grey: rgba(127, 127, 127, 1);
   --font-color-black: rgba(0, 0, 0, 1);
 }
+
 @font-face {
-  font-family: number;
-  font-style: normal;
-  font-weight: bold;
-  src: url(/fonts/Vazir-Bold-FD-WOL.eot);
-  src: url(/fonts/Vazir-Bold-FD-WOL.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Bold-FD-WOL.woff2) format("woff2"),
-    url(/fonts/Vazir-Bold-FD-WOL.woff) format("woff"),
-    url(/fonts/Vazir-Bold-FD-WOL.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
-  font-style: normal;
-  font-weight: 400;
-  src: url(/fonts/Vazir-Regular.eot);
-  src: url(/fonts/Vazir-Regular.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Regular.woff2) format("woff2"),
-    url(/fonts/Vazir-Regular.woff) format("woff"),
-    url(/fonts/Vazir-Regular.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
-  font-style: normal;
-  font-weight: 700;
-  src: url(/fonts/Vazir-Bold.eot);
-  src: url(/fonts/Vazir-Bold.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Bold.woff2) format("woff2"),
-    url(/fonts/Vazir-Bold.woff) format("woff"),
-    url(/fonts/Vazir-Bold.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
-  font-style: normal;
-  font-weight: 900;
-  src: url(/fonts/Vazir-Black.eot);
-  src: url(/fonts/Vazir-Black.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Black.woff2) format("woff2"),
-    url(/fonts/Vazir-Black.woff) format("woff"),
-    url(/fonts/Vazir-Black.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
-  font-style: normal;
-  font-weight: 500;
-  src: url(/fonts/Vazir-Medium.eot);
-  src: url(/fonts/Vazir-Medium.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Medium.woff2) format("woff2"),
-    url(/fonts/Vazir-Medium.woff) format("woff"),
-    url(/fonts/Vazir-Medium.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
-  font-style: normal;
-  font-weight: 300;
-  src: url(/fonts/Vazir-Light.eot);
-  src: url(/fonts/Vazir-Light.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Light.woff2) format("woff2"),
-    url(/fonts/Vazir-Light.woff) format("woff"),
-    url(/fonts/Vazir-Light.ttf) format("truetype");
-}
-@font-face {
-  font-family: vazir;
+  font-family: Yekan Bakh;
   font-style: normal;
   font-weight: 100;
-  src: url(/fonts/Vazir-Thin.eot);
-  src: url(/fonts/Vazir-Thin.eot?#iefix) format("embedded-opentype"),
-    url(/fonts/Vazir-Thin.woff2) format("woff2"),
-    url(/fonts/Vazir-Thin.woff) format("woff"),
-    url(/fonts/Vazir-Thin.ttf) format("truetype");
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-Thin.woff") format("woff"),
+    url("/fonts/YekanBakh-Thin.woff2") format("woff2");
+}
+@font-face {
+  font-family: Yekan Bakh;
+  font-style: normal;
+  font-weight: 300;
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-Light.woff") format("woff"),
+    url("/fonts/YekanBakh-Light.woff2") format("woff2");
+}
+@font-face {
+  font-family: Yekan Bakh;
+  font-style: normal;
+  font-weight: normal;
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-Regular.woff") format("woff"),
+    url("/fonts/YekanBakh-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Yekan Bakh;
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-SemiBold.woff") format("woff"),
+    url("/fonts/YekanBakh-SemiBold.woff2") format("woff2");
+}
+@font-face {
+  font-family: Yekan Bakh;
+  font-style: normal;
+  font-weight: 900;
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-Black.woff") format("woff"),
+    url("/fonts/YekanBakh-Black.woff2") format("woff2");
+}
+@font-face {
+  font-family: Yekan Bakh;
+  font-style: normal;
+  font-weight: bold;
+  font-stretch: normal;
+  src: url("/fonts/YekanBakh-Bold.woff") format("woff"),
+    url("/fonts/YekanBakh-Bold.woff2") format("woff2");
 }
 
 * {

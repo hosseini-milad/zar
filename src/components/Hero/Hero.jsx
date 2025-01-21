@@ -9,10 +9,9 @@ export default function Hero() {
         style={{ backgroundImage: `url("${Bg}")` }}
       >
         <div className="logo-wrapper">
-          <img src="/ZarLogoHero.svg" alt="Logo" />
+          <img src="/ZarLogoHero.PNG" alt="Logo" />
         </div>
-        <p className="fa-title">گالری جواهرات برزگر</p>
-        <p className="en-title">Barzegar Jewelry Gallery</p>
+        
       </div>
     </div>
   );

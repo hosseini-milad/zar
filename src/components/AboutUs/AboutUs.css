@@ -33,3 +33,13 @@
   line-height: 40px;
   color: var(--font-color-gold);
 }
+@media (max-width: 750px) {
+  .AboutUs .AboutUs-container{
+    padding-block: 2rem;
+  }
+  .AboutUs .AboutUs-container p {
+    width: 85%;
+    font-size: 20px;
+    font-weight: 300;
+  }
+}
