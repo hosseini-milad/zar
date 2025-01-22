@@ -24,4 +24,10 @@
   .Hero {
     min-height: 800px;
   }
+  .Hero .logo-wrapper img {
+    max-width: 100%;
+    width: 100%;
+    
+    
+  }
 }
