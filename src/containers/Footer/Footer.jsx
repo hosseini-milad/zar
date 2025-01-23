@@ -39,7 +39,7 @@ export default function Footer() {
         <div className="copyright">
           <p>کلیه حقوق برای فروشگاه برزگر محفوظ است </p>
           <a href="https://dkmehr.com/">
-            <p>طراحی سایت : شرکت داده کاوان</p>
+            <p style={{ textDecoration: "underline" }}>طراحی سایت</p>
           </a>
         </div>
       </div>

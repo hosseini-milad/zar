@@ -20,5 +20,6 @@
 @media (max-width: 750px) {
   .header .header-container {
     justify-content: space-between;
+    padding-right: 0.5rem;
   }
 }
