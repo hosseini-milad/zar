@@ -142,6 +142,7 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         template: process.env.template,//"mgmVerify",
         receptor: phone
     },);
+    console.log(smsResult)
       const newUser = await customers.updateOne(
         {phone:phone},{$set:{otp:otpValue}});
         ////console.log((newUser)
@@ -157,6 +158,7 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         template: process.env.template,//"mgmVerify",
         receptor: phone 
     },);
+    console.log(smsResult)
       const newUser = await customers.create(
         { username:phone,
           phone:phone,
