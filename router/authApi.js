@@ -145,7 +145,11 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
       const newUser = await customers.updateOne(
         {phone:phone},{$set:{otp:otpValue}});
         ////console.log((newUser)
-      res.status(200).json({message:"sms sent for "+phone,smsResult});
+      res.status(200).json({message:"sms sent for "+phone,smsResult,query:{
+        token: otpValue,
+        template: process.env.template,//"mgmVerify",
+        receptor: phone
+    }});
     }
     else {
       smsResult = api.VerifyLookup({
@@ -170,7 +174,11 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
         date:Date.now()
       })
       ////console.log((newUserLog)
-      res.status(200).json({message:"welcome to sharif, sms sent for "+phone,
+      res.status(200).json({message:"welcome to sharif, sms sent for "+phone,query:{
+        token: otpValue,
+        template: process.env.template,//"mgmVerify",
+        receptor: phone
+    },
       smsResult:smsResult});
     }
   }
