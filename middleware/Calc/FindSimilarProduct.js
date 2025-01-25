@@ -53,8 +53,15 @@ for(var i=0;i<totalData.length;i++){
 }
 var finalDuplicate = []
 if(duplicates&&duplicates.length>3){
-        finalDuplicate.push(duplicates[1])
-        finalDuplicate.push(duplicates[duplicates.length-1])
+        var dup1 = duplicates[1]
+        if(!dup1.thumbUrl) dup1.thumbUrl="https://admin.barzegargold.com/upload/default/product.png"
+        if(!dup1.imageUrl) dup1.imageUrl="https://admin.barzegargold.com/upload/default/product.png"
+        var dup2 = duplicates[duplicates.length-1]
+        if(!dup2.thumbUrl) dup2.thumbUrl="https://admin.barzegargold.com/upload/default/product.png"
+        if(!dup2.imageUrl) dup2.imageUrl="https://admin.barzegargold.com/upload/default/product.png"
+        
+        finalDuplicate.push(dup1)
+        finalDuplicate.push(dup2)
 }
 else
         finalDuplicate   = duplicates
