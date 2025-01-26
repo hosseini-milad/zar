@@ -32,6 +32,7 @@ const products = require('../models/product/products');
 const UpdateMarket = require('../middleware/UpdateMarket');
 const crmlist = require('../models/crm/crmlist');
 const multer = require('multer');
+const gallery = require('../models/param/gallery');
 
 router.post('/fetch-service',jsonParser,async (req,res)=>{
     var serviceId = req.body.serviceId?req.body.serviceId:''
@@ -848,4 +849,96 @@ router.post('/upload',uploadImg.single('upload'), async(req, res, next)=>{
         }
 })
 
+
+router.post('/list-gallery',jsonParser,async(req,res)=>{
+    try{ 
+        const galleryData = await findGallery()
+        
+        res.json({data:galleryData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/fetch-gallery',jsonParser,async(req,res)=>{
+    var manageId = req.headers['userid']
+    var id = req.body.id
+    try{ 
+        var galleryData = await gallery.findOne({_id:ObjectID(id)}).lean()
+        if(galleryData){
+            var productList = galleryData.productList
+            var productDataList = []
+            for(var i=0;i<productList.length;i++){
+                var product = await products.findOne({sku:productList[i]})
+                if(product) 
+                    productDataList.push(product)
+            }
+        }
+        res.json({data:galleryData,productDataList})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/add-gallery',auth,jsonParser,async(req,res)=>{
+    var manageId = req.headers['userid']
+    var data = req.body
+    data.manageId = manageId
+    try{ 
+        await gallery.create(data)
+        const galleryData = await findGallery()
+        
+        res.json({data:galleryData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/update-gallery',auth,jsonParser,async(req,res)=>{
+    var manageId = req.headers['userid']
+    var data = {
+        title:req.body.title,
+        gCode:req.body.gCode,
+        content: req.body.content,
+        manageEdit: manageId,
+        sort:req.body.sort,
+        imageUrl: req.body.imageUrl,
+        thumbUrl: req.body.thumbUrl,
+
+        productList:req.body.productList
+    }
+    var id = req.body.id
+    if(!id){
+        res.status(400).json({error:"پیدا نشد"})
+        return
+    }
+    try{ 
+        await gallery.updateOne({_id:ObjectID(id)},{$set:data})
+        const galleryData = await findGallery()
+        res.json({data:galleryData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.post('/remove-gallery',auth,jsonParser,async(req,res)=>{
+    var manageId = req.headers['userid']
+    var id = req.body.id
+    if(!id){
+        res.status(400).json({error:"پیدا نشد"})
+        return
+    }
+    try{ 
+        await gallery.deleteOne({_id:ObjectID(id)})
+        const galleryData = await findGallery()
+        res.json({data:galleryData})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+const findGallery=async()=>{
+    var galleryData = await gallery.find({})
+    return(galleryData)
+}
 module.exports = router;
