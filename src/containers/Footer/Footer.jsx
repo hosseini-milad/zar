@@ -9,7 +9,7 @@ import whatsapp from "../../assets/Media/whatsapp.svg";
 
 export default function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" id="contact-us">
       <div className="footer-container">
         <div className="wrapper">
           <div className="col">

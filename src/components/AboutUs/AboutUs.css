@@ -1,6 +1,6 @@
 .AboutUs {
   width: 100%;
-
+  padding-top: 1rem;
   .AboutUs-container {
     width: 90%;
     margin-inline: auto;

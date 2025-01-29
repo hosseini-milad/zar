@@ -28,7 +28,7 @@ export default function Branches() {
     },
   ];
   return (
-    <div className="Branches">
+    <div className="Branches" id="branches">
       <div className="section-title">شعب فروشگاه برزگر</div>
       <div className="Branches-container">
         {BranchList.map((branch, b) => (

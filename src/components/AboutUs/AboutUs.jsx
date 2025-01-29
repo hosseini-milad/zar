@@ -2,7 +2,7 @@ import React from "react";
 import "./AboutUs.css";
 export default function AboutUs() {
   return (
-    <div className="AboutUs">
+    <div className="AboutUs" id="about-us">
       <div className="section-title">درباره ما</div>
       <div className="AboutUs-container">
         <p>

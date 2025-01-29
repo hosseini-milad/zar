@@ -4,10 +4,10 @@ import "./Header.css";
 import { Navbar } from "../../components";
 export default function Header() {
   const NavList = [
-    { title: "فروشگاه", link: "#" },
-    { title: "درباره ما", link: "#" },
-    { title: "شعب ها", link: "#" },
-    { title: "تماس با ما", link: "#" },
+    { title: "فروشگاه", link: "https://shop.barzegargold.com/" },
+    { title: "درباره ما", link: "#about-us" },
+    { title: "شعب ها", link: "#branches" },
+    { title: "تماس با ما", link: "#contact-us" },
   ];
   return (
     <header className="header">
