@@ -908,12 +908,17 @@ router.post('/update-gallery',auth,jsonParser,async(req,res)=>{
         productList:req.body.productList
     }
     var id = req.body.id
+    
     if(!id){
         res.status(400).json({error:"پیدا نشد"})
         return
     }
     try{ 
-        await gallery.updateOne({_id:ObjectID(id)},{$set:data})
+        if(id == "new"){
+            await gallery.create(data)
+        }
+        else 
+            await gallery.updateOne({_id:ObjectID(id)},{$set:data})
         const galleryData = await findGallery()
         res.json({data:galleryData})
     }
