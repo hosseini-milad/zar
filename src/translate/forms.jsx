@@ -103,6 +103,10 @@ const formtrans ={
         english: "Email Address",
         persian: "آدرس ایمیل"
     },
+    gcode:{
+        english: "Gallery Code",
+        persian: "کد گالری"
+    },
     customercode:{
         english: "Customer Code",
         persian: "کد مشتری"

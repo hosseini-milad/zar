@@ -33,7 +33,9 @@ import Category from "./pages/Category";
 import CatDetailHolder from "./modules/Category/CatData/CatDetailHolder";
 import Sepidar from "./modules/Config/Sepidar";
 import Sliders from "./pages/Sliders";
+import Gallery from "./pages/Gallery";
 import SliderDetailHolder from "./modules/Sliders/SliderData/SliderDetailHolder";
+import GalleryDetailHolder from "./modules/Gallery/GalleryData/GalleryDetailHolder";
 import Transactions from "./pages/Transactions";
 import CRM from "./pages/Crm";
 import CrmList from "./modules/Crm/CRMList/crmList";
@@ -437,6 +439,22 @@ root.render(
           element={
             <Layout>
               <SliderDetailHolder lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/gallery"
+          element={
+            <Layout>
+              <Gallery lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/gallery/detail/:orderId"
+          element={
+            <Layout>
+              <GalleryDetailHolder lang={lang} />
             </Layout>
           }
         />

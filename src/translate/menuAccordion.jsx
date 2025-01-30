@@ -121,6 +121,14 @@ const menutrans ={
                 url:"sliders"
             },
             {
+                english: "Gallery",
+                persian: "گالری",
+                index:0,
+                icon:"fa-dashboard",
+                href:"/gallery",
+                url:"gallery"
+            },
+            {
                 english: "Update",
                 persian: "بروزرسانی",
                 index:0,
