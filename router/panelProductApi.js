@@ -904,7 +904,7 @@ router.post('/update-gallery',auth,jsonParser,async(req,res)=>{
         sort:req.body.sort,
         imageUrl: req.body.imageUrl,
         thumbUrl: req.body.thumbUrl,
-
+        active:req.body.active,
         productList:req.body.productList
     }
     var id = req.body.id

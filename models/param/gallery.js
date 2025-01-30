@@ -6,7 +6,7 @@ const gallerySchema = new mongoose.Schema({
   content: { type: String},
   manageId: {type:String},
   manageEdit: {type:String},
-
+  active:{type:Boolean},
   imageUrl: { type: String},
   thumbUrl: { type: String},
   sort:{type:Number},
