@@ -142,7 +142,7 @@ router.get('/faktor-get-status/:id',auth,jsonParser,async (req,res)=>{
             res.status(400).json({error:"شماره فاکتور موجود نیست"})
             return
         }
-        buttons.push({title:"چاپ",type:"button",color:"aquamarine",value:1,
+        buttons.push({title:"چاپ",type:"button",color:"lightgrey",value:1,
             url:"/print/official/"+faktorItem.faktorNo})
         if(faktorItem.status =="accept"){
             buttons.push({title:"تایید",type:"button",color:"lightgreen",value:1})
