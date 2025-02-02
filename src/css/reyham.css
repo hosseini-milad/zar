@@ -1703,3 +1703,19 @@ dialog {
     height: 100%;
   }
 }
+.cu-product {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  min-width: 300px;
+  gap: 6px;
+}
+.cu-product .product-list {
+  padding: 0.2rem 1rem;
+  background-color: lightgray;
+  
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+}

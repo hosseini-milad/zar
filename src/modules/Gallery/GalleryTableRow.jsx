@@ -20,29 +20,35 @@ function GalleryTableRow(props) {
           />
         </td>
         <td>
-          <div className="order-id">{slider.gCode}</div>
+          <div style={{ fontSize: "1rem", fontWeight: "600" }}>
+            {slider.gCode}
+          </div>
         </td>
         <td>
           <div>
             <img
               src={slider ? env.siteApiUrl + slider.thumbUrl : ""}
               alt={slider ? slider.title : "default"}
+              style={{ width: "60px" }}
             />
           </div>
         </td>
 
         <td>
-          <div className="cu-avatar">
-            <div className="cu-name">
-              <p className="name">{slider.title}</p>
-              <p className="email">{slider.sku}</p>
-            </div>
+          <div className="cu-product">
+            {slider &&
+              slider.productList &&
+              slider.productList.map((product, p) => (
+                <p key={p} className="product-list">
+                  {product.title}
+                </p>
+              ))}
           </div>
         </td>
 
         <td>
           <Status
-            status={slider.status}
+            status={slider.active ? "Active" : "deActive"}
             class={"order-status"}
             lang={props.lang}
           />

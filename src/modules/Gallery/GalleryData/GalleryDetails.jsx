@@ -63,18 +63,6 @@ function GalleryDetails(props) {
           }))
         }
       />
-      {/* <StyleInput
-        title={formtrans.enTitle[props.lang]}
-        direction={props.direction}
-        defaultValue={content ? content.enTitle : ""}
-        class={"formInput"}
-        action={(e) =>
-          props.setSliderChange((prevState) => ({
-            ...prevState,
-            enTitle: e,
-          }))
-        }
-      /> */}
       <StyleInput
         title={formtrans.gcode[props.lang]}
         direction={props.direction}
@@ -93,11 +81,13 @@ function GalleryDetails(props) {
           options={Product || []}
           getOptionLabel={(item) => item.title || ""}
           style={{ width: "100%" }}
-          defaultValue={props.ProductList}
+          defaultValue={content ? content.productList : ""}
           onChange={(e, value) =>
             props.setSliderChange((prevState) => ({
               ...prevState,
-              productsList: value ? value.map((item) => item.sku) : "",
+              productList: value
+                ? value.map((item) => ({ sku: item.sku, title: item.title }))
+                : "",
             }))
           }
           renderInput={(params) => (
@@ -115,11 +105,12 @@ function GalleryDetails(props) {
         direction={props.lang.dir}
         class={"formInput"}
         options={StatusList}
+        defaultValue={content && content.active ? "فعال" : "غیرفعال"}
         label={"Title"}
         action={(e) =>
           props.setSliderChange((prevState) => ({
             ...prevState,
-            status: e ? e.Active : "",
+            active: e ? e.Active : "",
           }))
         }
       />

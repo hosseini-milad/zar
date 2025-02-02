@@ -98,13 +98,27 @@ const statustrans ={
         color: "rgb(17, 141, 87)",
         background: "rgba(34, 197, 94, 0.16)"
     },
+    Active:{
+        english: "Active",
+        persian: "فعال",
+        index:8,
+        color: "rgb(17, 141, 87)",
+        background: "rgba(34, 197, 94, 0.16)"
+    },
     cancel:{
         english: "Cancel",
         persian: "ابطال شده",
         index:9,
         color: "rgb(183, 29, 24)",
         background: "rgba(255, 86, 48, 0.16)"
-    }
+    },
+    deActive:{
+        english: "de-Active",
+        persian: "غیرفعال",
+        index:9,
+        color: "rgb(183, 29, 24)",
+        background: "rgba(255, 86, 48, 0.16)"
+    },
 }
 export default statustrans
 

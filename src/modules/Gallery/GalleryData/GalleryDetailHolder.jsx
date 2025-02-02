@@ -74,7 +74,7 @@ function GalleryDetailHolder(props) {
             );
           } else {
             setError({ errorText: result.success, errorColor: "green" });
-            // setTimeout(() => (window.location.href = "/gallery"), 2000);
+            setTimeout(() => (window.location.href = "/gallery"), 2000);
           }
         },
         (error) => {

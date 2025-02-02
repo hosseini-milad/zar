@@ -13,7 +13,7 @@ function GalleryTable(props) {
           <th className="checkBoxStyle">
             <input type="checkbox" name="" id="" />
           </th>
-          <th>
+          <th style={{ textAlign: "center" }}>
             <p>{tabletrans.id[lang]}</p>
             <i></i>
           </th>
