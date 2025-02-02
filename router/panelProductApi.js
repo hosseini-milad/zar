@@ -874,7 +874,7 @@ router.post('/fetch-gallery',jsonParser,async(req,res)=>{
                     productDataList.push(product)
             }
         }*/
-        res.json({data:galleryData,productDataList})
+        res.json({data:galleryData})
     }
     catch(error){
         res.status(500).json({message: error.message})
