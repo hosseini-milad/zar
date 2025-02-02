@@ -865,7 +865,7 @@ router.post('/fetch-gallery',jsonParser,async(req,res)=>{
     var id = req.body.id
     try{ 
         var galleryData = await gallery.findOne({_id:ObjectID(id)}).lean()
-        if(galleryData){
+        /*if(galleryData){
             var productList = galleryData.productList
             var productDataList = []
             for(var i=0;i<productList.length;i++){
@@ -873,7 +873,7 @@ router.post('/fetch-gallery',jsonParser,async(req,res)=>{
                 if(product) 
                     productDataList.push(product)
             }
-        }
+        }*/
         res.json({data:galleryData,productDataList})
     }
     catch(error){
