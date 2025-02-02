@@ -81,7 +81,7 @@ function GalleryDetails(props) {
           options={Product || []}
           getOptionLabel={(item) => item.title || ""}
           style={{ width: "100%" }}
-          defaultValue={content ? content.productList : ""}
+          defaultValue={content ? content.productList : []}
           onChange={(e, value) =>
             props.setSliderChange((prevState) => ({
               ...prevState,
