@@ -33,6 +33,7 @@ const quickCart = require('../models/product/quickCart');
 const GetTahHesab = require('../middleware/GetTahHesab');
 const price = require('../models/price');
 const NewBank = require('../middleware/NewBank');
+const banks = require('../models/param/banks');
 const { ONLINE_URL} = process.env;
  
 router.get('/main', async (req,res)=>{
