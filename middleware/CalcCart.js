@@ -17,6 +17,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     var unitPrice = 0
     var goldUnit = []
     var discount = 0
+    var totalItem = 0
     var totalDiscount = 0
     const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
@@ -60,6 +61,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartPrice": totalPrice,
             "totalTax": totalTax,
             "totalDiscount":totalDiscount,
+            "totalItem":cartDetails&&cartDetails.length,
             "cartWeight": FloatDec(totalWeight,2),
             "cartWeightRaw": totalWeight,
             "remainUser":remain,
