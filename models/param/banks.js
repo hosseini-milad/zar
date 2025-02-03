@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
 const bankSchema = new mongoose.Schema({
-  title:{ type: String},
+  title:{ type: String,unique:true},
   enTitle:{ type: String},
   payValue:{type:String},
   orderNo:{type:String},
   userId:{type:String},
-  bankCode:{type:String},
+  code:{type:String},
   description:{type:String},
   date:{type:Date,default:Date.now()}
 });

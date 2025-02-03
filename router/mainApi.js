@@ -32,6 +32,7 @@ const city = require('../models/main/city');
 const quickCart = require('../models/product/quickCart');
 const GetTahHesab = require('../middleware/GetTahHesab');
 const price = require('../models/price');
+const NewBank = require('../middleware/NewBank');
 const { ONLINE_URL} = process.env;
  
 router.get('/main', async (req,res)=>{
@@ -120,6 +121,16 @@ router.get('/get-banks', async (req,res)=>{
                 "DoListHesabBanki":[]
             }
         )
+        for(var i=0;i<bankList.length;i++){
+            var bankData = bankList[i]
+            var exists = await banks.findOne({title:bankData.Name_Bank})
+            if(!exists){
+                await banks.create({
+                    title:bankData.Name_Bank,
+                    code:await NewBank("B")
+                })
+            }
+        }
         res.json(bankList)
     }
     catch(error){
