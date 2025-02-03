@@ -7,6 +7,7 @@ const bankSchema = new mongoose.Schema({
   orderNo:{type:String},
   userId:{type:String},
   code:{type:String},
+  active:{type:Boolean,default:false},
   description:{type:String},
   date:{type:Date,default:Date.now()}
 });
