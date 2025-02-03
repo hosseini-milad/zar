@@ -26,8 +26,8 @@ const FindSimilarProduct=async(productData)=>{
         const uniqueElements = [];
 
 var duplicates = [{title:productData.title,
-        sku:productData.sku,thumbUrl:"https://admin.barzegargold.com/upload/default/product.png",
-        imageUrl:"https://admin.barzegargold.com/upload/default/product.png"}];
+        sku:productData.sku,thumbUrl:productData.thumbUrl,
+        imageUrl:productData.imageUrl}];
 
 for(var i=0;i<totalData.length;i++){
         var item =totalData[i]
