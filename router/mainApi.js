@@ -112,6 +112,20 @@ router.get('/get-product', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+router.get('/get-banks', async (req,res)=>{
+    try{
+        const result =[]
+        const bankList = await GetTahHesab(
+            {
+                "DoListHesabBanki":[]
+            }
+        )
+        res.json(bankList)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
 
 const updateProduct=async(from,to)=>{
     const productList = await GetTahHesab(
@@ -165,8 +179,6 @@ const updateCustomer=async(from,to)=>{
                 [from,to]
             }
         )
-        console.log("updating: ",from," - ", to)
-        console.log("count: " ,customerList.length)
         var outPut = []
         var updateCustomer = 0
         var newCustomer = 0
