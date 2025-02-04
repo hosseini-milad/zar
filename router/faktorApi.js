@@ -555,11 +555,19 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
 })
 router.post('/update-discount',auth,jsonParser, async (req,res)=>{
     const userId =req.body.userId?req.body.userId:req.headers['userid']
-    const discount = req.body.discount
+    var discount = req.body.discount
     try{
+        var tempDiscount = Number(discount)
+        if(!tempDiscount) discount=0
+        else{
+            if(tempDiscount<0 || tempDiscount>100) {
+                res.status(400).json({error:"تخفیف بین صفر تا 100 وارد کنید"})
+                return
+            }
+        }
         const myCart = await cart.find({userId:userId,purchase:{$exists:false}})
         const priceRaw = await FindPrice()
-            
+        
         var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<myCart.length;i++){
             var cartItem = myCart[i]
