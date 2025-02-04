@@ -805,7 +805,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             totalPrice:NormalNumber(totalPrice),
             fullPrice:NormalNumber(totalFull),
             totalDiscount:NormalNumber(totalDiscount),
-            totalWeight:NormalNumber(totalWeight),
+            totalWeight:parseInt(totalWeight*100)/100,
             unitPrice:NormalNumber(priceRaw)
         }
         //await SetTahHesab()
