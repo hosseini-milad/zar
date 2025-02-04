@@ -110,7 +110,7 @@ function OfficialPrint(props) {
               {TransData.map((Item, i) => (
                 <tr key={i} className="buy-tr">
                   <td className="xsmall-td"></td>
-                  <td className="larg-td">{Item.title}</td>
+                  <td className="larg-td">واریز به بانک</td>
                   <td className="xsmall-td"></td>
                   <td className="small-td"></td>
                   <td className="small-td"></td>
