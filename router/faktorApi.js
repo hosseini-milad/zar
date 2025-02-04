@@ -409,7 +409,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
         )
         const clientStatus = ClientStatus(clientRemain)
         const cartDetails = await CalcCart(userId,clientStatus.remain,req.headers['userid'])
-        const bankList = await banks.find()
+        const bankList = await banks.find({active:true})
         res.json({message:"سبد بروز شد",...cartDetails,
             clientStatus,bankList})
     }
