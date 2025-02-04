@@ -576,10 +576,10 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
                 {$set:{discount:discount,priceDetail,fullPrice:priceDetail.roundPrice}})
 
         }
-        const finalCart = await cart.find({userId:userId,purchase:{$exists:false}})
+        const cart = await CalcCart(userId,0,req.headers['userid'])
+        res.json({...cart,message:"تخفیف اعمال شد"})
         //const cartDetail = await UpdateCart(finalCart)
         
-        res.json({...finalCart})
     }
     catch(error){
         res.status(500).json({message: error.message})
