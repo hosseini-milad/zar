@@ -463,8 +463,8 @@ router.post('/add-cart',auth,jsonParser, async (req,res)=>{
             return
         }
         else{
-            const cart = await CalcCart(userId,0,req.headers['userid'])
-            res.json({...cart,message:"آیتم اضافه شد"})
+            const cartData = await CalcCart(userId,0,req.headers['userid'])
+            res.json({...cartData,message:"آیتم اضافه شد"})
             return
         } 
         //const cartDetails = await findCartFunction(userId,req.headers['userid'])

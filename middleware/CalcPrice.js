@@ -19,9 +19,6 @@ const CalcPrice=(product,price,TAX,discount)=>{
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
     
-    var itemDiscount = cartDetails[c].discount
-    if(itemDiscount>discount) discount = itemDiscount
-
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice-discountPrice
     
     var finalPrice = roundPriceTemp(totalPrice)
