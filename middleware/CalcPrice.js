@@ -18,17 +18,21 @@ const CalcPrice=(product,price,TAX)=>{
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
-    var finalPrice = parseInt(Math.round(totalPrice)/100)*100
+    var finalPrice = (totalPrice)
     var priceDetail = { 
-        taxValue:TAX, taxPrice:parseInt(Math.round(taxPrice)/100)*100,
-        ojratValue:OJRAT, ojratPrice:ojratPrice,
-        senfiValue:SENFI , senfiPrice:senfiPrice,
+        taxValue:TAX, taxPrice:roundPriceTemp(taxPrice),
+        ojratValue:OJRAT, ojratPrice:roundPriceTemp(ojratPrice),
+        senfiValue:SENFI , senfiPrice:roundPriceTemp(senfiPrice),
         poolSang:poolSang, unitPrice:price,
-        unitGold:parseInt(Math.round((totalPrice/floatWeight)/1000)*1000),//FloatDec(totalPrice/floatWeight,0),
+        unitGold:roundPriceTemp(totalPrice/floatWeight),//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
     return({price:finalPrice,priceDetail:priceDetail})
+}
+const roundPriceTemp = (price)=>{
+     var tempPrice = parseInt(Math.round(price)/1000)*1000
+     return(tempPrice)
 }
 
 module.exports =CalcPrice
