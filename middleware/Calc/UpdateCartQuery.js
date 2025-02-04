@@ -3,10 +3,10 @@ const products = require("../../models/product/products");
 const NormalNumber = require("../NormalNumber");
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
 
-const UpdateCartQuery=async(cartItem,price,TAX)=>{
+const UpdateCartQuery=async(cartItem,price,TAX,discountTemp)=>{
     const product = await products.findOne({sku:cartItem.sku})
     if(!product) return(0)
-    var discount = cartItem.discount
+    var discount = discountTemp?discountTemp:cartItem.discount
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
     totalPrice = floatWeight*price
