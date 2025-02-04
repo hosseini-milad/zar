@@ -836,6 +836,7 @@ router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
         var PRE = await prepaid.findOne().sort({date:-1})
         var totalPrice = 0
         var totalWeight = 0
+        var totalDiscount = 0
         var totalFull = 0
         if(!cartDetail.cart||!cartDetail.cart.length){
             res.status(400).json({error:"سبد خرید خالی است"})
@@ -850,6 +851,7 @@ router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
             totalPrice+=price
+            totalDiscount += NormalNumber(productDetail&&productDetail.totalDiscount)
             totalWeight+= NormalNumber(productDetail&&productDetail.weight)
             const { _id: _, ...newObj } = cartItem;
             var status = cartItem.isReserve?"needtobuild":"accept"
@@ -869,6 +871,7 @@ router.post('/cart-to-faktor',auth,jsonParser, async (req,res)=>{
             status:"inprogress",
             isActive:true, isEdit:false,
             totalPrice:NormalNumber(totalPrice),
+            totalDiscount:NormalNumber(totalDiscount),
             fullPrice:NormalNumber(totalFull),
             totalWeight:NormalNumber(totalWeight),
             unitPrice:NormalNumber(priceRaw)
