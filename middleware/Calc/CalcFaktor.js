@@ -9,7 +9,7 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     var totalDebitRaw = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
     debit.MandeHesab[0].MandeyeKolBePool
     var totalDebit =NormalNumber(totalDebitRaw)
-    var totalOff = NormalNumber(off)
+    var totalDiscount = NormalNumber(off)
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
@@ -25,9 +25,9 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
         totalPay += NormalNumber(payment[i].payValue)
     }
     const totalRemain = totalSale-totalPurchase-totalPay+
-        totalDebit-totalOff
+        totalDebit-totalDiscount
     return({totalSale,totalPurchase,totalPay,totalSaleWeight,totalTax,
-        totalOff,totalDebit:totalDebit,totalRemain})
+        totalDiscount,totalDebit:totalDebit,totalRemain})
 }
 
 module.exports =CalcFaktor
