@@ -953,7 +953,8 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const transactions = await transaction.find({orderNo:faktorNo})
         const userDebit = userDetail&&await GetTahHesab(
             {"getmandehesabbycode":[userDetail.cCode]})
-        const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit,totalDiscount)
+        const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit,
+            faktorData&&faktorData.totalDiscount)
         res.json({data:faktorData,userDebit,calcFaktor,
             saleItems:{saleDetail,data:saleItems},
             purchaseItems:{purchaseDetail,data:purchaseItems},
