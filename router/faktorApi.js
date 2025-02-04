@@ -703,6 +703,9 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
     
         const priceRaw = await FindPrice()
         const userData = await customers.findOne({_id:userId})
+        if(!userData){
+            res.status(400).json({error:"مشتری پیدا نشد"})
+        }
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
