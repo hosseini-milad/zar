@@ -563,9 +563,9 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
         var TAX = await tax.findOne().sort({date:-1})
         for(var i=0;i<myCart.length;i++){
             var cartItem = myCart[i]
-            var priceDetail = await UpdateCartQuery(cartItem,priceRaw,TAX&&TAX.percent)
             await cart.updateOne({_id:myCart[i]._id},
                 {$set:{discount:discount,priceDetail}})
+            var priceDetail = await UpdateCartQuery(cartItem,priceRaw,TAX&&TAX.percent,discount)
 
         }
         const finalCart = await cart.find({userId:userId,purchase:{$exists:false}})
