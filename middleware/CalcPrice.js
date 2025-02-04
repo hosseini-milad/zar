@@ -1,12 +1,13 @@
 const FloatDec = require("./FloatDec")
 
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
-const CalcPrice=(product,price,TAX)=>{
+const CalcPrice=(product,price,TAX,discount)=>{
     if(!product) return(0)
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
+    var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))
     var SENFI = product.sood?parseFloat(product.sood&&
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
@@ -17,13 +18,19 @@ const CalcPrice=(product,price,TAX)=>{
     var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
-    var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
+    
+    var itemDiscount = cartDetails[c].discount
+    if(itemDiscount>discount) discount = itemDiscount
+
+    var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice-discountPrice
+    
     var finalPrice = roundPriceTemp(totalPrice)
     var priceDetail = { 
         taxValue:TAX, taxPrice:roundPriceTemp(taxPrice),
         ojratValue:OJRAT, ojratPrice:roundPriceTemp(ojratPrice),
         senfiValue:SENFI , senfiPrice:roundPriceTemp(senfiPrice),
         poolSang:poolSang, unitPrice:price,
+        totalDiscount:discountPrice,
         unitGold:roundPriceTemp(totalPrice/floatWeight),//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
