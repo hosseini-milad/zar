@@ -72,18 +72,20 @@ function QuickCartHolder(props) {
         payValue={props.payValue}
       />
       <div className="product-table-btn-wrapper">
-        <QuickActions
-          tab={tab}
-          cart={props.cart}
-          setCart={props.setCart}
-          action={props.addToCart}
-          cartNo={props.cartNo}
-          token={token}
-          setError={props.setError}
-          user={props.user}
-          setPayValue={props.setPayValue}
-          payValue={props.payValue}
-        />
+        {NeedToRe && (
+          <QuickActions
+            tab={tab}
+            cart={props.cart}
+            setCart={props.setCart}
+            action={props.addToCart}
+            cartNo={props.cartNo}
+            token={token}
+            setError={props.setError}
+            user={props.user}
+            setPayValue={props.setPayValue}
+            payValue={props.payValue}
+          />
+        )}
         <QuickTotal
           setNeedToRe={setNeedToRe}
           NeedToRe={NeedToRe}

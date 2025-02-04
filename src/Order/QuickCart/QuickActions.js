@@ -32,7 +32,7 @@ function QuickActions(props) {
       }),
     };
     console.log(postOptions);
-    fetch(env.siteApi + "/panel/faktor/update-desc", postOptions)
+    fetch(env.siteApi + "/panel/faktor/update-discount", postOptions)
       .then((res) => res.json())
       .then(
         (result) => {

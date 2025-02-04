@@ -93,12 +93,14 @@ function OfficialPrint(props) {
               {buy.data.map((Item, i) => (
                 <tr key={i} className="buy-tr">
                   <td className="xsmall-td">{Item.index}</td>
-                  <td className="larg-td">{Item.title}</td>
+                  <td className="larg-td">{Item.title}{Item.count&&"(تعداد:"+Item.count+")"}</td>
                   <td className="xsmall-td">{Item.ayar}</td>
                   <td className="small-td"></td>
                   <td className="small-td">{Item.weight}</td>
 
-                  <td className="larg-td">{normalPriceCount(Item.price)}</td>
+                  <td className="larg-td">
+                    {normalPriceCount(Item.fullPrice)}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -126,7 +128,7 @@ function OfficialPrint(props) {
               <td className="small-td"></td>
               <td className="small-td"></td>
 
-              <td className="larg-td">{normalPriceCount(Total.totalOff)}</td>
+              <td className="larg-td">{normalPriceCount(Total.totalDiscount)}</td>
             </tr>
             <tr className="add-tr">
               <td className="xsmall-td"></td>

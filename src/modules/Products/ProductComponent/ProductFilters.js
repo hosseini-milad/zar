@@ -2,11 +2,12 @@ import StyleInput from "../../../components/Button/Input";
 import StyleSelect from "../../../components/Button/AutoComplete";
 import StyleDatePicker from "../../../components/Button/DatePicker";
 import tabletrans from "../../../translate/tables";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function ProductFilters(props){
-  const lang = props.lang
-  const catList = props.catList
+function ProductFilters(props) {
+  const lang = props.lang;
+  const catList = props.catList;
+  const [query, setQuery] = useState("");
   const handleFilterChange = (property, value) => {
     const newValue = value ? (value._id ? value._id : value) : "";
     props.setFilters((prevState) => ({
@@ -27,31 +28,39 @@ function ProductFilters(props){
       }
     };
   };
-  
+  useEffect(() => {
+    const timeOutId = setTimeout(
+      () => handleFilterChange("title", query),
+      1000
+    );
+    return () => clearTimeout(timeOutId);
+    //props.setSearch
+  }, [query]);
+  console.log(query);
   return (
     <div className="user-filter">
       <div className="serach-input">
         <StyleInput
           title={tabletrans.productTitle[lang.lang]}
           direction={props.lang.dir}
-          action={createConditionalAction("title", 0)}
-
+          action={(e) => setQuery(e)}
         />
         <StyleSelect
           title={"موجودی"}
           direction={props.lang.dir}
           label="title"
-          options={[{title:"موجود",value:"1"},{title:"ناموجود",value:"2"}]}
-          action={(e)=>handleFilterChange("exist", e?e.value:'')}
-
+          options={[
+            { title: "موجود", value: "1" },
+            { title: "ناموجود", value: "2" },
+          ]}
+          action={(e) => handleFilterChange("exist", e ? e.value : "")}
         />
         <StyleSelect
           title={"دسته بندی"}
           direction={props.lang.dir}
           label="title"
           options={props.catList}
-          action={(e)=>handleFilterChange("catid", e?e.catCode:'')}
-
+          action={(e) => handleFilterChange("catid", e ? e.catCode : "")}
         />
         <i className="tableIcon fas fa-ellipsis-v"></i>
       </div>

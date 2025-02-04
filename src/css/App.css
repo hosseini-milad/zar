@@ -28947,7 +28947,7 @@ pre[class*="language-"] {
   font-size: 0.75rem;
 
   p {
-    font-size:0.75rem;
+    font-size: 0.75rem;
     color: black;
     font-weight: 600;
     margin: 0;
@@ -28959,7 +28959,7 @@ pre[class*="language-"] {
   justify-content: space-between;
   min-height: 150px;
   width: 100%;
-  margin-block:0;
+  margin-block: 0;
 
   .image-wrapper {
     width: calc(100% / 5);
@@ -28976,14 +28976,12 @@ pre[class*="language-"] {
   }
   .info-wrapper {
     width: calc(100% / 2);
-    
+
     margin: 0;
     display: flex;
     align-items: flex-start;
     justify-content: center;
     flex-direction: column;
-
-    
 
     .container {
       display: flex;
@@ -28991,7 +28989,7 @@ pre[class*="language-"] {
       align-items: flex-start;
       justify-content: center;
       width: 100%;
-      gap: .7rem;
+      gap: 0.7rem;
 
       p {
         margin: 0;
@@ -29010,7 +29008,7 @@ pre[class*="language-"] {
     }
   }
 }
-.col4{
+.col4 {
   width: calc(100% / 3) !important;
   margin-block: auto !important;
 }
@@ -29040,13 +29038,13 @@ pre[class*="language-"] {
   th {
     color: black;
     text-align: center;
-    padding:0.2rem 0.2rem;
+    padding: 0.2rem 0.2rem;
     border-right: 1px solid grey;
     background-color: #d4c8b6;
     font-size: 0.7rem;
     white-space: nowrap;
   }
-  th:first-child{
+  th:first-child {
     border: none;
   }
 }
@@ -29062,9 +29060,8 @@ pre[class*="language-"] {
   }
   td:first-child {
     border: unset;
-    
   }
-  td:nth-child(2){
+  td:nth-child(2) {
     font-size: 0.7rem;
     text-align: right;
   }
@@ -29081,19 +29078,18 @@ pre[class*="language-"] {
     width: 31.5%;
   }
 }
-.zar-print .main table .sale-table .sale-tr:nth-last-child(1 of .sale-tr) td{
+.zar-print .main table .sale-table .sale-tr:nth-last-child(1 of .sale-tr) td {
   border-bottom: 1px dotted black !important;
 }
-.zar-print .main table .sale-table .sale-tr-total td{
+.zar-print .main table .sale-table .sale-tr-total td {
   border-bottom: 1px dotted black !important;
 }
-.zar-print .main table .buy-table .buy-tr:last-child td{
+.zar-print .main table .buy-table .buy-tr:last-child td {
   border-bottom: 1px dotted black !important;
 }
-.zar-print .main table .buy-table .add-tr td{
+.zar-print .main table .buy-table .add-tr td {
   border-bottom: 1px dotted black !important;
 }
-  
 
 .zar-print .main .more-info {
   width: 100%;
@@ -29106,7 +29102,7 @@ pre[class*="language-"] {
   .zar-box {
     border-right: 1px solid grey;
     width: 29.5%;
-    
+
     p {
       text-align: center;
       margin: 0;
@@ -29117,67 +29113,67 @@ pre[class*="language-"] {
   }
   .first-box {
     border: unset;
-    
-    width:41%;
+
+    width: 41%;
   }
 }
-.zar-print .main .gold-info{
+.zar-print .main .gold-info {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   width: 100%;
 
-  .zar-box{
+  .zar-box {
     border: 1px solid grey;
     width: calc(100% / 2.02);
     border-radius: 1rem;
     height: 60px;
   }
 }
-.zar-print .main .gold-info .gold-day{
+.zar-print .main .gold-info .gold-day {
   padding: 0.5rem;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  
-  .date{
+
+  .date {
     position: absolute;
     top: 0.5rem;
     left: 0;
     right: 0;
-    margin-inline:auto;
+    margin-inline: auto;
   }
-  .zar-box-item{
+  .zar-box-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
 
-    p{
+    p {
       margin: 0;
       font-size: 0.75rem;
     }
   }
 }
-.zar-print .main .gold-info .history{
+.zar-print .main .gold-info .history {
   display: flex;
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  
-  .zar-box-item{
+
+  .zar-box-item {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
   }
-  .zar-box-item:first-child{
+  .zar-box-item:first-child {
     border-bottom: 1px solid grey;
   }
-  .content{
+  .content {
     width: 100%;
     display: flex;
     align-items: center;
@@ -29185,66 +29181,65 @@ pre[class*="language-"] {
     border-right: 1px solid grey;
     height: 100%;
 
-    p{
+    p {
       margin: 0;
       font-size: 0.7rem;
     }
   }
-  .title{
+  .title {
     width: 20%;
     border: unset;
 
-    p{
+    p {
       margin: 0;
-      min-width:30px;
+      min-width: 30px;
       text-align: center;
     }
   }
-
 }
-.zar-print .footer{
+.zar-print .footer {
   width: 100%;
   display: flex;
-  flex-direction:column;
-  margin-top:auto;
-  .title{
+  flex-direction: column;
+  margin-top: auto;
+  .title {
     width: 100%;
     text-align: right;
     font-size: 0.7rem;
   }
-  .container{
+  .container {
     width: 100%;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     flex-direction: row;
-    height: 100px;
-    padding:0;
-    .item{
+    height: 120px;
+    padding: 0;
+    .item {
       width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      p{
+      p {
         margin: 0;
         color: black;
         text-align: center;
         font-size: 0.7rem;
+        white-space: nowrap;
       }
     }
-    .sign-item{
+    .sign-item {
       justify-content: flex-end;
       width: 190px;
     }
   }
 }
-.zar-print .print-btn{
+.zar-print .print-btn {
   margin-top: 5rem;
   font-size: 0.85rem;
 }
-.zar-print .separate{
+.zar-print .separate {
   border-spacing: 10rem;
-  
 }
