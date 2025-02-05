@@ -64,6 +64,8 @@ import DocDetailHolder from "./modules/Documents/DocPanel/DocData/DocDetailHolde
 import DocumentList from "./pages/DocumentList";
 import Documents from "./pages/Document";
 import SalesSetting from "./pages/SalesSetting";
+import NewCustomer from "./pages/NewCustomer";
+import Message from "./pages/message";
 
 const cookies = new Cookies();
 const style = document.getElementById("style-direction");
@@ -153,6 +155,14 @@ root.render(
           element={
             <Layout>
               <Customers lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/newcustomer"
+          element={
+            <Layout>
+              <NewCustomer lang={lang} />
             </Layout>
           }
         />
@@ -332,6 +342,14 @@ root.render(
           element={
             <Layout>
               <BrandDetailHolder lang={lang} />
+            </Layout>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <Layout>
+              <Message lang={lang} />
             </Layout>
           }
         />

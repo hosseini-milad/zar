@@ -119,6 +119,13 @@ function Customers(props) {
           </div>
         </div>
         <div className="od-header-btn">
+          <label
+            className="edit-btn"
+            onClick={() => (window.location.href = "/newcustomer")}
+          >
+            <i className="fa-solid fa-user"></i>
+            {tabletrans.newCu[lang]}
+          </label>
           <label className="edit-btn" onClick={() => setShowSMS(1)}>
             <i className="fa-solid fa-envelope-o"></i>
             {tabletrans.sendSms[lang]}
@@ -135,7 +142,7 @@ function Customers(props) {
             <i className="fa-solid fa-percent"></i>
             {tabletrans.discount[lang]}
           </label>
-          
+
           <label
             className="edit-btn"
             onClick={() => (window.location.href = "#")}

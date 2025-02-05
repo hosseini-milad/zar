@@ -1,6 +1,6 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "universal-cookie";
-import env,{normalPriceCount} from "../env";
+import env, { normalPriceCount } from "../env";
 
 import errortrans from "../translate/error";
 import Configuration from "./Configuration";
@@ -18,29 +18,27 @@ const Header = (props) => {
     cookies.remove(env.cookieName, { path: "/" });
     setTimeout(() => (document.location.reload(), 500));
   };
-  useEffect(()=>{
-    setLivePrice("")
-    var postOptions={
-      method:'get',
+  useEffect(() => {
+    setLivePrice("");
+    var postOptions = {
+      method: "get",
       headers: {
         "Content-Type": "application/json",
         "x-access-token": token && token.token,
         userId: token && token.userId,
       },
-    }
-fetch(env.siteApi + "/panel/faktor/price",postOptions)
-.then(res => res.json())
-.then(
-  (result) => {
-    setLivePrice(result.data)
-  },
-    (error) => {
-      console.log(error);
-    }
-)  
-    
-    
-  },[Refresh])
+    };
+    fetch(env.siteApi + "/panel/faktor/price", postOptions)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setLivePrice(result.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, [Refresh]);
 
   return (
     <nav
@@ -70,14 +68,19 @@ fetch(env.siteApi + "/panel/faktor/price",postOptions)
           id="navbar"
         >
           <div className="d-flex align-items-center">
-
             {/* <div className="input-group input-group-outline">
               <label className="form-label">{errortrans.typeHere[lang]}</label>
               <input type="text" className="form-control" />
             </div> */}
-            <span className="LivePrice">قیمت طلا: <i onClick={()=>setRefresh(Refresh+1)} class="fa fa-refresh" aria-hidden="true"></i>{normalPriceCount(LivePrice)}
+            <span className="LivePrice">
+              قیمت طلا:{" "}
+              <i
+                onClick={() => setRefresh(Refresh + 1)}
+                class="fa fa-refresh"
+                aria-hidden="true"
+              ></i>
+              {normalPriceCount(LivePrice)}
             </span>
-            
           </div>
           <ul
             className={`${
@@ -105,7 +108,7 @@ fetch(env.siteApi + "/panel/faktor/price",postOptions)
 
             <li className="nav-item d-flex align-items-center">
               <a
-                href="#"
+                href="/messages"
                 className="nav-link text-body p-0"
                 id="dropdownMenuButton"
                 data-bs-toggle="dropdown"
