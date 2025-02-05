@@ -29,12 +29,14 @@ const SetTransaction=async(userId,faktorNo)=>{
         var Mablagh=PureNumber(transItem.payValue)
         var Sharh=transItem.title+"_"+
             (transItem.description?transItem.description:"")
+        var Name_Bank=transItem.title
+        var Code_Rahgiri=""
         var query = [Sabte_Kol_Or_Movaghat_1_0,Moshtari_Code, 
             Factor_Number, Radif_Number,
             Shamsi_Year,Shamsi_Month,Shamsi_Day,
-            IsVoroodOrKhorooj_0_1,Mablagh,Sharh]
+            IsVoroodOrKhorooj_0_1,Mablagh,Sharh,Name_Bank,Code_Rahgiri]
         var payResult = await GetTahHesab(
-            {"DoNewSanadVKHVaghNaghd":query})
+            {"DoNewSanadVKHBank":query})
         
         
     await transaction.updateOne({_id:transItem._id},{
