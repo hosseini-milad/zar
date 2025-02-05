@@ -29065,6 +29065,9 @@ pre[class*="language-"] {
     font-size: 0.7rem;
     text-align: right;
   }
+  td:last-child {
+    direction: ltr;
+  }
   .xsmall-td {
     width: 2%;
   }
@@ -29084,7 +29087,7 @@ pre[class*="language-"] {
 .zar-print .main table .sale-table .sale-tr-total td {
   border-bottom: 1px dotted black !important;
 }
-.zar-print .main table .buy-table .buy-tr:last-child td {
+.zar-print .main table .buy-table .buy-tr td {
   border-bottom: 1px dotted black !important;
 }
 .zar-print .main table .buy-table .add-tr td {
@@ -29153,7 +29156,8 @@ pre[class*="language-"] {
 
     p {
       margin: 0;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
+      white-space: nowrap;
     }
   }
 }

@@ -1677,10 +1677,15 @@ dialog {
 .tax-p {
   font-size: 0.6rem;
   margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 .tax-p span:first-child {
   font-size: 0.7rem;
   font-weight: 400;
+}
+.tax-p span:last-child {
+  white-space: nowrap;
 }
 @media print {
   .noprint {
@@ -1729,5 +1734,4 @@ dialog {
   button {
     width: 100%;
   }
-  
 }

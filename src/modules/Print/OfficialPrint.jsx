@@ -1,6 +1,4 @@
 import { normalPriceCalc, normalPriceCount } from "../../env";
-import Num2persian from "num2persian";
-var token = JSON.parse(localStorage.getItem("token-lenz"));
 
 function OfficialPrint(props) {
   const content = props.content.data;
@@ -56,7 +54,9 @@ function OfficialPrint(props) {
               {sale.data.map((Item, i) => (
                 <tr key={i} className="sale-tr">
                   <td className="xsmall-td">{Item.index}</td>
-                  <td className="larg-td">{Item.title}</td>
+                  <td className="larg-td">
+                    {Item.title + " [" + Item.sku + "]"}
+                  </td>
                   <td className="xsmall-td">{Item.ayar}</td>
                   <td className="small-td"></td>
                   <td className="small-td">{Item.weight}</td>
@@ -93,7 +93,10 @@ function OfficialPrint(props) {
               {buy.data.map((Item, i) => (
                 <tr key={i} className="buy-tr">
                   <td className="xsmall-td">{Item.index}</td>
-                  <td className="larg-td">{Item.title}{Item.count&&"(تعداد:"+Item.count+")"}</td>
+                  <td className="larg-td">
+                    {Item.title}
+                    {Item.count && "(تعداد:" + Item.count + ")"}
+                  </td>
                   <td className="xsmall-td">{Item.ayar}</td>
                   <td className="small-td"></td>
                   <td className="small-td">{Item.weight}</td>
@@ -121,24 +124,36 @@ function OfficialPrint(props) {
             </tbody>
           )}
           <tbody className="buy-table">
-            <tr className="add-tr">
-              <td className="xsmall-td"></td>
-              <td className="larg-td">تخفیف</td>
-              <td className="xsmall-td"></td>
-              <td className="small-td"></td>
-              <td className="small-td"></td>
+            {Total.totalDiscount ? (
+              <tr className="add-tr">
+                <td className="xsmall-td"></td>
+                <td className="larg-td">تخفیف</td>
+                <td className="xsmall-td"></td>
+                <td className="small-td"></td>
+                <td className="small-td"></td>
 
-              <td className="larg-td">{normalPriceCount(Total.totalDiscount)}</td>
-            </tr>
-            <tr className="add-tr">
-              <td className="xsmall-td"></td>
-              <td className="larg-td">بدهی</td>
-              <td className="xsmall-td"></td>
-              <td className="small-td"></td>
-              <td className="small-td"></td>
+                <td className="larg-td">
+                  {normalPriceCount(Total.totalDiscount)}
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )}
+            {Total.totalDebit ? (
+              <tr className="add-tr">
+                <td className="xsmall-td"></td>
+                <td className="larg-td">بدهی</td>
+                <td className="xsmall-td"></td>
+                <td className="small-td"></td>
+                <td className="small-td"></td>
 
-              <td className="larg-td">{normalPriceCount(Total.totalDebit)}</td>
-            </tr>
+                <td className="larg-td">
+                  {normalPriceCount(Total.totalDebit)}
+                </td>
+              </tr>
+            ) : (
+              <></>
+            )}
           </tbody>
         </table>
         <table className="more-info">
@@ -157,11 +172,11 @@ function OfficialPrint(props) {
         <div className="gold-info">
           <div className="zar-box gold-day">
             <div className="zar-box-item">
-              <p>یک گرم طلا بدون اجرت:</p>
+              <p>یک گرم طلا 18 عیار بدون اجرت:</p>
               <p>{normalPriceCount(content.unitPrice)}</p>
             </div>
             <div className="zar-box-item">
-              <p>یک مثقال طلای 17 عیار:</p>
+              <p>یک مثقال طلا:</p>
               <p></p>
             </div>
           </div>
@@ -171,10 +186,10 @@ function OfficialPrint(props) {
                 <p>قبل:</p>
               </div>
               <div className="content">
-                <p></p>
+                <p>---</p>
               </div>
               <div className="content">
-                <p></p>
+                <p>---</p>
               </div>
             </div>
             <div className="zar-box-item">
@@ -182,10 +197,10 @@ function OfficialPrint(props) {
                 <p>نهایی:</p>
               </div>
               <div className="content">
-                <p></p>
+                <p>---</p>
               </div>
               <div className="content">
-                <p></p>
+                <p>---</p>
               </div>
             </div>
           </div>
@@ -195,7 +210,12 @@ function OfficialPrint(props) {
         <div className="title">اشتباه از طرفین قابل برگشت هست</div>
         <div className="container">
           <div className="item sign-item">
-            <p>صادرکننده</p>
+            <p>
+              صادرکننده{" "}
+              <span style={{ fontWeight: "600" }}>
+                {props.content.manager.username}
+              </span>
+            </p>
           </div>
           <div className="item ">
             <p>Tel: 021 916 915 19</p>
