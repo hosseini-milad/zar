@@ -514,7 +514,7 @@ router.post('/update-customer',jsonParser,auth, async (req,res)=>{
         }
         if(userData){
           await customers.updateOne({_id:ObjectID(userId)},
-            {$set:body});
+            {$set:req.body});
           res.status(200).json({message:"کاربر بروز شد"})
           }
       } 
