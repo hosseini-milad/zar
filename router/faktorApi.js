@@ -485,12 +485,28 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
         title:req.body.title,
         purchaseType:req.body.purchaseType,
         price:req.body.price,
+        isCoin:req.body.isCoin,
         lab:req.body.lab,
         riang:req.body.riang,
         count:req.body.count, 
         description:req.body.description,
         date:req.body.date?req.body.date:Date.now(),
         progressDate:Date.now()
+    }
+    if(data.isCoin){
+        if(!data.purchaseType){
+            res.status(400).json({error:"روش خرید انتخاب نشده است"})
+            return
+        }
+        if(data.purchaseType =="10"){
+            data.ayar="740"
+            data.weight="4.06"
+        }
+        if(data.purchaseType =="11"){
+            data.ayar="740"
+            data.weight="2.03"
+        }
+        
     }
     try{
         const cartItems = await CreateCartPurchase(data,userId)
