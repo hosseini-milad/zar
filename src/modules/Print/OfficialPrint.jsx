@@ -186,10 +186,10 @@ function OfficialPrint(props) {
                 <p>قبل:</p>
               </div>
               <div className="content">
-                <p>---</p>
+                <p>--------</p>
               </div>
               <div className="content">
-                <p>---</p>
+                <p>--------</p>
               </div>
             </div>
             <div className="zar-box-item">
@@ -197,10 +197,10 @@ function OfficialPrint(props) {
                 <p>نهایی:</p>
               </div>
               <div className="content">
-                <p>---</p>
+                <p>--------</p>
               </div>
               <div className="content">
-                <p>---</p>
+                <p>--------</p>
               </div>
             </div>
           </div>

@@ -1735,3 +1735,10 @@ dialog {
     width: 100%;
   }
 }
+.line {
+  display: block;
+  height: 1px;
+  width: 80%;
+  background-color: black;
+  margin-inline: auto;
+}

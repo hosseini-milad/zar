@@ -54,6 +54,8 @@ function QuickNew(props) {
         userId: user && user._id,
         title: selectedItem.title,
         ...PayInfo,
+        isCoin: selectedItem.isCoin && selectedItem.isCoin,
+        purchaseType:selectedItem.id
       }),
     };
     fetch(env.siteApi + "/panel/faktor/add-purchase-cart", postOptions)
