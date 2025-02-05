@@ -508,12 +508,12 @@ router.post('/active-user',jsonParser, async (req,res)=>{
 router.post('/update-customer',jsonParser,auth, async (req,res)=>{
   const userId = req.headers['userid']
   try {
-        const userData = await customers.findOne({userId:ObjectID(userId)});
+        const userData = await customers.findOne({_id:ObjectID(userId)});
         if(!userData){
           res.status(400).json({error:"کاربر پیدا نشد"})
         }
         if(userData){
-          await customers.updateOne({userId:ObjectID(userId)},
+          await customers.updateOne({_id:ObjectID(userId)},
             {$set:body});
           res.status(200).json({message:"کاربر بروز شد"})
           }
