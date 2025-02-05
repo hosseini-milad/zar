@@ -30,15 +30,25 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     var Vazn = faktorPrice.weight
     var Ayar = faktorPrice.Ayar
     var IsMotefaregheOrAbshode_0_1 =type
+    var Count= faktorRow.count
+    var Name_Sekeh=faktorRow.title
+    var Sharh=faktorRow.title
     var query = [
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day,
         Vazn, Ayar, Ang_Number, Name_az, BuyOrSale_0_1, 
         Mazaneh, MazanehIsMesghalOrGeram_0_1, 
-        IsMotefaregheOrAbshode_0_1, MablaghKol
+        IsMotefaregheOrAbshode_0_1, MablaghKol,Sharh
     ]
-    
-        var customerList = await GetTahHesab(
+    var queryCoin = [
+        Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
+        Shamsi_Year, Shamsi_Month, Shamsi_Day,
+        Vazn, Ayar, Ang_Number, Name_az, Count, Name_Sekeh, BuyOrSale_0_1, 
+        Mazaneh, MablaghKol,Sharh
+    ]
+        var customerList = faktorRow.isCoin?await GetTahHesab(
+            {"DoNewSanadBuySaleSEKEH":queryCoin}
+            ):await GetTahHesab(
             {"DoNewSanadBuySaleGOLD":query}
         )
     return({query,customerList,message:"outPut"})
