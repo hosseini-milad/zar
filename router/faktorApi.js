@@ -955,10 +955,12 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
             {"getmandehesabbycode":[userDetail.cCode]})
         const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit,
             faktorData&&faktorData.totalDiscount)
+        const managerId = await users.findOne({_id:ObjectID(faktorData.manageId)})
         res.json({data:faktorData,userDebit,calcFaktor,
             saleItems:{saleDetail,data:saleItems},
             purchaseItems:{purchaseDetail,data:purchaseItems},
-            userDetail:userDetail,goldInfo,transactions})
+            userDetail:userDetail,goldInfo,transactions,
+            manager:managerId})
     }
     catch(error){
         res.status(500).json({error: error.message})
