@@ -145,7 +145,6 @@ router.post('/customer-otp',jsonParser,async(req,res)=>{
       console.log(response);
       console.log(status);
   });
-    console.log(smsResult)
       const newUser = await customers.updateOne(
         {phone:phone},{$set:{otp:otpValue}});
         ////console.log((newUser)
@@ -501,6 +500,23 @@ router.post('/active-user',jsonParser, async (req,res)=>{
         else{
           res.status(500).json({error:"Expired OTP"})
         }
+      } 
+  catch(error){
+      res.status(500).json({message: error.message})
+  }
+})
+router.post('/update-customer',jsonParser,auth, async (req,res)=>{
+  const userId = req.headers['userid']
+  try {
+        const userData = await customers.findOne({userId:ObjectID(userId)});
+        if(!userData){
+          res.status(400).json({error:"کاربر پیدا نشد"})
+        }
+        if(userData){
+          await customers.updateOne({userId:ObjectID(userId)},
+            {$set:body});
+          res.status(200).json({message:"کاربر بروز شد"})
+          }
       } 
   catch(error){
       res.status(500).json({message: error.message})
