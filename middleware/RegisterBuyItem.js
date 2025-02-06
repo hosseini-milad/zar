@@ -28,7 +28,7 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
     var Ang_Number = faktorRow.riang?faktorRow.riang:""
     var Name_az = faktorRow.lab?faktorRow.lab:""
     var Vazn = faktorPrice.weight
-    var Ayar = faktorPrice.Ayar
+    var Ayar = Number(faktorPrice.Ayar)
     var IsMotefaregheOrAbshode_0_1 =type
     var Count= faktorRow.count
     var Name_Sekeh=faktorRow.title
