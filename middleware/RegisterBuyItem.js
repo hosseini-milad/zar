@@ -46,7 +46,7 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
         Vazn, Ayar, Ang_Number, Name_az, Count, Name_Sekeh, BuyOrSale_0_1, 
         Mazaneh, MablaghKol,Sharh
     ]
-        var customerList = faktorRow.isCoin?await GetTahHesab(
+        var customerList = faktorRow.count?await GetTahHesab(
             {"DoNewSanadBuySaleSEKEH":queryCoin}
             ):await GetTahHesab(
             {"DoNewSanadBuySaleGOLD":query}
