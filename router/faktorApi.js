@@ -504,7 +504,7 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
             res.status(400).json({error:"سکه درست انتخاب نشده است"})
             return
         }
-        data.ayar=sekkeData.ayar
+        data.ayar=sekkeData.Ayar
         data.weight=sekkeData.weight
         
     }
