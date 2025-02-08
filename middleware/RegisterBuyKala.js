@@ -6,7 +6,7 @@ const GetTahHesab = require("./GetTahHesab");
 const PureNumber = require("./PureNumber");
 var ObjectID = require('mongodb').ObjectID;
 
-const RegisterBuyItem=async(faktorRow,indexRaw)=>{
+const RegisterBuyKala=async(faktorRow,indexRaw)=>{
     var index = indexRaw?indexRaw:1
     const type = (faktorRow.title=="متفرقه")?0:1
     const customerData = await customers.findOne({phone:faktorRow.phone})
@@ -37,21 +37,20 @@ const RegisterBuyItem=async(faktorRow,indexRaw)=>{
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day,
         Vazn, Ayar, Ang_Number, Name_az, BuyOrSale_0_1, 
-        Mazaneh, MazanehIsMesghalOrGeram_0_1, 
-        IsMotefaregheOrAbshode_0_1, MablaghKol,Sharh
+        IsMotefaregheOrAbshode_0_1, Sharh
     ]
     var queryCoin = [
         Sabte_Kol_Or_Movaghat_1_0, Moshtari_Code, Factor_Number, Radif_Number, 
         Shamsi_Year, Shamsi_Month, Shamsi_Day,
         Vazn, Ayar, Count, Name_Sekeh, BuyOrSale_0_1, 
-        Mazaneh, MablaghKol,Sharh
+        Sharh
     ]
         var customerList = faktorRow.count?await GetTahHesab(
-            {"DoNewSanadBuySaleSEKEH":queryCoin}
+            {"DoNewSanadVKHSEKEH":queryCoin}
             ):await GetTahHesab(
-            {"DoNewSanadBuySaleGOLD":query}
+            {"DoNewSanadVKHGOLD":query}
         )
     return({query,customerList,message:"outPut"})
 }
 
-module.exports =RegisterBuyItem
+module.exports =RegisterBuyKala

@@ -16,7 +16,7 @@ const UpdateCartQuery=async(cartItem,price,TAX,discountTemp)=>{
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
     var poolSang = product.poolSang?product.poolSang:0
-    var ojratPrice = parseFloat(OJRAT)*roundPrice/100
+    var ojratPrice = parseInt(Math.round(parseFloat(OJRAT)*roundPrice/100))
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
     var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
 
