@@ -34,6 +34,7 @@ const GetTahHesab = require('../middleware/GetTahHesab');
 const price = require('../models/price');
 const NewBank = require('../middleware/NewBank');
 const banks = require('../models/param/banks');
+const sekke = require('../models/param/sekke');
 const { ONLINE_URL} = process.env;
  
 router.get('/main', async (req,res)=>{
@@ -133,6 +134,31 @@ router.get('/get-banks', async (req,res)=>{
             }
         }
         res.json(bankList)
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+router.get('/get-sekke', async (req,res)=>{
+    try{
+        const result =[]
+        const sekkeList = await GetTahHesab(
+            {
+                "DoListNameSekeh":[]
+            }
+        )
+        for(var i=0;i<sekkeList.length;i++){
+            var sekkeData = sekkeList[i]
+            var exists = await sekke.findOne({title:sekkeData.Name})
+            if(!exists){
+                await sekke.create({
+                    title:sekkeData.Name,
+                    weight:sekkeData.Vazn,
+                    Ayar:sekkeData.Ayar,
+                })
+            }
+        }
+        res.json(sekkeList)
     }
     catch(error){
         res.status(500).json({message: error.message})

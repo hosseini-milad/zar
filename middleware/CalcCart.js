@@ -1,4 +1,5 @@
 const customers = require("../models/auth/customers");
+const sekke = require("../models/param/sekke");
 const transactions = require("../models/param/transaction");
 const cart = require("../models/product/cart");
 const faktor = require("../models/product/faktor");
@@ -52,8 +53,38 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         faktorData[i].userDetail = userDetail
         faktorData[i].items = items
     }
+    var sekkeList = await sekke.find({})
     var transData = userId?await transactions.find({userId:userId,orderNo:{$exists:false}}):''
     var transRemain = FindRemainBank(cartDetails,transData)
+    var purchaseTypes = [
+    {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
+        parameters:[ 
+            
+        ],isOptional:false
+    },
+    {title:"خرید آبشده",id:2,unitPrice:unitPrice,
+        parameters:[
+            {title:"نام آزمایشگاه",value:"lab",icon:"fa-cog",
+                options:["سعدی","حافظ","مولوی"],isOptional:true
+            },
+            {title:"شماره ری.انگ",value:"riang",icon:"fa-headphones",
+                options:[41,51,61,71,81,91],isOptional:true
+            }
+        ]
+    }
+    ]
+    var sekkeTypes = sekkeList.map((sekke,i)=>(
+        {title:sekke.title,id:i+10,unitPrice:unitPrice,
+            ayar:sekke.Ayar,weight:sekke.weight, isCoin:true,
+            parameters:[
+                {title:"تعداد",value:"count",icon:"fa-comment",
+                    options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
+                },
+                {title:"قیمت",value:"price",icon:"fa-headphones",
+                    isOptional:false
+                }
+            ]
+        }))
     return({cart:cartDetails,
         cartDetail: {
             "unitPrice": unitPrice,
@@ -69,45 +100,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "rawPrice":NormalNumber(totalPrice-remain),
             "finalPrice":NormalNumber(totalPrice-remain-totalDiscount)
         },
-        purchaseType:[
-            {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
-                parameters:[ 
-                    
-                ],isOptional:false
-            },
-            {title:"خرید آبشده",id:2,unitPrice:unitPrice,
-                parameters:[
-                    {title:"نام آزمایشگاه",value:"lab",icon:"fa-cog",
-                        options:["سعدی","حافظ","مولوی"],isOptional:true
-                    },
-                    {title:"شماره ری.انگ",value:"riang",icon:"fa-headphones",
-                        options:[41,51,61,71,81,91],isOptional:true
-                    }
-                ]
-            },
-            {title:"سکه تمام بهار",id:10,unitPrice:unitPrice,
-                ayar:"740",weight:"4.06", isCoin:true,
-                parameters:[
-                    {title:"تعداد",value:"count",icon:"fa-comment",
-                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
-                    },
-                    {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:false
-                    }
-                ]
-            },
-            {title:"سکه نیم بهار",id:11,unitPrice:unitPrice,
-                ayar:"740",weight:"2.03", isCoin:true,
-                parameters:[
-                    {title:"تعداد",value:"count",icon:"fa-comment",
-                        options:[1,2,3,4,5,6,7,8,9,10],isOptional:true
-                    },
-                    {title:"قیمت",value:"price",icon:"fa-headphones",
-                        isOptional:false
-                    }
-                ]
-            }
-        ],
+        purchaseType:purchaseTypes.concat(sekkeTypes),
         faktorData,faktorSize:faktorData&&faktorData.length,transData,
         ...transRemain
     })

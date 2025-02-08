@@ -61,6 +61,7 @@ const FindRemainBank = require('../middleware/Calc/FindRemainBank');
 const SetDiscountTahHesab = require('../middleware/Calc/SetDiscountTahHesab');
 const FindRemainUser = require('../middleware/Calc/FindRemainUser');
 const FindSimilarProduct = require('../middleware/Calc/FindSimilarProduct');
+const sekke = require('../models/param/sekke');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -498,14 +499,13 @@ router.post('/add-purchase-cart',auth,jsonParser, async (req,res)=>{
             res.status(400).json({error:"روش خرید انتخاب نشده است"})
             return
         }
-        if(data.purchaseType =="10"){
-            data.ayar="740"
-            data.weight="4.06"
+        const sekkeData = await sekke.findOne({title:data.title})
+        if(!sekkeData){
+            res.status(400).json({error:"سکه درست انتخاب نشده است"})
+            return
         }
-        if(data.purchaseType =="11"){
-            data.ayar="740"
-            data.weight="2.03"
-        }
+        data.ayar=sekkeData.ayar
+        data.weight=sekkeData.weight
         
     }
     try{
