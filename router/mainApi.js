@@ -187,7 +187,7 @@ const updateProduct=async(from,to)=>{
         var query = {title:productList[i].Name,
             sku:productList[i].Code,
             weight:productList[i].Vazn,
-            size:productList[i].Size,
+            size:NormalNum(productList[i].Size),
             ayar:productList[i].Ayar,
             sharh:productList[i].Sharh,
             sood:productList[i].DarsadSood,
@@ -258,6 +258,11 @@ router.get('/update-log', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
+const NormalNum = (data)=>{
+    if(!data) return("0")
+    var result = data.replace(/\D/g,'')
+    return(result)
+}
 
 
 
