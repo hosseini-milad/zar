@@ -94,7 +94,7 @@ router.use('/panel/crm',CRMPanelApi)
             result.push(await updateCustomer(i*500,(i+1)*500))
         }
 
-        await updateLog.create({date:Date.now(),updateQuery:"get-customers"})
+        await updateLog.create({date:Date.now(),updateQuery:"customers"})
         res.json({result})
     }
     catch(error){
@@ -108,7 +108,7 @@ router.get('/get-product', async (req,res)=>{
             result.push(await updateProduct(i*500,(i+1)*500))
         }
         console.log("updating")
-        await updateLog.create({date:Date.now(),updateQuery:"get-product"})
+        await updateLog.create({date:Date.now(),updateQuery:"products"})
         res.json({result})
     }
     catch(error){
@@ -250,9 +250,19 @@ const updateCustomer=async(from,to)=>{
 }
 router.get('/update-log', async (req,res)=>{
     try{ 
-        const sepidarLog = await updateLog.find({}).sort({"date":-1}).limit(10)
-        
-        res.json({log:sepidarLog,message:"done"})
+        const userData = await users.findOne({_id:ObjectID(req.headers['userid'])})
+        if(!userData){
+            res.status(400).json({error:"error not found"})
+            return
+        }
+        const productLog = await updateLog.find({updateQuery:"products"}).sort({ "date": -1 }).limit(5)
+        const customerLog = await updateLog.find({updateQuery:"customers"}).sort({ "date": -1 }).limit(5)
+
+        const sepidarLog = await updateLog.find({}).sort({ "date": -1 }).limit(20)
+
+        res.json({ log: sepidarLog,
+            productLog,customerLog,
+             message: "done" })
     }
     catch(error){
         res.status(500).json({message: error.message})
