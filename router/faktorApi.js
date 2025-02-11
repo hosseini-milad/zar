@@ -180,8 +180,8 @@ router.post('/fetch-product', async (req,res)=>{
             
         var TAX = await tax.findOne().sort({date:-1})
         const fullPrice =  CalcPrice(productData,priceRaw,TAX&&TAX.percent)
-        productData.color="رزگلد"
-        productData.colorCode="#E7B2A4"
+        productData.color=productData.color?productData.color:"نامشخص"
+        productData.colorCode=productData.colorCode?productData.colorCode:"#eee"
         productData.price = fullPrice.price
         productData.priceDetail = fullPrice.priceDetail
         if(!productData.thumbUrl) productData.thumbUrl="https://admin.barzegargold.com/upload/default/product.png"

@@ -188,6 +188,8 @@ const updateProduct=async(from,to)=>{
             sku:productList[i].Code,
             weight:productList[i].Vazn,
             size:NormalNum(productList[i].Size),
+            color:productList[i].Color,
+            colorCode:ColorCode(productList[i].ColorCode),
             ayar:productList[i].Ayar,
             sharh:productList[i].Sharh,
             sood:productList[i].DarsadSood,
@@ -263,7 +265,11 @@ const NormalNum = (data)=>{
     var result = data.replace(/\D/g,'')
     return(result)
 }
-
+const ColorCode = (color)=>{
+    if(!color) return("#eee")
+    var result = "#eee"
+    return(result)
+}
 
 
 module.exports = router;
