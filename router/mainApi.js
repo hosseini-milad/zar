@@ -187,7 +187,9 @@ const updateProduct=async(from,to)=>{
         var query = {title:productList[i].Name,
             sku:productList[i].Code,
             weight:productList[i].Vazn,
-            size:productList[i].Size,
+            size:NormalNum(productList[i].Size),
+            color:productList[i].Color,
+            colorCode:ColorCode(productList[i].ColorCode),
             ayar:productList[i].Ayar,
             sharh:productList[i].Sharh,
             sood:productList[i].DarsadSood,
@@ -268,7 +270,16 @@ router.get('/update-log', async (req,res)=>{
         res.status(500).json({message: error.message})
     }
 })
-
+const NormalNum = (data)=>{
+    if(!data) return("0")
+    var result = data.replace(/\D/g,'')
+    return(result)
+}
+const ColorCode = (color)=>{
+    if(!color) return("#eee")
+    var result = "#eee"
+    return(result)
+}
 
 
 module.exports = router;
