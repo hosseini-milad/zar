@@ -37,7 +37,9 @@ export default function AppHero() {
             <p>محصولات برزگر</p>
             <p>به راحتی خرید کنید</p>
           </div>
-          <button>ورود به برنامه</button>
+          <button onClick={() => window.open("https://shop.barzegargold.com/")}>
+            ورود به برنامه
+          </button>
           <a href="#">دانلود مستقیم اپلیکیشن</a>
         </div>
         <div
