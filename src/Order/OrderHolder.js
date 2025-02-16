@@ -4,8 +4,8 @@ import OrderHeader from "./Components/Header";
 import ProductList from "./Components/ProductList";
 import QuickCartHolder from "./QuickCart/QuickCartHolder";
 import PreOrderHolder from "./PreOrder/PreOrderList";
-import PreOrderSale from "./PreOrder/PreOrderSale"
-import env, {CheckAccess, defPay } from "../env";
+import PreOrderSale from "./PreOrder/PreOrderSale";
+import env, { CheckAccess, defPay } from "../env";
 import Cookies from "universal-cookie";
 import ShowError from "../components/Modal/ShowError";
 import PreQuickHolder from "./PreOrder/PreQuickList";
@@ -23,10 +23,10 @@ function OrderHolder(props) {
   const [products, setProduct] = useState();
   const [payValue, setPayValue] = useState(defPay);
   const [error, setError] = useState({ message: "", color: "brown" });
-  const [tab,setTab] = useState(0)
-  const [ProductInfo,setProductInfo]=useState("")
-  const access = CheckAccess(token,"orders")
-  
+  const [tab, setTab] = useState(0);
+  const [ProductInfo, setProductInfo] = useState("");
+  const access = CheckAccess(token, "orders");
+
   useEffect(() => {
     const postOptions = {
       method: "post",
@@ -36,7 +36,7 @@ function OrderHolder(props) {
         userId: token && token.userId,
       },
       body: JSON.stringify({
-        userId: user&&user._id
+        userId: user && user._id,
       }),
     };
     fetch(env.siteApi + "/panel/faktor/cart", postOptions)
@@ -107,7 +107,7 @@ function OrderHolder(props) {
         }
       );
   }, [appFilter]);
-  
+
   return (
     <div className="sharif new-sharif" style={{ direction: "rtl" }}>
       <header className="sharif-order-header">
@@ -115,14 +115,13 @@ function OrderHolder(props) {
           lang={props.lang}
           setGrid={setGrid}
           grid={grid}
-          token={props.token}
+          token={token}
           setError={setError}
           user={user}
           setUser={setUser}
           setFilters={setFilters}
           setProductInfo={setProductInfo}
           ProductInfo={ProductInfo}
-          
         />
         {/* <OrderFilters
           grid={grid}
@@ -161,18 +160,21 @@ function OrderHolder(props) {
             setError={setError}
             cartDetail={cart && cart.cartDetail}
             bankList={cart && cart.bankList}
-            totalPay={cart&&cart.totalPay}
-            remain={cart&&cart.remain}
+            totalPay={cart && cart.totalPay}
+            remain={cart && cart.remain}
           />
+        ) : ProductInfo ? (
+          <ProductInfoHolder ProductInfo={ProductInfo} token={token} />
         ) : (
-          ProductInfo ?(
-            <ProductInfoHolder ProductInfo={ProductInfo} token={token}/>
-          ):<></>
+          <></>
         )}
-        
+
         {/* <PreQuickHolder token={token} user={user} cart={cart} /> */}
-        {user?<PreOrderHolder cart={cart} token={token} user={user}
-          />:<></>}
+        {user ? (
+          <PreOrderHolder cart={cart} token={token} user={user} />
+        ) : (
+          <></>
+        )}
         {/* {(cart&&cart.isSale)?
         <PreOrderSale token={token} user={user}
         cart={cart} access={access}/>:

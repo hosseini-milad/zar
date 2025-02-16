@@ -76,12 +76,11 @@ function OrderTableRow(props) {
               <p className="name">
                 {order.userDetail ? order.userDetail.username : "---"}
               </p>
+              <p className="name">
+                نام کاربر
+              </p>
             </div>
-            {order.moreInformation ? (
-              <i className="fa fa-comment-o" title={order.moreInformation}></i>
-            ) : (
-              <></>
-            )}
+            
           </div>
         </td>
         <td>

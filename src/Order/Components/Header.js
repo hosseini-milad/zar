@@ -2,6 +2,7 @@ import { useState } from "react";
 import env from "../../env";
 import ManageUser from "./ManageUser";
 import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 
 function OrderHeader(props) {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ function OrderHeader(props) {
   const [ProductList, setProductList] = useState("");
   const ProductInfo = props.ProductInfo;
   const setProductInfo = props.setProductInfo;
+  const cookies = new Cookies();
   const findCustomer = (search) => {
     if (search.length < 3) {
       //setShowPop(0)
@@ -68,8 +70,17 @@ function OrderHeader(props) {
   const gotToOpenOrders = () => {
     navigate("/orders/open");
   };
+  const logOff = () => {
+    cookies.remove(env.cookieName, { path: "/" });
+    setTimeout(() => (window.location.reload(), 1000));
+  };
   return (
     <div className="nav-bar">
+      <div className="icon-wrapper">
+        <i class="fa fa-sign-out" aria-hidden="true" onClick={logOff}></i>
+
+        <p>{props.token.username}</p>
+      </div>
       <div className="logo-wrapper">
         <img src="\img\zar-logo.PNG" alt="Logo" />
       </div>

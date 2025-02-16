@@ -28,9 +28,13 @@ function Orders(props) {
   const [tab, setTab] = useState(localStorage.getItem("orderTab"));
   const [Error, setError] = useState("");
   const token = cookies.get(env.cookieName);
-  useEffect(()=>{
-    localStorage.setItem("orderTab",tab)
-  },[tab])
+  const TabList = [
+    { title: "وب", type: "web" },
+    { title: "فروشگاه", type: "shop" },
+  ];
+  useEffect(() => {
+    localStorage.setItem("orderTab", tab);
+  }, [tab]);
   function handleFilterChange(newFilters) {
     setFilters(newFilters);
     updateUrlWithFilters(newFilters);
@@ -45,11 +49,10 @@ function Orders(props) {
       orderNo: filters.orderNo,
       status: filters.status,
       brand: filters.brand,
+      type: filters.shop,
       dateFrom: filters.date && filters.date.dateFrom,
       dateTo: filters.date && filters.date.dateTo,
       access: "manager",
-      
-      
     };
     const postOptions = {
       method: "post",
@@ -64,14 +67,14 @@ function Orders(props) {
       .then((res) => res.json())
       .then(
         (result) => {
-          if(result.error){
+          if (result.error) {
             setLoading(0);
-            setError(result.error)
-          }else{
-          setLoading(0);
-          setContent("");
-          setTimeout(() => setContent(result), 200);
-          setError('')
+            setError(result.error);
+          } else {
+            setLoading(0);
+            setContent("");
+            setTimeout(() => setContent(result), 200);
+            setError("");
           }
         },
         (error) => {
@@ -79,25 +82,28 @@ function Orders(props) {
           console.log(error);
         }
       );
-  }, [filters,tab]);
+  }, [filters, tab]);
   useEffect(() => {
-    const postOptions={
-        method:'get',
-        headers: {'Content-Type': 'application/json',
-        "x-access-token":token&&token.token,"userId":token&&token.userId},
-        body:JSON.stringify()
-      }
-   fetch(env.siteApi + "/panel/product/list-status",postOptions)
-  .then(res => res.json())
-  .then(
-    (result) => {
-      setStatusList(result.data)
-    },
-    (error) => {
-      console.log(error);
-    }
-    
-)},[])
+    const postOptions = {
+      method: "get",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": token && token.token,
+        userId: token && token.userId,
+      },
+      body: JSON.stringify(),
+    };
+    fetch(env.siteApi + "/panel/product/list-status", postOptions)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          setStatusList(result.data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
 
   //window.scrollTo(0, 270);},[pageNumber,filters,perPage,refreshTable])
   return (
@@ -124,15 +130,20 @@ function Orders(props) {
         </div>
       </div>
       <div className="list-container">
-      <StatusBar
+        {/* <StatusBar
           lang={lang}
           token={token}
           filters={filters}
           status={content.rxStatus}
           setFilters={setFilters}
+        /> */}
+        <OrderTab
+          TabList={TabList}
+          setFilters={handleFilterChange}
+          filters={filters}
+          setTab={setTab}
+          tab={tab}
         />
-        {/* <OrderTab setFilters={handleFilterChange} filters={filters} 
-        setTab={setTab} tab={tab}/> */}
 
         <OrderFilters
           lang={props.lang}
@@ -142,24 +153,30 @@ function Orders(props) {
           filters={filters}
           StatusList={StatusList}
         />
-        
+
         <div className="user-list">
           {loading ? (
             env.loader
+          ) : Error ? (
+            <p>دسترسی ندارید</p>
           ) : (
-            Error?<p>دسترسی ندارید</p>:<OrderTable orders={content ? content.data : {}} lang={lang} 
-            isSale={content&&content.isSale} token={token}/>
+            <OrderTable
+              orders={content ? content.data : {}}
+              lang={lang}
+              isSale={content && content.isSale}
+              token={token}
+            />
           )}
         </div>
-      
+
         <Paging
           content={content}
-          size={tab?content.cartSize:content.size}
+          size={tab ? content.cartSize : content.size}
           filters={filters}
           lang={props.lang}
           setFilters={handleFilterChange}
           updateUrlWithFilters={updateUrlWithFilters} // Pass the function as a prop
-          />
+        />
       </div>
     </div>
   );
