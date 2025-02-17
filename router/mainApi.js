@@ -71,7 +71,7 @@ router.use('/panel/crm',CRMPanelApi)
     try{
     var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
     const result = await response.json();
-    var priceValue = result&&result.geram18
+    var priceValue = result&&result.YekGram18
     priceValue&&await price.create({price:priceValue.value,date:Date.now()});
     }
     catch(error){
@@ -107,7 +107,6 @@ router.get('/get-product', async (req,res)=>{
         for(var i=0;i<20;i++){
             result.push(await updateProduct(i*500,(i+1)*500))
         }
-        console.log("updating")
         await updateLog.create({date:Date.now(),updateQuery:"products"})
         res.json({result})
     }
