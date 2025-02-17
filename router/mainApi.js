@@ -73,7 +73,7 @@ router.use('/panel/crm',CRMPanelApi)
     const result = await response.json();
     console.log(result)
     var priceValue = result&&result.YekGram18
-    priceValue&&await price.create({price:priceValue.value,date:Date.now()});
+    priceValue&&await price.create({price:priceValue,date:Date.now()});
     }
     catch(error){
         console.log(error)
