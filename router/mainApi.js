@@ -71,7 +71,6 @@ router.use('/panel/crm',CRMPanelApi)
     try{
     var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
     const result = await response.json();
-    console.log(result)
     var priceValue = result&&result.YekGram18
     priceValue&&await price.create({price:priceValue,date:Date.now()});
     }
