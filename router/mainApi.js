@@ -181,8 +181,8 @@ const updateProduct=async(from,to)=>{
         var sku = Number(productList[i].Code)
         skuList.push(sku)
         var newSood = Number(productList[i].DarsadVazn)
-        if(sku>400)
-            newSood -=3
+        /*if(sku>400)
+            newSood -=3*/
         var query = {title:productList[i].Name,
             sku:productList[i].Code,
             weight:productList[i].Vazn,
