@@ -4,6 +4,7 @@ const cart = require("../models/product/cart");
 const products = require("../models/product/products");
 const CalcPrice = require("./CalcPrice");
 const FindPrice = require("./FindPrice");
+const FloatDec = require("./FloatDec");
 
 const CreateCart=async(cartDetails,sku,userId)=>{
     var index = cartDetails.find(item=>item.sku==sku)
