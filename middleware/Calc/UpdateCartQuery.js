@@ -35,7 +35,7 @@ const UpdateCartQuery=async(cartItem,price,TAX,discountTemp)=>{
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
-    console.log(priceDetail)
+    //console.log(priceDetail)
     return(priceDetail)
         
 }

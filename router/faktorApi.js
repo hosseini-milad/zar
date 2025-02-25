@@ -792,7 +792,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
             const hesabResult = await SetTahHesabItem(faktorItem,i)
-            console.log(hesabResult)
+            //console.log(hesabResult)
             var tahResult = hesabResult&&hesabResult.customerList
             InvoiceID = tahResult&&tahResult.OK
             Sh_Faktor = tahResult&&tahResult.Sh_factor
