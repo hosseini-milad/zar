@@ -25,7 +25,8 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         unitPrice = cartDetails[c].unitPrice
         var itemDiscount = cartDetails[c].discount
         if(itemDiscount>discount) discount = itemDiscount
-        var cartPrice = FloatDec(cartDetails[c].fullPrice)
+        var cartPrice = parseFloat(cartDetails[c].fullPrice)
+        cartDetails[c].fullPrice = FloatDec(cartDetails[c].fullPrice)
         if(cartDetails[c].purchase){
             var count = cartDetails[c].count?cartDetails[c].count:1
             totalPrice -= cartPrice*count
