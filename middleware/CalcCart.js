@@ -25,7 +25,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
         unitPrice = cartDetails[c].unitPrice
         var itemDiscount = cartDetails[c].discount
         if(itemDiscount>discount) discount = itemDiscount
-        var cartPrice = parseFloat(cartDetails[c].fullPrice)
+        var cartPrice = FloatDec(cartDetails[c].fullPrice)
         if(cartDetails[c].purchase){
             var count = cartDetails[c].count?cartDetails[c].count:1
             totalPrice -= cartPrice*count
@@ -98,7 +98,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
             "rawPrice":NormalNumber(totalPrice-remain),
-            "finalPrice":FloatDec(NormalNumber(totalPrice-remain-totalDiscount))
+            "finalPrice":NormalNumber(totalPrice-remain-totalDiscount)
         },
         purchaseType:purchaseTypes.concat(sekkeTypes),
         faktorData,faktorSize:faktorData&&faktorData.length,transData,
