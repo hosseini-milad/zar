@@ -98,7 +98,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "remainUser":remain,
             "finalGoldUnit":calcUnit(goldUnit),
             "rawPrice":NormalNumber(totalPrice-remain),
-            "finalPrice":NormalNumber(totalPrice-remain-totalDiscount)
+            "finalPrice":FloatDec(NormalNumber(totalPrice-remain-totalDiscount))
         },
         purchaseType:purchaseTypes.concat(sekkeTypes),
         faktorData,faktorSize:faktorData&&faktorData.length,transData,
