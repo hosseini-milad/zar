@@ -105,6 +105,7 @@ router.get('/get-product', async (req,res)=>{
     try{
         const result =[]
         for(var i=0;i<20;i++){
+            console.log("updating: "+i*500+" to "+ (i+1)*500)
             result.push(await updateProduct(i*500,(i+1)*500))
         }
         await updateLog.create({date:Date.now(),updateQuery:"products"})
