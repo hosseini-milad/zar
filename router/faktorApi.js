@@ -405,7 +405,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
     const userData = await customers.findOne({_id:ObjectID(userId)})
     try{ 
         await CalcCartRecalc(userId)
-        const clientRemain = userData&&await GetTahHesab(
+        const clientRemain = 0&&userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         )
         const clientStatus = ClientStatus(clientRemain)
@@ -725,7 +725,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
         const userCode = userData.phone&&userData.phone.substr(userData.phone.length - 4)
         const faktorNo = await NewCode("z"+userCode)
         const cartDetail = await CalcCart(userId,0,req.headers['userid'])
-        const clientRemain = userData&&await GetTahHesab(
+        const clientRemain = 0&&userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         ) 
         const clientStatus = ClientStatus(clientRemain)
@@ -967,7 +967,7 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const userDetail = await customers.findOne({_id:ObjectID(faktorData.userId)})
         const goldInfo = await FindPrice()
         const transactions = await transaction.find({orderNo:faktorNo})
-        const userDebit = userDetail&&await GetTahHesab(
+        const userDebit = 0&&userDetail&&await GetTahHesab(
             {"getmandehesabbycode":[userDetail.cCode]})
         const calcFaktor = CalcFaktor(saleItems,purchaseItems,transactions,userDebit,
             faktorData&&faktorData.totalDiscount)
@@ -1653,7 +1653,7 @@ router.post('/list-complete-faktor',auth, async (req,res)=>{
         return('')
     }
     try{
-        const creditData = await GetTahHesab(
+        const creditData = 0&&await GetTahHesab(
             {
                 "getmandehesabbycode":
                 [userCode.cCode]
