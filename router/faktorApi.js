@@ -1653,7 +1653,7 @@ router.post('/list-complete-faktor',auth, async (req,res)=>{
         return('')
     }
     try{
-        const creditData = await GetTahHesab(
+        const creditData = 0&&await GetTahHesab(
             {
                 "getmandehesabbycode":
                 [userCode.cCode]
