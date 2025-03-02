@@ -2,7 +2,7 @@ const FloatDec = require("./FloatDec")
 
 const CalcPurchase=(Ayar,price,weight,count)=>{
     if(!weight||!Ayar) return(0)
-    var floatWeight = parseFloat(weight.replace(/\//g,'.'))
+    var floatWeight = parseFloat(weight&&weight.replace(/\//g,'.'))
     var ayarPercent = parseFloat(Ayar)/750
     var ayarRound = Math.round(floatWeight*ayarPercent*100)/100
     var finalPrice = FloatDec(ayarRound*price,1)
