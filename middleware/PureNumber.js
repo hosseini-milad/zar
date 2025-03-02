@@ -1,7 +1,8 @@
 var tax = process.env.TaxRate
 
 const PureNumber=(number)=>{
-    var result = parseInt(number&&number.replace(/\D/g,''))
+    var numberStr = number.toString()
+    var result = parseInt(numberStr&&numberStr.replace(/\D/g,''))
     return(result)
 }
 
