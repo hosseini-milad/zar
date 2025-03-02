@@ -1380,9 +1380,15 @@ const createfaktorNo= async(Noun,year,userCode)=>{
 }
 const toInt=(strNum,count,align)=>{
     if(!strNum)return(0)
-    
-    return(parseInt(parseInt((align?"-":'')+strNum.toString().replace( /,/g, ''))*
-    (count?parseFloat(count):1)))
+    var pureNumber = ''
+    try{
+        pureNumber =parseInt(parseInt((align?"-":'')+strNum.toString().replace( /,/g, ''))*
+        (count?parseFloat(count):1))
+    }
+    catch{
+
+    }
+    return(pureNumber)
 }
 const normalPriceCount=(priceText,count,tax)=>{
     if(!priceText||priceText === null||priceText === undefined) return("")
