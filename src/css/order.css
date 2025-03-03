@@ -1426,6 +1426,13 @@ input[type="number"] {
   .sharif-order-main .admin-table-sec .product-info td:last-child::before {
     content: attr(data-cell);
   }
+  .sharif-order-main .admin-table-sec .product-info td:last-child {
+    color: black;
+    font-weight: 600;
+    background-color: #cd8945a9;
+    padding: 0.5rem;
+    
+  }
   .sharif-order-main .admin-table-sec td {
     display: flex;
     align-items: flex-start;
