@@ -20,6 +20,7 @@ const CreateCartPurchase=async(data,userId)=>{
         ayar:data.ayar,
         riang:data.riang,
         count:data.count,
+        isCoin:data.isCoin,
         priceDetail:priceDetail.priceDetail,
         price:price,
         fullPrice:price,
