@@ -4,7 +4,7 @@ import QuickOff from "./QuickOff";
 import QuickSearch from "./QuickSearch";
 import env, { payValue, normalPriceCount } from "../../env";
 import DataModal from "../../components/Modal/dataModal";
-
+import FormattedInputs from "../../components/Button/FormattedInputs";
 function QuickNew(props) {
   const [selectedItem, setSelectedItem] = useState();
   const [count, setCount] = useState(1);
@@ -55,7 +55,7 @@ function QuickNew(props) {
         title: selectedItem.title,
         ...PayInfo,
         isCoin: selectedItem.isCoin && selectedItem.isCoin,
-        purchaseType:selectedItem.id
+        purchaseType: selectedItem.id,
       }),
     };
     fetch(env.siteApi + "/panel/faktor/add-purchase-cart", postOptions)
@@ -173,20 +173,28 @@ function QuickNew(props) {
           {selectedItem &&
             selectedItem.parameters &&
             selectedItem.parameters.map((param, i) => (
-              <td data-cell={param.title}>
+              <td key={i} data-cell={param.title}>
                 {" "}
                 <div className="code-input-wrapper new-input">
-                  <input
-                    className="dp-input"
-                    type="text"
-                    placeholder={param.title}
-                    onChange={(e) =>
-                      setPayInfo((prevState) => ({
-                        ...prevState,
-                        [param.value]: e.target.value,
-                      }))
-                    }
-                  />
+                  {param.value == "price" ? (
+                    <FormattedInputs
+                      setSendBank={setPayInfo}
+                      SendBank={PayInfo}
+                      type={param.value}
+                    />
+                  ) : (
+                    <input
+                      className="dp-input"
+                      type="text"
+                      placeholder={param.title}
+                      onChange={(e) =>
+                        setPayInfo((prevState) => ({
+                          ...prevState,
+                          [param.value]: e.target.value,
+                        }))
+                      }
+                    />
+                  )}
                 </div>
               </td>
             ))}
