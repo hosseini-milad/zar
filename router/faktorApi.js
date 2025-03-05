@@ -408,8 +408,10 @@ router.post('/recalc-cart',auth, async (req,res)=>{
         const clientRemain = 0&&userData&&await GetTahHesab(
             {"getmandehesabbycode":[userData.cCode]}
         )
+        const priceRaw = await FindPrice()
         const clientStatus = ClientStatus(clientRemain)
-        const cartDetails = await CalcCart(userId,clientStatus.remain,req.headers['userid'])
+        const cartDetails = await CalcCart(userId,clientStatus.remain,req.headers['userid'],priceRaw)
+        await UpdateCart(cartDetails)
         const bankList = await banks.find({active:true})
         res.json({message:"سبد بروز شد",...cartDetails,
             clientStatus,bankList})

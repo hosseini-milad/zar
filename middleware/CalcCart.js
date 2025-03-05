@@ -73,7 +73,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             }
         ]
     }
-    ]
+    ] 
     var sekkeTypes = sekkeList.map((sekke,i)=>(
         {title:sekke.title,id:i+10,unitPrice:unitPrice,
             ayar:sekke.Ayar,weight:sekke.weight, isCoin:true,

@@ -10,6 +10,7 @@ const CartSchema = new Schema({
     discount:{type:Number},
     sku:{type:String},
     isMojood:{type:Boolean},
+    isCoin:{type:Boolean},
     isReserve:{type:Boolean},
     purchase:{type:Boolean},
     fullPrice:{type:String},
