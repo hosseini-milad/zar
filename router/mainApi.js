@@ -181,7 +181,7 @@ const updateProduct=async(from,to)=>{
         if(productList[i]){ 
         var sku = Number(productList[i].Code)
         skuList.push(sku)
-        var feature = productList[i].Vitrin=="فروش"?0:1
+        var feature = productList[i].Vitrin=="ويژه"?1:0
         var newSood = Number(productList[i].DarsadVazn)
         /*if(sku>400)
             newSood -=3*/
