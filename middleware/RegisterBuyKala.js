@@ -8,7 +8,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 const RegisterBuyKala=async(faktorRow,indexRaw)=>{
     var index = indexRaw?indexRaw:1
-    const type = (faktorRow.title=="متفرقه")?0:1
+    const type = (faktorRow.title&&faktorRow.title.includes("متفرقه"))?0:1
     const customerData = await customers.findOne({phone:faktorRow.phone})
     const date = new Date(faktorRow.initDate).toLocaleDateString('fa')
     const dateSplit = date.split('/')

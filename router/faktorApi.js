@@ -734,7 +734,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
        
         var TAX = await tax.findOne().sort({date:-1})
         var PRE = await prepaid.findOne().sort({date:-1})
-        var totalPrice = 0
+        var totalPrice = 0 
         var totalWeight = 0
         var totalFull = 0
         var totalDiscount = 0
