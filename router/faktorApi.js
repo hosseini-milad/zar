@@ -94,6 +94,7 @@ router.post('/list-product', async (req,res)=>{
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
             {$match:isMaster?{isMaster:true}:{}},
+            {$match:{feature:false}},
             {$match:isMojood?{isMojood:true}:{}}
         ])
         const priceRaw = await FindPrice()
@@ -135,6 +136,7 @@ router.post('/list-product-sale', async (req,res)=>{
             { $match:categoryFilter?{categories:{$elemMatch:
                 {catCode:categoryFilter.toString()}}}:{}},
             {$match:isMojood?{isMojood:true}:{}},
+            {$match:{feature:false}},
             {$match:(isReserve&&isReserve=="false")?{isReserve:false}:{}}
         ])
         const priceRaw = await FindPrice()

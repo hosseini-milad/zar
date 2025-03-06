@@ -196,6 +196,7 @@ router.post('/list-product',jsonParser,async (req,res)=>{
         catId:req.body.catId,
         active:req.body.active,
         offset:req.body.offset,
+        feature:req.body.feature,
         isMaster:req.body.isMaster,
         pageSize:pageSize
     }
@@ -206,6 +207,7 @@ router.post('/list-product',jsonParser,async (req,res)=>{
             { $match:data.catId?{categories:{$elemMatch:
                 {catCode:data.catId}}}:{}},
             { $match:data.active?{isMojood:true}:{}},
+            { $match:data.feature?{feature:true}:{}},
             { $match:data.isMaster?{isMaster:true}:{}},
             { $match:data.exists?data.exists=="1"?{isMojood:true}:
                 {isMojood:false}:{}}
