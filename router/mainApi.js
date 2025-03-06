@@ -178,9 +178,10 @@ const updateProduct=async(from,to)=>{
     var newProduct = 0
     var skuList = []
     for(var i=from;i<to;i++){
-        if(productList[i]){
+        if(productList[i]){ 
         var sku = Number(productList[i].Code)
         skuList.push(sku)
+        var feature = productList[i].Vitrin=="فروش"?0:1
         var newSood = Number(productList[i].DarsadVazn)
         /*if(sku>400)
             newSood -=3*/
@@ -195,6 +196,7 @@ const updateProduct=async(from,to)=>{
             sood:productList[i].DarsadSood,
             poolSang:productList[i].PoolSang,
             ojrat:newSood,
+            feature:feature,
             isMojood:productList[i].IsMojood=="1"?true:false,
             }
         var updateResult = await products.updateOne({sku:productList[i].Code},
