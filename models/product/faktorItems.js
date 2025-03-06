@@ -37,6 +37,7 @@ const FaktorItems = new Schema({
     lab:{type:String},
     riang:{type:String},
     count:{type:Number},
+    isCoin:{type:Boolean},
     description:{type:String},
     result:{ type: Object },
 
