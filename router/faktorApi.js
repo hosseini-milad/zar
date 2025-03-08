@@ -790,7 +790,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             totalWeight+= parseFloat(productDetail&&productDetail.weight
                 &&productDetail.weight.replace( /\//g, '.'))
             const { _id: _, ...newObj } = cartItem;
-            var status = cartItem.isReserve?"needtobuild":"accept"
+            var status = cartItem.isReserve?"needtobuild":"completed"
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
                 priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
