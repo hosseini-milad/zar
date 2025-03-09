@@ -12,7 +12,7 @@ const FindRemainBank=(cartDetails,transData)=>{
                 if(cartDetails[i].purchase)
                         totalPrice-= NormalNumber(cartDetails[i].fullPrice)
                 else
-                        totalPrice+= NormalNumber(cartDetails[i].cartDetail.finalPrice)
+                        totalPrice+= NormalNumber(cartDetails[i].finalPrice)
         }
         var remain = totalPrice-totalPay
         return({totalPay,remain,totalPrice})
