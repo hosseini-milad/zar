@@ -78,13 +78,13 @@ router.use('/panel/crm',CRMPanelApi)
         console.log(error)
     }
  })
- schedule.scheduleJob('*/10 * * * *', async() => { 
+ schedule.scheduleJob('* * /2 * * *', async() => { 
     try{
         var response = await fetch(ONLINE_URL + "/get-product",
-        { method: 'POST' });
+        { method: 'GET' });
         
         var response = await fetch(ONLINE_URL + "/get-customers",
-            { method: 'POST' });
+            { method: 'GET' });
     }catch{}
  })
  router.get('/get-customers', async (req,res)=>{
