@@ -1,6 +1,6 @@
 const NormalNumber = require("../NormalNumber")
 
-const FindRemainBank=(cartDetails,transData)=>{
+const FindRemainBank=(cartDetails,transData,totalDiscount)=>{
         var totalPrice = 0
         var totalPay = 0
         for(var i=0;i<(transData&&transData.length);i++){
@@ -12,7 +12,7 @@ const FindRemainBank=(cartDetails,transData)=>{
                 if(cartDetails[i].purchase)
                         totalPrice-= NormalNumber(cartDetails[i].fullPrice)
                 else
-                        totalPrice+= NormalNumber(cartDetails[i].finalPrice)
+                        totalPrice+= NormalNumber(cartDetails[i].fullPrice-totalDiscount)
         }
         var remain = totalPrice-totalPay
         return({totalPay,remain,totalPrice})

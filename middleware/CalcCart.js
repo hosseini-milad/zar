@@ -56,7 +56,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     }
     var sekkeList = await sekke.find({})
     var transData = userId?await transactions.find({userId:userId,orderNo:{$exists:false}}):''
-    var transRemain = FindRemainBank(cartDetails,transData)
+    var transRemain = FindRemainBank(cartDetails,transData,totalDiscount)
     var purchaseTypes = [
     {title:"خرید متفرقه",id:1,unitPrice:unitPrice,
         parameters:[ 
