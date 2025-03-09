@@ -227,7 +227,8 @@ const updateCustomer=async(from,to)=>{
         for(var i=from;i<to;i++){
             if(customerList[i]){
             outPut.push(customerList[i])
-            var query = {username:customerList[i].Name,
+            var query = {username:customerList[i].Name&&
+                customerList[i].Name.replace( /ي/g, 'ی'),
                 phone:customerList[i].Mobile,
                 groupCode:customerList[i].GID,
                 cCode:i, 
