@@ -767,7 +767,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 //await faktorItems.create(faktorItem)
-                var hesabResult = 0&&await SetTahHesabItem(faktorItem,i+1)
+                var hesabResult = await SetTahHesabItem(faktorItem,i+1)
                 if(hesabResult.error){
                     res.status(400).json({error:hesabResult.error})
                     return
@@ -798,7 +798,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             //console.log(faktorItem)
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            const hesabResult = 0&&await SetTahHesabItem(faktorItem,i)
+            const hesabResult = await SetTahHesabItem(faktorItem,i)
             //console.log(hesabResult)
             var tahResult = hesabResult&&hesabResult.customerList
             InvoiceID = tahResult&&tahResult.OK
@@ -812,7 +812,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             } 
         }
         //await SetTransaction(userId,faktorNo)
-        0&&totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
+        totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
         
         const faktorResult = {
             faktorNo:faktorNo,
