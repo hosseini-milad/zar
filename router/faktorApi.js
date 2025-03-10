@@ -132,7 +132,7 @@ router.post('/list-product-sale', async (req,res)=>{
    
         const products = await productSchema.aggregate([
             {$match:search?{$or:[
-                {sku:{$regex: search, $options : 'i'}},
+                {sku:search},
                 {title:{$regex: search, $options : 'i'}}
             ]}:{}},
             { $match:categoryFilter?{categories:{$elemMatch:
