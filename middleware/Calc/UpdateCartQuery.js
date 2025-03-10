@@ -24,6 +24,7 @@ const UpdateCartQuery=async(cartItem,price,TAX,discountTemp)=>{
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     var totalDiscount = NormalNumber(totalPrice*discount/10000)
     var disPrice = totalPrice-totalDiscount
+    console.log(totalPrice,totalDiscount)
     var finalPrice = parseInt(Math.round(disPrice)/100)*100
     var priceDetail = { 
         taxValue:TAX, taxPrice:taxPrice,
