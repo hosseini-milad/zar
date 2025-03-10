@@ -35,7 +35,7 @@ const resizeFile = (file,type) =>
 const resizeThumb = (file,type) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
-      file,150,150,type,70,0,
+      file,150,150,type,100,0,
       (uri) => {
         resolve(uri);
       },"base64");
