@@ -8,8 +8,6 @@ const CalcPrice=(product,price,TAX,discount)=>{
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
     var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
-    console.log("totalPrice: ",totalPrice)
-    console.log("discount: ",discountPrice)
     var SENFI = product.sood?parseFloat(product.sood&&
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
@@ -34,7 +32,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
-    return({price:totalPrice,priceDetail:priceDetail})
+    return({price:roundPriceTemp(totalPrice),priceDetail:priceDetail})
 }
 const roundPriceTemp = (price)=>{
      var tempPrice = parseInt(Math.round(price)/1000)*1000
