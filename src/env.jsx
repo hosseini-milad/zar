@@ -1,11 +1,11 @@
 
 const env={
-    // siteApi:'http://localhost:6060/api',
-    siteApi:'https://admin.barzegargold.com/api',
+    siteApi:'http://localhost:6060/api',
+    // siteApi:'https://admin.barzegargold.com/api',
     // siteApi:'https://zaradmin.dkmehr.com/api',
     
-    // siteApiUrl:'http://localhost:6060',
-    siteApiUrl:'https://admin.barzegargold.com',
+    siteApiUrl:'http://localhost:6060',
+    // siteApiUrl:'https://admin.barzegargold.com',
     // siteApiUrl:'https://zaradmin.dkmehr.com',
     cookieName:'zar-login',
     //cookieName:'panel-login',
