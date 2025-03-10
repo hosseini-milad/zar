@@ -553,10 +553,13 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
         //console.log(cartDetail.priceDetail)
         const cartItems = await CalcPurchase(data.ayar?data.ayar:cartDetail.priceDetail.Ayar,
             cartDetail.unitPrice,data.weight?data.weight:cartDetail.priceDetail.weight.toString())
-        if(data.price)
+        if(data.price){
             cartItems.priceDetail.roundPrice = data.price
+
+        }
         const cartUpdate = await cart.updateOne({_id:ObjectID(id)},
             {$set:{...data,priceDetail:cartItems.priceDetail,
+                fullPrice:data.price,
                 price:data.price?data.price:cartItems.price
             }}) 
         if(cartItems.error){
