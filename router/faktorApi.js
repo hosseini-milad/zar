@@ -772,6 +772,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 //await faktorItems.create(faktorItem)
+                console.log(faktorItem)
                 var hesabResult = await SetTahHesabItem(faktorItem,i+1)
                 if(hesabResult.error){
                     res.status(400).json({error:hesabResult.error})
@@ -785,21 +786,21 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 await CreateFaktorLog(userId,faktorNo,"purchaseOrder","purchase","","",newObj)
             }
             else{
-            const productDetail = await products.findOne({sku:cartItem.sku})
+            //const productDetail = await products.findOne({sku:cartItem.sku})
             //const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             const fullPrice = cartItem.fullPrice//priceData.price
+            const priceDetail = cartItem.priceDetail
             totalFull+=fullPrice
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
-            totalDiscount += NormalNumber(cartItem.price*cartItem.discount/10000)
-            totalPrice+=price
-            totalWeight+= parseFloat(productDetail&&productDetail.weight
-                &&productDetail.weight.replace( /\//g, '.'))
+            totalDiscount += priceDetail&&priceDetail.totalDiscount
+            totalPrice+=fullPrice
+            totalWeight+= cartItem.weight
             const { _id: _, ...newObj } = cartItem;
             var status = cartItem.isReserve?"needtobuild":"completed"
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
-                priceDetail:cartItem.priceDetail.priceDetail,cName:userData.username,phone:userData.phone}
+                priceDetail:priceDetail,cName:userData.username,phone:userData.phone}
             //console.log(faktorItem)
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
