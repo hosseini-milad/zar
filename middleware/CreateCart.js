@@ -30,7 +30,7 @@ const CreateCart=async(cartDetails,sku,userId)=>{
             ayar:productDetail.ayar,
             priceDetail:priceDetail.priceDetail,
             price:mojood?price:parseFloat(PRE&&PRE.percent)*price/100,
-            fullPrice:FloatDec(price),
+            fullPrice:parseInt(price),
             unitPrice:priceRaw,
             isMojood:productDetail.isMojood,
             isReserve:mojood?0:1,
