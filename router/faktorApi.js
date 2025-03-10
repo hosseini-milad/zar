@@ -555,7 +555,7 @@ router.post('/update-purchase-cart',auth,jsonParser, async (req,res)=>{
             cartDetail.unitPrice,data.weight?data.weight:cartDetail.priceDetail.weight.toString())
         if(data.price){
             cartItems.priceDetail.roundPrice = data.price
-
+            cartItems.fullPrice = data.price
         }
         const cartUpdate = await cart.updateOne({_id:ObjectID(id)},
             {$set:{...data,priceDetail:cartItems.priceDetail,
@@ -597,6 +597,7 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
         for(var i=0;i<myCart.length;i++){
             var cartItem = myCart[i]
             var priceDetail = await UpdateCartQuery(cartItem,priceRaw,TAX&&TAX.percent,discount)
+            console.log(priceDetail.roundPrice)
             await cart.updateOne({_id:myCart[i]._id},
                 {$set:{discount:discount,priceDetail,fullPrice:priceDetail.roundPrice}})
 

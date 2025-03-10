@@ -26,7 +26,8 @@ const CalcCartRecalc=async(userId)=>{
         else{
             const productDetail = 
                 await products.findOne({sku:cartDetails[c].sku})
-            const priceDetail = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const discount = cartDetails[c].discount
+            const priceDetail = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent,discount)
             var tempPrice = priceDetail.price
             var fullPrice = priceDetail.priceDetail&&priceDetail.priceDetail.roundPrice
             
