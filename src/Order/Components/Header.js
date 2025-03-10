@@ -71,7 +71,7 @@ function OrderHeader(props) {
   };
 
   let typingTimer;
-  const doneTypingInterval = 3000;
+  const doneTypingInterval = 1000;
 
   const handleCustomerSearchChange = (e) => {
     clearTimeout(typingTimer);
