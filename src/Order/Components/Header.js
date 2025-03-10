@@ -17,10 +17,8 @@ function OrderHeader(props) {
   const cookies = new Cookies();
   const findCustomer = (search) => {
     if (search.length < 3) {
-      //setShowPop(0)
       return;
     }
-    //console.log(search)
     const postOptions = {
       method: "post",
       headers: {
@@ -46,7 +44,11 @@ function OrderHeader(props) {
         }
       );
   };
+
   const findProduct = (search) => {
+    if (search.length < 3) {
+      return;
+    }
     const postOptions = {
       method: "post",
       headers: {
@@ -66,6 +68,21 @@ function OrderHeader(props) {
           console.log(error);
         }
       );
+  };
+
+  let typingTimer;
+  const doneTypingInterval = 3000;
+
+  const handleCustomerSearchChange = (e) => {
+    clearTimeout(typingTimer);
+    const search = e.target.value;
+    typingTimer = setTimeout(() => findCustomer(search), doneTypingInterval);
+  };
+
+  const handleProductSearchChange = (e) => {
+    clearTimeout(typingTimer);
+    const search = e.target.value;
+    typingTimer = setTimeout(() => findProduct(search), doneTypingInterval);
   };
   const gotToOpenOrders = () => {
     navigate("/orders/open");
@@ -115,7 +132,7 @@ function OrderHeader(props) {
               name=""
               id="f-search"
               placeholder="مشتری"
-              onChange={(e) => findCustomer(e.target.value)}
+              onChange={(e) => handleCustomerSearchChange(e)}
               onFocus={() => setShowDrop(1)}
               onBlur={() => setTimeout(() => setShowDrop(0), 200)}
             />
@@ -151,7 +168,7 @@ function OrderHeader(props) {
             name=""
             id="p-search"
             placeholder="جستجوی اتیکت"
-            onChange={(e) => findProduct(e.target.value)}
+            onChange={(e) => handleProductSearchChange(e)}
             onFocus={() => setShowProduct(1)}
             onBlur={() => setTimeout(() => setShowProduct(0), 200)}
           />
