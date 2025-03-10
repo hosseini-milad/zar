@@ -62,6 +62,7 @@ const SetDiscountTahHesab = require('../middleware/Calc/SetDiscountTahHesab');
 const FindRemainUser = require('../middleware/Calc/FindRemainUser');
 const FindSimilarProduct = require('../middleware/Calc/FindSimilarProduct');
 const sekke = require('../models/param/sekke');
+const UpdateCartInline = require('../middleware/Calc/UpdateCartInline');
 const {TaxRate} = process.env
 router.post('/products', async (req,res)=>{
     try{
@@ -414,7 +415,7 @@ router.post('/recalc-cart',auth, async (req,res)=>{
         const priceRaw = await FindPrice()
         const clientStatus = ClientStatus(clientRemain)
         const cartDetails = await CalcCart(userId,clientStatus.remain,req.headers['userid'],priceRaw)
-        await UpdateCart(cartDetails)
+        //const query = await UpdateCartInline(cartDetails,priceRaw)
         const bankList = await banks.find({active:true})
         res.json({message:"سبد بروز شد",...cartDetails,
             clientStatus,bankList})
@@ -757,7 +758,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                 const cartItems = CalcPurchase(priceDetail.Ayar,
                     priceRaw,priceDetail.weight&&priceDetail.weight.toString())
 
-                const price = cartItems.price
+                const price = cartItem.fullPrice//cartItems.price
                 totalFull-=price
                 totalPrice-=price
                 totalWeight-= parseFloat(priceDetail.weight)
@@ -766,7 +767,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
                     price,unitPrice:priceRaw, status:"status",purchase:true,
                     weight:priceDetail.weight,cName:userData.username,phone:userData.phone}
                 //await faktorItems.create(faktorItem)
-                var hesabResult = await SetTahHesabItem(faktorItem,i+1)
+                var hesabResult = 0&&await SetTahHesabItem(faktorItem,i+1)
                 if(hesabResult.error){
                     res.status(400).json({error:hesabResult.error})
                     return
@@ -780,8 +781,8 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             }
             else{
             const productDetail = await products.findOne({sku:cartItem.sku})
-            const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
-            const fullPrice = priceData.price
+            //const priceData = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
+            const fullPrice = cartItem.fullPrice//priceData.price
             totalFull+=fullPrice
             const price = cartItem.isReserve?
                 (parseFloat(PRE&&PRE.percent)*fullPrice/100):fullPrice
@@ -793,11 +794,11 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             var status = cartItem.isReserve?"needtobuild":"completed"
             const faktorItem ={...newObj,faktorNo:faktorNo,
                 fullPrice:fullPrice,price,unitPrice:priceRaw, status:status,
-                priceDetail:priceData.priceDetail,cName:userData.username,phone:userData.phone}
+                priceDetail:cartItem.priceDetail.priceDetail,cName:userData.username,phone:userData.phone}
             //console.log(faktorItem)
             
             await CreateFaktorLog(userId,faktorNo,"regOrder",status,"","",newObj)
-            const hesabResult = await SetTahHesabItem(faktorItem,i)
+            const hesabResult = 0&&await SetTahHesabItem(faktorItem,i)
             //console.log(hesabResult)
             var tahResult = hesabResult&&hesabResult.customerList
             InvoiceID = tahResult&&tahResult.OK
@@ -811,7 +812,7 @@ router.post('/cart-to-faktor-sale',auth,jsonParser, async (req,res)=>{
             } 
         }
         //await SetTransaction(userId,faktorNo)
-        totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
+        0&&totalDiscount&&await SetDiscountTahHesab(userId,faktorNo,totalDiscount.toString())
         
         const faktorResult = {
             faktorNo:faktorNo,

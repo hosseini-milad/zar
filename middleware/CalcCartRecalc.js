@@ -18,8 +18,9 @@ const CalcCartRecalc=async(userId)=>{
             const priceDetail = CalcPurchase(cartDetails[c].ayar,priceRaw,
                 cartDetails[c].weight,count)
             var tempPrice = priceDetail.price
+            var fullPrice = priceDetail.roundPrice
             await cart.updateOne({_id:ObjectID(cartDetails[c]._id)},
-            {$set:{price:tempPrice,unitPrice:priceRaw,
+            {$set:{price:tempPrice,unitPrice:priceRaw,fullPrice,
                 priceDetail:priceDetail&&priceDetail.priceDetail,progressDate:Date.now()}})
         }
         else{
@@ -27,9 +28,10 @@ const CalcCartRecalc=async(userId)=>{
                 await products.findOne({sku:cartDetails[c].sku})
             const priceDetail = CalcPrice(productDetail,priceRaw,TAX&&TAX.percent)
             var tempPrice = priceDetail.price
+            var fullPrice = priceDetail.priceDetail&&priceDetail.priceDetail.roundPrice
             
             await cart.updateOne({_id:ObjectID(cartDetails[c]._id)},
-            {$set:{price:tempPrice,unitPrice:priceRaw,
+            {$set:{price:tempPrice,unitPrice:priceRaw,fullPrice,
                 priceDetail:priceDetail&&priceDetail.priceDetail,progressDate:Date.now()}})
         }
             

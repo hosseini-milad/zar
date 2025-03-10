@@ -71,8 +71,10 @@ router.use('/panel/crm',CRMPanelApi)
     try{
     var response = await fetch(process.env.ONLINE_PRICE,{method: 'GET'})
     const result = await response.json();
-    var priceValue = result&&(result.YekGram18+"0")
-    priceValue&&await price.create({price:priceValue,date:Date.now()});
+    if(!result.Error){
+        var priceValue = result&&(result.YekGram18+"0")
+        priceValue&&await price.create({price:priceValue,date:Date.now()});
+    }
     }
     catch(error){
         console.log(error)
