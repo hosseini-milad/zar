@@ -31,6 +31,7 @@
   font-weight: 600;
   line-height: 29px;
   color: var(--font-color-gold);
+  text-align: center;
 }
 .footer .wrapper .col .image-wrapper {
   display: flex;

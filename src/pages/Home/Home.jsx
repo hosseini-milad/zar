@@ -14,7 +14,7 @@ export default function Home() {
         <AppHero />
         <ProductPreset />
         <AboutUs />
-        <Branches />
+        {/* <Branches /> */}
       </div>
     </>
   );

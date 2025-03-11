@@ -12,14 +12,14 @@ export default function Footer() {
     <footer className="footer" id="contact-us">
       <div className="footer-container">
         <div className="wrapper">
-          <div className="col">
+          {/* <div className="col">
             <p className="title">مجوز ها</p>
             <div className="image-wrapper">
               <img src={license1} alt={license1} />
               <img src={license2} alt={license2} />
               <img src={license3} alt={license3} />
             </div>
-          </div>
+          </div> */}
           <div className="col">
             <p className="title">شبکه های مجازی</p>
             <div className="image-wrapper">
@@ -31,16 +31,22 @@ export default function Footer() {
           <div className="col">
             <p className="title">راه های ارتباطی</p>
             <div className="p-wrapper">
-              <p>02128282828</p>
-              <p>info@barzegar.com</p>
+              <p>۰۲۱۸۲۸۰۱۵۱۹</p>
+              <p>۰۹۱۲۳۱۸۶۰۱۰</p>
+              <p>Ali.Barzegar1997@gmail.com</p>
+              <p>
+                بازار بزرگ، خ ۱۵ خرداد، کوچه تکیه دولت، پاساژ تکیه دولت، پلاک
+                ۵۰۴
+              </p>
             </div>
           </div>
         </div>
         <div className="copyright">
           <p>کلیه حقوق برای فروشگاه برزگر محفوظ است </p>
-          <a href="https://dkmehr.com/">
-            <p style={{ textDecoration: "underline" }}>طراحی سایت</p>
-          </a>
+
+          <p>
+            Power by<a href="https://dkmehr.com/"> DKMehr</a>
+          </p>
         </div>
       </div>
     </footer>

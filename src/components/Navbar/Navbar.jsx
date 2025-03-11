@@ -17,11 +17,14 @@ export default function Navbar(props) {
         </ul>
         {HamMenu ? (
           <i
-            class="fa-solid fa-xmark nav-btn"
+            className="fa-solid fa-xmark nav-btn"
             onClick={() => setHamMenu(0)}
           ></i>
         ) : (
-          <i class="fa-solid fa-bars nav-btn" onClick={() => setHamMenu(1)}></i>
+          <i
+            className="fa-solid fa-bars nav-btn"
+            onClick={() => setHamMenu(1)}
+          ></i>
         )}
       </div>
     </nav>

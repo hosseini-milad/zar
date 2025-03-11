@@ -34,12 +34,12 @@ export default function Branches() {
         {BranchList.map((branch, b) => (
           <div key={b} className="branch-item">
             <div className="wrapper">
-              <i class="fa-solid fa-location-dot"></i>
+              <i className="fa-solid fa-location-dot"></i>
               <p>{branch.title}</p>
             </div>
             <p className="address">{branch.address}</p>
             <div className="wrapper phone">
-              <i class="fa-solid fa-phone-volume"></i>
+              <i className="fa-solid fa-phone-volume"></i>
               <p>{branch.phone}</p>
             </div>
           </div>
