@@ -23,8 +23,6 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
     const cartDetails = await cart.find({userId:userId}).lean()
     for(var c=0;c<cartDetails.length;c++){
         unitPrice = cartDetails[c].unitPrice
-        var itemDiscount = cartDetails[c].discount
-        if(itemDiscount>discount) discount = itemDiscount
         var cartPrice = parseFloat(cartDetails[c].price)
         cartDetails[c].fullPrice = FloatDec(cartDetails[c].fullPrice)
         if(cartDetails[c].purchase){
@@ -37,9 +35,10 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             var weight = parseFloat(cartDetails[c].weight&&
                 cartDetails[c].weight.replace(/\//g,'.'))
             goldUnit.push({weight:weight,price:cartPrice})
-            totalTax += cartDetails[c].priceDetail&&cartDetails[c].priceDetail.taxPrice
+            const detail = cartDetails[c].priceDetail
+            totalTax += detail&&detail.taxPrice
             totalPrice += cartPrice 
-            totalDiscount += NormalNumber(totalPrice*itemDiscount/10000)
+            totalDiscount += detail&&detail.totalDiscount
             totalWeight += weight
         }
     } 
