@@ -12,7 +12,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
     if(product.feature) {
-        var eq = floatWeight*SENFI/100
+        var eq = floatWeight*OJRAT/100
         var weightEq = eq+floatWeight
         featurePrice = NormalNumber(weightEq*price)
     }
