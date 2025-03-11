@@ -14,7 +14,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     if(product.feature) {
         var eq = floatWeight*SENFI/100
         var weightEq = eq+floatWeight
-        featurePrice = weightEq*price
+        featurePrice = NormalNumber(weightEq*price)
     }
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
@@ -28,7 +28,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
-    var finalPrice = NormalNumber(totalPrice-discountPrice)
+    var finalPrice = featurePrice?featurePrice:NormalNumber(totalPrice-discountPrice)
     var priceDetail = { 
         taxValue:TAX, taxPrice:NormalNumber(taxPrice),
         ojratValue:OJRAT, ojratPrice:NormalNumber(ojratPrice),
