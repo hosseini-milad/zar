@@ -39,7 +39,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             goldUnit.push({weight:weight,price:cartPrice})
             totalTax += cartDetails[c].priceDetail&&cartDetails[c].priceDetail.taxPrice
             totalPrice += cartPrice 
-            totalDiscount += NormalNumber(cartPrice*itemDiscount/10000)
+            totalDiscount += NormalNumber(totalPrice*itemDiscount/10000)
             totalWeight += weight
         }
     } 
