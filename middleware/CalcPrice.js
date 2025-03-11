@@ -11,10 +11,12 @@ const CalcPrice=(product,price,TAX,discount)=>{
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
+    var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
+
     if(product.feature) {
         var eq = floatWeight*OJRAT/100
         var weightEq = eq+floatWeight
-        featurePrice = NormalNumber(weightEq*price)
+        featurePrice = NormalNumber(weightEq*taxValue*price)
     }
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
@@ -22,7 +24,6 @@ const CalcPrice=(product,price,TAX,discount)=>{
     var poolSang = product.poolSang
     var ojratPrice = parseFloat(OJRAT)*roundPrice/100
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
-    var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
 
     var taxPrice = (senfiPrice+ojratPrice) * taxValue
     
