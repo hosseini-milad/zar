@@ -3,12 +3,16 @@ const env = {
   siteApi: "https://admin.barzegargold.com/api",
   // siteApi:'https://zaradmin.dkmehr.com/api',
 
-  // siteApiUrl:'http://localhost:6060',
+  //siteApiUrl:'http://localhost:6060',
   siteApiUrl: "https://admin.barzegargold.com",
   // siteApiUrl:'https://zaradmin.dkmehr.com',
   cookieName: "zar-login",
   //cookieName:'panel-login',
   //cookieName:'mehr-login',
+
+  cookieLang: "zar-lang",
+  //cookieLang:'panel-lang',
+  //cookieLang:'mehr-lang',
 
   cookieLang: "zar-lang",
   //cookieLang:'panel-lang',

@@ -27,7 +27,7 @@ import { withStyles } from "@material-ui/core/styles";
 const resizeFile = (file,type) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
-      file,1500,900,type,100,0,
+      file,1500,1200,type,100,0,
       (uri) => {
         resolve(uri);
       },"base64");
@@ -35,7 +35,7 @@ const resizeFile = (file,type) =>
 const resizeThumb = (file,type) =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
-      file,150,150,type,70,0,
+      file,250,250,type,100,0,
       (uri) => {
         resolve(uri);
       },"base64");
