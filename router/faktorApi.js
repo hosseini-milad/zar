@@ -600,8 +600,8 @@ router.post('/update-discount',auth,jsonParser, async (req,res)=>{
             var priceDetail = CalcPrice(productItem,priceRaw,TAX&&TAX.percent,discount)
             //console.log(priceDetail.roundPrice)
             await cart.updateOne({_id:ObjectID(cartItem._id)},
-                {$set:{discount:discount,priceDetail,
-                    fullPrice:priceDetail.roundPrice}})
+                {$set:{discount:discount,priceDetail:priceDetail.priceDetail,
+                    fullPrice:priceDetail.priceDetail.roundPrice}})
 
         }
         const cartData = await CalcCart(userId,0,req.headers['userid'])
