@@ -20,7 +20,7 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     }
     for(var i=0;i<purchase.length;i++){
         totalPurchase += NormalNumber(purchase[i].fullPrice)*
-        NormalNumber(purchase[i].priceDetail.count?purchase[i].priceDetail.count:1)
+        (purchase[i].count?purchase[i].count:1)
     }
     for(var i=0;i<payment.length;i++){
         totalPay += NormalNumber(payment[i].payValue)
