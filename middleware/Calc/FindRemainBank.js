@@ -6,7 +6,7 @@ const FindRemainBank=(transData,totalPrice)=>{
                 //console.log(transData[i])
                 totalPay+= NormalNumber(transData[i].payValue)
         }
-        var remain = totalPrice-totalPay
+        var remain = NormalNumber(totalPrice)-totalPay
         return({totalPay,remain,totalPrice})
         
 }
