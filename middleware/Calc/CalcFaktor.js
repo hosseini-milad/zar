@@ -9,7 +9,7 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     var totalDebitRaw = debit&&debit.MandeHesab&&debit.MandeHesab[0]&&
     debit.MandeHesab[0].MandeyeKolBePool
     var totalDebit =NormalNumber(totalDebitRaw)
-    var totalDiscount = NormalNumber(off)
+    var totalDiscount = 0//NormalNumber(off)
 
     for(var i=0;i<sale.length;i++){
         totalSale += NormalNumber(sale[i].price)
