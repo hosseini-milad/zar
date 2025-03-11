@@ -25,8 +25,8 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
     for(var i=0;i<payment.length;i++){
         totalPay += NormalNumber(payment[i].payValue)
     }
-    const totalRemain = totalSale-totalPurchase-totalPay+
-        totalDebit-totalDiscount
+    const totalRemain = NormalNumber(totalSale-totalPurchase-totalPay+
+        totalDebit-totalDiscount)
     return({totalSale,totalPurchase,totalPay,totalSaleWeight,totalTax,
         totalDiscount,totalDebit:totalDebit,totalRemain})
 }
