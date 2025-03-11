@@ -14,6 +14,7 @@ const CalcCartRecalc=async(userId)=>{
     var TAX = await tax.findOne().sort({date:-1})
     for(var c=0;c<cartDetails.length;c++){
         if(cartDetails[c].purchase){
+            if(cartDetails[c].isCoin) continue
             var count = cartDetails[c].count? cartDetails[c].count:1
             const priceDetail = CalcPurchase(cartDetails[c].ayar,priceRaw,
                 cartDetails[c].weight,count)

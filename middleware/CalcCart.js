@@ -92,7 +92,7 @@ const CalcCart=async(userId,remainRaw,manageId)=>{
             "cartDiscount": 0,
             "cartPrice": totalPrice,
             "totalTax": totalTax,
-            "totalDiscount":totalDiscount,
+            "totalDiscount":NormalNumber(totalDiscount),
             "totalItem":cartDetails&&cartDetails.length,
             "cartWeight": FloatDec(totalWeight,2),
             "cartWeightRaw": totalWeight,
