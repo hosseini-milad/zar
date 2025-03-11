@@ -4,15 +4,21 @@ const NormalNumber = require("./NormalNumber")
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
 const CalcPrice=(product,price,TAX,discount)=>{
     if(!product) return(0)
+    var featurePrice = 0
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
-    totalPrice = floatWeight*price
-    var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
-    var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
     var SENFI = product.sood?parseFloat(product.sood&&
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
+    if(product.feature) {
+        var eq = floatWeight*SENFI/100
+        var weightEq = eq+floatWeight
+        featurePrice = weightEq*price
+    }
+    totalPrice = floatWeight*price
+    var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
+    var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
     var poolSang = product.poolSang
     var ojratPrice = parseFloat(OJRAT)*roundPrice/100
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
@@ -31,7 +37,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
         totalDiscount:discountPrice,
         unitGold:NormalNumber(totalPrice/floatWeight),//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
-        totalPrice:totalPrice,roundPrice:finalPrice
+        totalPrice:totalPrice,roundPrice:featurePrice?featurePrice:finalPrice
     }
     return({price:NormalNumber(totalPrice),priceDetail:priceDetail})
 }
