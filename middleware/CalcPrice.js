@@ -16,7 +16,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     if(product.feature) {
         var eq = floatWeight*OJRAT/100
         var weightEq = eq+floatWeight
-        featurePrice = NormalNumber(weightEq*taxValue*price)
+        featurePrice = NormalNumber(weightEq*(1+taxValue)*price)
     }
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
