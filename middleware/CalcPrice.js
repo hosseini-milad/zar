@@ -6,6 +6,8 @@ const CalcPrice=(product,price,TAX,discount)=>{
     var floatWeight = parseFloat(product.weight&&
             product.weight.replace(/\//g,'.'))
     totalPrice = floatWeight*price
+    var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
+    var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
     var SENFI = product.sood?parseFloat(product.sood&&
             product.sood.replace(/\//g,'.')):SENFI_DEF
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
@@ -19,11 +21,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
-    var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
-    
-    
     var finalPrice = roundPriceTemp(totalPrice-discountPrice)
-    var roundPrice = parseInt(Math.round(finalPrice*1000))/1000
     var priceDetail = { 
         taxValue:TAX, taxPrice:roundPriceTemp(taxPrice),
         ojratValue:OJRAT, ojratPrice:roundPriceTemp(ojratPrice),
