@@ -1,4 +1,5 @@
 const FloatDec = require("./FloatDec")
+const NormalNumber = require("./NormalNumber")
 
 const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
 const CalcPrice=(product,price,TAX,discount)=>{
@@ -21,18 +22,18 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
-    var finalPrice = roundPriceTemp(totalPrice-discountPrice)
+    var finalPrice = NormalNumber(totalPrice-discountPrice)
     var priceDetail = { 
-        taxValue:TAX, taxPrice:roundPriceTemp(taxPrice),
-        ojratValue:OJRAT, ojratPrice:roundPriceTemp(ojratPrice),
-        senfiValue:SENFI , senfiPrice:roundPriceTemp(senfiPrice),
+        taxValue:TAX, taxPrice:NormalNumber(taxPrice),
+        ojratValue:OJRAT, ojratPrice:NormalNumber(ojratPrice),
+        senfiValue:SENFI , senfiPrice:NormalNumber(senfiPrice),
         poolSang:poolSang, unitPrice:price,
         totalDiscount:discountPrice,
-        unitGold:roundPriceTemp(totalPrice/floatWeight),//FloatDec(totalPrice/floatWeight,0),
+        unitGold:NormalNumber(totalPrice/floatWeight),//FloatDec(totalPrice/floatWeight,0),
         goldPrice:roundPrice, weight:floatWeight,
         totalPrice:totalPrice,roundPrice:finalPrice
     }
-    return({price:roundPriceTemp(totalPrice),priceDetail:priceDetail})
+    return({price:NormalNumber(totalPrice),priceDetail:priceDetail})
 }
 const roundPriceTemp = (price)=>{
      var tempPrice = parseInt(Math.round(price)/1000)*1000
