@@ -229,7 +229,16 @@ function OrderHeader(props) {
                 key={i}
                 onClick={() => setProductInfo(product)}
               >
-                <p className="bu-name">{product.title}</p>
+                <p className="bu-name">
+                  {product.feature && (
+                    <i
+                      class="fa fa-check-circle"
+                      style={{ fontSize: "20px" }}
+                      aria-hidden="true"
+                    ></i>
+                  )}
+                  {product.title}
+                </p>
                 <div className="info-holder col">
                   <span>
                     <i
