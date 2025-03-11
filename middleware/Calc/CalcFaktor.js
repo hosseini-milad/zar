@@ -19,7 +19,8 @@ const CalcFaktor=(sale,purchase,payment,debit,off)=>{
             sale[i].priceDetail.taxPrice) 
     }
     for(var i=0;i<purchase.length;i++){
-        totalPurchase += NormalNumber(purchase[i].fullPrice)
+        totalPurchase += NormalNumber(purchase[i].fullPrice)*
+        NormalNumber(purchase[i].count?purchase[i].count:1)
     }
     for(var i=0;i<payment.length;i++){
         totalPay += NormalNumber(payment[i].payValue)
