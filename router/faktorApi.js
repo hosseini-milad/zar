@@ -1060,10 +1060,12 @@ router.post('/list-faktor',auth, async (req,res)=>{
         for(var i=0;i<faktorList.length;i++){
             var faktorNo = faktorData[i].faktorNo
             var userDetail = await customers.findOne({_id:ObjectID(faktorData[i].userId)})
+            var manageDetail = await users.findOne({_id:ObjectID(faktorData[i].manageId)})
             const faktorItemData = await faktorItems.find({faktorNo:faktorNo})
             faktorData[i].items = faktorItemData
             faktorData[i].rahId	=faktorNo
             faktorData[i].userDetail=userDetail
+            faktorData[i].manageDetail=manageDetail
             //itemRefs.push(faktorItem)
         }
         res.json({data:faktorData,size:faktorData.length})
