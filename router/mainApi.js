@@ -295,6 +295,10 @@ const NormalNum = (data)=>{
 }
 const ColorCode = (color)=>{
     if(!color) return("#eee")
+    if(color=="سفید")return("#fff")
+    if(color=="نقره ای") return("silver")
+    if(color=="زرد") return("#FFD700")
+    if(color=="قرمز") return("#B22222")
     var result = "#eee"
     return(result)
 }
