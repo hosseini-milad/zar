@@ -25,6 +25,8 @@ const ProductSchema = new Schema({
     isMojood:Boolean,
     isReserve:{type:Boolean,default:false},
     sood:String,
+    color:String,
+    colorCode:String,
     isMaster:Boolean,
     masterSku:String,
     ojrat:String,
