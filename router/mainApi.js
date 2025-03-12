@@ -170,7 +170,7 @@ router.get('/get-sekke', async (req,res)=>{
 router.post('/get-product', async (req,res)=>{
     const id = req.body.id
     try{
-        result = await updateProduct(id,id,1)
+        result = await updateProduct(id,id+1,1)
         res.json({result})
     }
     catch(error){
