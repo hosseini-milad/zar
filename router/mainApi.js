@@ -170,7 +170,7 @@ router.get('/get-sekke', async (req,res)=>{
 router.post('/get-product', async (req,res)=>{
     const id = req.body.id
     try{
-        result = await updateProduct(id,id)
+        result = await updateProduct(id,id,query)
         res.json({result})
     }
     catch(error){
@@ -178,7 +178,7 @@ router.post('/get-product', async (req,res)=>{
     }
 })
 
-const updateProduct=async(from,to)=>{
+const updateProduct=async(from,to,queryShow)=>{
     const productList = await GetTahHesab(
         {
             "DoListEtiket":
@@ -189,6 +189,7 @@ const updateProduct=async(from,to)=>{
     var outPut = []
     var updateProduct = 0
     var newProduct = 0
+    var queryOut=''
     var skuList = []
     for(var i=from;i<to;i++){
         if(productList[i]){ 
@@ -212,6 +213,7 @@ const updateProduct=async(from,to)=>{
             feature:feature,
             isMojood:productList[i].IsMojood=="1"?true:false,
             }
+        if(queryShow) queryOut = query
         var updateResult = await products.updateOne({sku:productList[i].Code},
             {$set:query}
         )
@@ -224,7 +226,7 @@ const updateProduct=async(from,to)=>{
         }
         }
     }
-    return({updateProduct, newProduct})
+    return({updateProduct, newProduct,queryOut})
 }
 const updateCustomer=async(from,to)=>{
     try{
