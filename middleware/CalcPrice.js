@@ -12,16 +12,17 @@ const CalcPrice=(product,price,TAX,discount)=>{
     var OJRAT = product.ojrat?parseFloat(product.ojrat&&
             product.ojrat.replace(/\//g,'.')):OJRAT_DEF
     var taxValue = parseFloat(TAX?TAX:TAX_DEF)/100
+    
+    var poolSang = product.poolSang
 
     if(product.feature) {
         var eq = floatWeight*OJRAT/100
         var weightEq = eq+floatWeight
-        featurePrice = NormalNumber(weightEq*price)
+        featurePrice = NormalNumber(weightEq*price)+poolSang
     }
     totalPrice = floatWeight*price
     var roundPrice = parseInt(Math.round(totalPrice*1000))/1000
     var discountPrice = roundPriceTemp(totalPrice*(discount?discount:0))/10000
-    var poolSang = product.poolSang
     var ojratPrice = parseFloat(OJRAT)*roundPrice/100
     var senfiPrice = parseFloat(roundPrice+ojratPrice)*(SENFI/100)
 
@@ -29,9 +30,12 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
-    if(featurePrice)taxPrice = featurePrice * taxValue
-
-    console.log(featurePrice)
+    if(featurePrice){
+        taxPrice = featurePrice * taxValue
+        discountPrice = 0
+        ojratValue=0
+        ojratPrice=0
+    }
 
     var finalPrice = NormalNumber(totalPrice-discountPrice)
     var priceDetail = { 
