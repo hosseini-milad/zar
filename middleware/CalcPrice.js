@@ -31,6 +31,8 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     if(featurePrice)taxPrice = featurePrice * taxValue
 
+    console.log(featurePrice)
+    
     var finalPrice = NormalNumber(totalPrice-discountPrice)
     var priceDetail = { 
         taxValue:TAX, taxPrice:NormalNumber(taxPrice),
