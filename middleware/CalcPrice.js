@@ -29,6 +29,8 @@ const CalcPrice=(product,price,TAX,discount)=>{
     
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
+    if(featurePrice)taxPrice = featurePrice * taxValue
+
     var finalPrice = NormalNumber(totalPrice-discountPrice)
     var priceDetail = { 
         taxValue:TAX, taxPrice:NormalNumber(taxPrice),
