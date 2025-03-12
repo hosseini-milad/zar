@@ -167,6 +167,17 @@ router.get('/get-sekke', async (req,res)=>{
     }
 })
 
+router.post('/get-product', async (req,res)=>{
+    const id = req.body.id
+    try{
+        result = await updateProduct(id,id)
+        res.json({result})
+    }
+    catch(error){
+        res.status(500).json({message: error.message})
+    }
+})
+
 const updateProduct=async(from,to)=>{
     const productList = await GetTahHesab(
         {
