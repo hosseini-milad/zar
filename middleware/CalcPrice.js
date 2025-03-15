@@ -1,7 +1,7 @@
 const FloatDec = require("./FloatDec")
 const NormalNumber = require("./NormalNumber")
 
-const {OJRAT_DEF,SENFI_DEF,TAX_DEF} = process.env
+const {OJRAT_DEF,SENFI_DEF,TAX_DEF,TAX_I} = process.env
 const CalcPrice=(product,price,TAX,discount)=>{
     if(!product) return(0)
     var featurePrice = 0
@@ -31,7 +31,7 @@ const CalcPrice=(product,price,TAX,discount)=>{
     var totalPrice = taxPrice+senfiPrice+ojratPrice+roundPrice
     
     if(featurePrice){
-        taxPrice = featurePrice * taxValue
+        taxPrice = featurePrice * TAX_I
         discountPrice = 0
         SENFI=0
         senfiPrice=0
