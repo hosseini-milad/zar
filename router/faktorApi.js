@@ -966,8 +966,11 @@ router.post('/fetch-faktor',auth, async (req,res)=>{
         const purchaseItems = []
         var index =1
         for(var i=0;i<FaktorItems.length;i++){
-            if(FaktorItems[i].purchase!== true)
+            if(FaktorItems[i].purchase!== true){
+                FaktorItems[i].weight750 = FaktorItems[i].weight + FaktorItems[i].ayar
                 saleItems.push({...FaktorItems[i],index})
+
+            }
             else
                 purchaseItems.push({...FaktorItems[i],index})
             index++
